@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="columns is-multiline">
+
+    <!-- Add User Card -->
+    <div class="column is-4" x-data="newUser()">
+        <div class="card">
+
+            <!-- Header -->
+            <header class="card-header has-background-primary-light">
+                <p class="card-header-title">Add User</p>
+            </header>
+
+            <div class="card-content">
+                <form>
+
+                    <!-- Email -->
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control">
+                            <input class="input" name="email" type="email" autocomplete="off" x-model="email">
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <div class="control">
+                            <input class="input" name="password" type="password" autocomplete="off" x-model="password">
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="field">
+                        <label class="label">Confirm Password</label>
+                        <div class="control">
+                            <input class="input" name="confirmPassword" type="password" autocomplete="off" x-model="confirmPassword">
+                        </div>
+                        <template
+                            x-effect="passwordCheck = passwordValidatorJSON(password, confirmPassword)"
+                            x-if="password || confirmPassword"
+                        >
+                            <div class="help">
+                                <ul>
+                                    <template x-for="test in (passwordCheck || {}).tests || []">
+                                        <li
+                                            x-text="test.message"
+                                            :class="test.passed ? 'has-background-success-light' : 'has-background-danger-light'"
+                                        ></li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Pick Role -->
+                    <div class="field">
+                        <label class="label">Role</label>
+                        <div class="control">
+                            <div class="select">
+                                <select name="roleId" autocomplete="off" x-model="roleId">
+                                    <option value="" selected disabled hidden>...</option>
+                                    {% for r in roles %}
+                                        <option value="{{ r.role_id }}">
+                                            {{ r.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <footer class="card-footer" x-cloak x-show="email || password || confirmPassword || roleId">
+                <button
+                    type="button"
+                    class="button card-footer-item is-success is-light"
+                    x-show="email && password && confirmPassword && roleId && (passwordCheck || {}).passed"
+                    @click="addUser()"
+                >Add</button>
+                <button
+                    type="button"
+                    class="button card-footer-item is-warning is-light"
+                    @click="clearChanges()"
+                >Cancel</button>
+            </footer>
+
+        </div>
+    </div>
+
+    {% for u in users %}
+
+        <!-- Current User Card -->
+        <div class="column is-4" x-data="existingUser('{{ u.email }}', '{{ u.role_id }}')">
+            <div class="card">
+
+                <!-- Header / Display Email -->
+                {% if u.id == cur_user_id %}
+                    <!-- current user -->
+                    <header class="card-header has-background-warning-light">
+                        <p class="card-header-title" style="overflow-wrap: anywhere;">
+                            <i>(you)</i>&nbsp;{{ u.email }}
+                        </p>
+                    </header>
+                {% else %}
+                    <!-- any other user -->
+                    <header class="card-header has-background-link-light">
+                        <p class="card-header-title" style="overflow-wrap: anywhere;">
+                            {{ u.email }}
+                        </p>
+
+                        <div
+                            class="card-header-icon"
+                            :class="{'has-background-danger-light': deleteHover}"
+                            @mouseover="deleteHover = true;"
+                            @mouseout="deleteHover = false; deleteProg = 0;"
+                            @click="if (deleteProg < 2) { deleteProg++; showToast(`${3 - deleteProg} clicks left`); } else { deleteUser(); }"
+                        >
+                            <span class="icon">
+                                <i
+                                    class="mdi mdi-24px mdi-delete"
+                                    :class="['', 'has-text-danger', 'has-text-danger-dark'][deleteProg]"
+                                ></i>
+                            </span>
+                        </div>
+                    </header>
+                {% endif %}
+
+                <div class="card-content">
+                    <form>
+
+                        <!-- Change Pass - New -->
+                        <div class="field">
+                            <label class="label">New Password</label>
+                            <div class="control">
+                                <input class="input" name="newPassword" type="password" autocomplete="off" x-model="newPassword">
+                            </div>
+                        </div>
+
+                        <!-- Change Pass - Confirm -->
+                        <div class="field">
+                            <label class="label">Confirm Password</label>
+                            <div class="control">
+                                <input class="input" name="confirmPassword" type="password" autocomplete="off" x-model="confirmPassword">
+                            </div>
+                            <template
+                                x-effect="passwordCheck = passwordValidatorJSON(newPassword, confirmPassword)"
+                                x-if="newPassword || confirmPassword"
+                            >
+                                <div class="help">
+                                    <ul>
+                                        <template x-for="test in (passwordCheck || {}).tests || []">
+                                            <li
+                                                x-text="test.message"
+                                                :class="test.passed ? 'has-background-success-light' : 'has-background-danger-light'"
+                                            ></li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Display / Change Role -->
+                        <div class="field">
+                            <label class="label">Role</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select name="roleId" autocomplete="off" x-model="roleId">
+                                        {% for r in roles %}
+                                            <option
+                                                value="{{ r.role_id }}"
+                                            >
+                                                {{ r.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <template x-if="origRoleId !== roleId">
+                                <p class="help">Changed</p>
+                            </template>
+                        </div>
+
+                    </form>
+                </div>
+
+                <footer class="card-footer" x-cloak x-show="(origRoleId !== roleId) || (newPassword || confirmPassword)">
+                    <button
+                        type="button"
+                        class="button card-footer-item is-success is-light"
+                        x-show="(newPassword || confirmPassword) ? (passwordCheck || {}).passed : (origRoleId !== roleId)"
+                        @click="saveChanges()"
+                    >Save</button>
+                    <button
+                        type="button"
+                        class="button card-footer-item is-warning is-light"
+                        @click="clearChanges()"
+                    >Cancel</button>
+                </footer>
+
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+<script>
+
+function newUser() {
+    return {
+        email          : "",
+        password       : "",
+        confirmPassword: "",
+        roleId         : "",
+        passwordCheck  : null,
+
+        addUser() {
+            ajaxJSON("POST", "/admin/user", {
+                email   : this.email,
+                password: this.password,
+                role_id : parseInt(this.roleId),
+            }).then(res => {
+                showToast(`Successfully added ${this.email}. Refreshing in 2s`);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+                this.clearChanges();
+            }).catch(err => {});
+        },
+
+        clearChanges() {
+            this.email           = "";
+            this.password        = "";
+            this.confirmPassword = "";
+            this.roleId          = "";
+            this.passwordCheck   = null;
+        }
+    }
+}
+
+function existingUser(email, roleId) {
+    return {
+        deleteHover: false,
+        deleteProg : 0,
+
+        email          : email,
+        roleId         : roleId,
+        origRoleId     : roleId,
+        newPassword    : "",
+        confirmPassword: "",
+        passwordCheck  : null,
+
+        deleteUser() {
+            ajaxJSON("DELETE", "/admin/user", {
+                email: this.email,
+            }).then(res => {
+                showToast(`Successfully deleted ${this.email}`);
+                this.$root.remove();
+            }).catch(err => {
+                this.deleteProg = 0;
+            });
+        },
+
+        saveChanges() {
+            ajaxJSON("PATCH", "/admin/user", {
+                email   : this.email,
+                password: this.newPassword,
+                role_id : parseInt(this.roleId),
+            }).then(res => {
+                showToast(`Successfully updated ${this.email}`);
+                this.origRoleId = this.roleId;
+                this.clearChanges();
+            }).catch(err => {});
+        },
+
+        clearChanges() {
+            this.roleId          = this.origRoleId;
+            this.newPassword     = "";
+            this.confirmPassword = "",
+            this.passwordCheck   = null;
+        }
+    }
+}
+
+</script>
+
+{% endblock %}

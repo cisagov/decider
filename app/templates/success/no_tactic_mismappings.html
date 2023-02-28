@@ -1,0 +1,44 @@
+{% macro noTacticMismappings(success) %}
+
+<section class="section content">
+
+	<h3 class="title">
+        Mismappings
+
+        <span class="icon is-medium has-tooltip-bottom has-tooltip-is-hover has-tooltip-multiline" data-tooltip="Mismappings are instances where a Technique was incorrectly mapped on a report. This table contains information about why the original Technique was wrong and provides alternatives. This information exists to inform of mapping edge cases and the hope is to prevent another mismap.">
+            <i class="mdi mdi-24px mdi-head-question" style="color: #7957d5;"></i>
+        </span>
+
+		<span id="mismappingsButton" class="icon is-medium has-tooltip-bottom" style="vertical-align: middle; color: #7957d5;" data-tooltip="You must select a tactic before editing mismappings.">
+			<a id="mismappingLink"><i id="mismappingIcon" class="mdi mdi-24px mdi-alert-octagon"></i></a>
+		</span>
+    </h3>
+
+	{% if success.mismappings|length > 0%}
+		<table>
+			<tr>
+				<th>Other Potential Technique</th>
+				<th>Context</th>
+				<th>Rationale</th>
+			</tr>
+
+			{% for m in success.mismappings %}
+				<tr>
+					{% if m.corrected_techname %}
+						<td><a href="{{ m.url }}">{{ m.corrected_techname }} ({{ m.corrected }})</a></td>
+					{% else %}
+						<td>N/A</td>
+					{% endif %}
+					<td>{{ m.context|safe }}</td>
+					<td>{{ m.rationale|safe }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<p>No Mismappings</p>
+		<div style="height: 10vh"></div>
+		<!-- Div gives spacing for tooltip in the case that mismaps is the last section and it hangs off the page -->
+	{% endif %}
+</section>
+
+{% endmacro %}

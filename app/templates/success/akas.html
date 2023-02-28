@@ -1,0 +1,13 @@
+{% macro Akas(success) %}
+
+{% if success.akas|length > 0 %}
+<section class="section content">
+    <h3 class="title is-4">AKAs</h3>
+    <div class="tags">
+        {% for aka in success.akas %}
+            <span class="tag is-primary">{{ aka }}</span>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endmacro %}

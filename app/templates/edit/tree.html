@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+<script src="/static/js/edit_tree.js"></script>
+<div class="columns is-centered is-flex-wrap-nowrap">
+    <div class="column">
+        <nav class="panel is-3" id="missingContentPanel">
+            <p class="panel-heading"> Missing Content</p>
+            <div class="panel-block">
+                <aside class="menu sidebar" id="missingContent">
+                    {% for tactic in missing %}
+                        <p class="menu-label">{{tactic[0]}} ({{tactic[1]}})</p>
+                        <ul class="menu-list">
+                            {% for technique in tactic[2] %}
+                                {% if technique[2] == 'tactic_level' %}
+                                    <li onclick="opentab_missing_content(this,'{{tactic[0]}}.{{technique[0]}}',{{technique[3] | int}})"><a><span class="icon" style="color: green;"><i class="mdi mdi-18px mdi-chat-question"></i></span> {{technique[0]}} ({{technique[1]}})</a></li>
+                                {% else %}
+                                    <li onclick="opentab_missing_content(this,'{{tactic[0]}}.{{technique[0]}}',{{technique[3] | int}})"><a><span class="icon" style="color: blue;"><i class="mdi mdi-18px mdi-chat-processing"></i></span> {{technique[0]}} ({{technique[1]}})</a></li>
+
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                </aside>
+            </div>
+        </nav>
+    </div>
+    <div class="column is-9 floatingColumn">
+
+        <div style="float: right;">
+            <a id="edit-tree-link-to-audit" href="/edit/tree/audit/{{ g.version_picker.cur_version }}">
+                Go to Audit <i class="mdi mdi-18px mdi-arrow-right-bold"></i>
+            </a>
+        </div>
+
+        <div id="editing-jump-to-id" style="margin-bottom: 1rem;">
+            <label for="editing-jump-to-id-input"><b>Jump to TechID:</b></label>&nbsp;
+            <input type="search" autocomplete="off" disabled type="text" id="editing-jump-to-id-input" name="editing-jump-to-id-input" style="width: 15ch;">
+            <button disabled type="button" id="editing-jump-to-id-button" onclick="jumpToIDBtnCallback()">Jump</button>
+            <span id="editing-jump-to-id-status">Tnnnn<u><b>.</b>nnn</u> or Tnnnn<u><b>/</b>nnn</u> allowed</span>
+        </div>
+
+        <div class="tabs is-boxed is-centered" id="tabs1">
+            <ul>
+                <li name='start' class="is-active" onclick="openTab(this,'{{results.question.id}}',1)"><a>{{results.question.id}}</a></li>
+                {% for val in results.data %}
+                    <li name="{{val.id}}" onclick="openTab(this,'{{val.id}}',1)"><a>{{val.id}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div id="content1">
+            <section class="section">
+                <h1 class="title">Question Text</h1>
+                <div class="box">
+                    <h6 class="title is-6">{{results.question.id}}</h6>
+                    {% if results.question.id == 'start'%}
+                        <div class="columns">
+                            <div class="column">
+                                <div id="{{results.question.id}}-render" class="md-content">{{results.question.question_view|safe}}</div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="columns">
+                            <div class="column">
+                                <textarea oninput="updateContent (this)" data-id="start" data-type="question" class="textarea">{{results.question.question_edit}}</textarea>
+                            </div>
+                            <div class="column">
+                                <div id="{{results.question.id}}-render" class="md-content">{{results.question.question_view|safe}}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+            <section class="section">
+                <h1 class="title">Answer Text</h1>
+            {% for tactic in results.data %}
+                <div class="box">
+                    <h6 class="title is-6">{{tactic.id}} ({{tactic.name}})</h6>
+                    <div class="columns">
+                        <div class="column">
+                            <textarea oninput="updateContent(this)" data-id="{{tactic.id}}" data-type="answer" class="textarea">{{tactic.answer_edit}}</textarea>
+                        </div>
+                        <div class="column">
+                            <div id="{{tactic.id}}-render">{{tactic.answer_view|safe}}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </section>
+        </div>
+    </div>
+    <a class="jump-to-top" onclick="jumpToTop()"><span class="icon is-large"><i class="mdi mdi-48px mdi-arrow-up-circle"></i></span></a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="columns is-centered is-mobile">
+    <div class="column floatingColumn">
+        <script src="/static/js/profile.js"></script>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <p id='message' hidden>{{messages[0]}}</p>
+        <script>
+            message = $('#message').text()
+            showToast(message)
+        </script>
+        {% endif %}
+        {% endwith %}
+        <div class="tile is-ancestor">
+
+            <div class="tile is-parent is-6">
+                <div class="tile is-child">
+
+                    <!-- Admin Tools -->
+                    {% if data.admin_permission %}
+                    <nav class="panel profile-panel">
+                        <p class="panel-heading">Administrator Tools</p>
+
+                        <a href="/admin/user" class="panel-block">
+                            <span class="panel-icon">
+                                <i class="mdi mdi-24px mdi-account" aria-hidden="true"></i>
+                            </span>&nbsp;
+                            User Management
+                        </a>
+                    </nav>
+                    {% endif %}
+
+                    <!-- Editor Tools -->
+                    {% if data.edit_permission %}
+                    <nav class="panel profile-panel">
+                        <p class="panel-heading">Editor Tools</p>
+
+                        <a href="/edit/mismapping" class="panel-block">
+                            <span class="panel-icon">
+                                <i class="mdi mdi-24px mdi-lead-pencil" aria-hidden="true"></i>
+                            </span>&nbsp;
+                            Edit Mismappings
+                        </a>
+
+                        <a href="/edit/tree" class="panel-block">
+                            <span class="panel-icon">
+                                <i class="mdi mdi-24px mdi-lead-pencil" aria-hidden="true"></i>
+                            </span>&nbsp;
+                            Edit Card Content
+                        </a>
+
+                        <a href="/edit/tree/audit/{{ g.version_picker.cur_version }}" class="panel-block">
+                            <span class="panel-icon">
+                                <i class="mdi mdi-24px mdi-file-document-outline" aria-hidden="true"></i>
+                            </span>&nbsp;
+                            Audit Card Content
+                        </a>
+                    </nav>
+                    {% endif %}
+
+                    <!-- User Options -->
+                    <nav class="panel profile-panel">
+                        <p class="panel-heading">User Settings</p>
+                        <a href="/profile/change_password" class="panel-block">
+                            <span class="panel-icon">
+                                <i class="mdi mdi-24px mdi-lock-reset" aria-hidden="true"></i>
+                            </span>&nbsp;
+                            Change Password
+                        </a>
+                    </nav>
+
+                </div>
+            </div>
+
+            <div class="tile is-parent is-6">
+                <div class="tile is-child">
+                    <nav class="panel profile-panel">
+                        <p class="panel-heading">Saved Carts</p>
+                        {% for x in data.carts %}
+                            <div class="panel-block">
+                                <span class="panel-icon">
+                                    <i class="mdi mdi-24px mdi-file-document"></i>
+                                </span>&nbsp;
+                                <a onclick="loadCart({{x.id}})">{{x.name}} <sub>({{x.version}})</sub>&emsp;</a>
+                                <button class="is-primary" style="cursor:pointer; display:inline;" onclick="askToConfirmDeleteCart({{x.id}}, this)" style="float:right;"><i class="mdi mdi-delete mdi-18px"></i></button>
+                            </div>
+                        {% endfor %}
+                        </p>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Cart deletion confirmation modal -->
+<div class="modal" id="cart_delete_confirm_modal">
+    <div class="modal-background" onclick="closeModal('#cart_delete_confirm_modal')"></div> <!-- Click outside modal to close -->
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Confirm Cart Deletion</p>
+            <button class="delete" aria-label="close" onclick="closeModal('#cart_delete_confirm_modal')"></button>
+        </header>
+        <section class="modal-card-body">
+            <p>
+                Are you sure that you want to delete this cart?<br>
+                This action is <b>irreversible</b>.
+            </p>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-danger" onclick="deleteCart()">Delete</button>
+            <button class="button" onclick="closeModal('#cart_delete_confirm_modal')">Cancel</button>
+        </footer>
+    </div>
+</div>
+{% endblock %}

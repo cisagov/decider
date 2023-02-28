@@ -1,0 +1,836 @@
+/* Bottom Pagination Bar */
+.pagination {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+ul.pagination-list {
+    list-style-type: none;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+/* Filtering Selection Column */
+
+.filter-panel .panel-heading {
+    background-color: #f2effb;
+}
+
+.filter-menu {
+    margin-bottom: 2em;
+}
+
+.filter-panel-selection {
+    display: none;
+    overflow-y: auto;
+    max-height: 50vh;
+}
+
+#filterColumn {
+    display: none;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+#answerListHeader {
+    margin-bottom: 1.5em;
+}
+
+/* Answer Card */
+.answer {
+    background-color: #f2effb;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+.answer:hover {
+    background-color: #e0d7fc;
+}
+.ans-url {
+    z-index: 2; /* keep above whole clickable card */
+    position: relative;
+    color: #7957d5;
+}
+.ans-content {
+    color: #363636;
+}
+.ans-additional-matches {
+    margin-top: 0.5rem;
+    color: #363636;
+}
+.ans-path {
+    text-align: left;
+    display: block;
+    z-index: 1; /* full card clickability */
+}
+.ans-path::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: " ";
+}
+.answer > .columns {
+    margin-bottom: 0;
+}
+.count-column {
+    align-items: right;
+    align-content: right;
+    justify-content: right;
+    padding-right: 0;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+/* Top Navigation Bar */
+.navbarSection {
+    padding-bottom: 2em;
+}
+#navbar-top {
+    background-color: #f2effb; /* ever so slightly purple */
+    border-bottom-width: 1px;
+    border-bottom-color: #ddd;
+    border-bottom-style: solid;
+}
+a > p > sub {
+    font-size: 0.7em;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+/* Success Card */
+#success-card {
+    margin-bottom: 30px;
+}
+.success-card-title {
+    font-size: 1.45rem;
+    line-height: 1.1;
+    background-color: #25096c;
+}
+.success-header {
+    color: #ffffff;
+    flex-wrap: wrap;
+}
+.success-header > span > a {
+    color: #33ff33;
+}
+.success-header > span > a:hover {
+    color: #00dddd;
+    text-decoration: underline;
+}
+.success-card-header-icon {
+    color: #33ff33;
+}
+.success-card-header-icon:hover {
+    color: #00dddd;
+}
+/* Space reduction & section delineation */
+.section.content {
+    margin-top: 1.2em !important;
+    padding-top: 1em !important;
+    margin-bottom: 1.2em !important;
+    padding-bottom: 2.2em !important;
+}
+.section.content {
+    border-bottom-style: dotted;
+    border-bottom-color: #baace0;
+    border-bottom-width: 1px;
+}
+.section.content:last-child {
+    border-bottom: none;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+/* Technique/Sub Selection */
+.techSubTable {
+    display: table;
+}
+
+/* Clickable row/cell */
+.techSubTable a {
+    display: table-row;
+}
+.techSubTable a span {
+    display: table-cell;
+    padding-right: 20px;
+}
+
+/* Current (un-interactive) row/cell */
+.techSubTable span {
+    display: table-row;
+}
+.techSubTable span span {
+    display: table-cell;
+    padding-right: 20px;
+}
+.righty {
+    text-align: right;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+/* Cooccurrence Technique Description
+    default: pale yellow, single line of text shown
+    opened: faint purple highlight, all content shown
+*/
+.cooc-desc {
+    overflow: hidden;
+    display: block;
+    padding-right: 0.5em;
+}
+
+.cooc-desc-open {
+    background-color: #f4f2fa;
+}
+.cooc-desc-open::before {
+    font-family: "Material Design Icons";
+    content: "\00a0\00a0\F0360"; /* v */
+    display: block;
+    float: right;
+    transform: scale(1.75) translate(0, -5%);
+    color: black;
+}
+.cooc-desc-open:hover::before {
+    color: red;
+}
+
+.cooc-desc-closed {
+    background-color: #fffef0;
+}
+.cooc-desc-closed::before {
+    font-family: "Material Design Icons";
+    content: "\00a0\00a0\F035D"; /* ^ */
+    display: block;
+    float: right;
+    transform: scale(1.75) translate(0, -5%);
+    color: black;
+}
+.cooc-desc-closed:hover::before {
+    color: red;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+/* Search Box */
+.dropdown-menu {
+    max-height: 18em;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 5px 2px #f0f0f0;
+    padding-top: 0;
+}
+.dropdown-content {
+    background-color: #ffffffff;
+    padding: 0;
+}
+#searchBar {
+    width: 100%;
+}
+.dropdown-trigger {
+    width: 100%;
+}
+.dropdown {
+    width: 35em;
+}
+.dropdown-item-div {
+    width: 35em;
+}
+.dropdown-item {
+    width: 35em;
+}
+
+/* technique mini search become large size when thrown into burger menu */
+@media only screen and (max-width: 1023px) {
+    #searchDropdown {
+        width: 35em;
+    }
+}
+
+/* technique mini search scales with width of navbar when not in burger-mode */
+@media only screen and (min-width: 1024px) {
+    #searchDropdown {
+        width: 23vw;
+    }
+}
+
+/* reduce padding for technique mini search */
+#searchDropdown a.dropdown-item {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+/* faint line between items */
+.dropdown-item + .dropdown-item {
+    border-top: 1px dotted lightgray;
+}
+
+.dropdown-item-selected {
+    background-color: #e2d8ff;
+}
+.search-result-p {
+    word-wrap: break-word;
+    word-break: break-word; /* prevent breaks within words */
+    hyphens: auto;
+    overflow-wrap: anywhere;
+    display: inline;
+    width: 35em;
+    white-space: normal;
+}
+.search-result-tag {
+    margin: 2px;
+}
+
+/* Sentences */
+#sentenceList {
+    overflow: auto;
+    max-height: 50em;
+    padding: 0;
+}
+.sentence-header {
+    border-width: 1px;
+    border-color: rgb(196, 196, 196);
+    border-style: solid;
+    background-color: #fbfbfb;
+}
+.sentence-title {
+    z-index: 2;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    flex-grow: 0;
+}
+.sentence-toggle {
+    z-index: 1;
+    display: block;
+    margin-left: auto;
+}
+.sentence-toggle::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: " ";
+}
+
+.tactic-column {
+    display: flex;
+}
+
+/* Tooltip icon color on hover - TODO: general tooltip class? */
+.navbar-item .mdi {
+    color: #7957d5;
+}
+.navbar-item .mdi:hover {
+    color: black;
+}
+
+a.navbar-item:hover {
+    background-color: #ece3ff;
+}
+
+/* Full Technique Search */
+.redtext {
+    color: red;
+    font-weight: bold;
+}
+/* Full Search AKA Highlighting */
+.tags .tag .highlighter {
+    /* Fixes spacing between highlights/plain text in AKAs */
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+}
+.tags .tag .highlighter {
+    /* Makes AKAs readable when highlighted */
+    color: black;
+}
+
+/* Last Clicked Search Result Styling (Based on Answer Card) */
+.last-result-clicked {
+    background-color: #f0f0f0;
+}
+.last-result-clicked:hover {
+    background-color: #dcdcdc;
+}
+.last-result-clicked-content {
+    color: #424242 !important;
+}
+.last-result-clicked-content:hover {
+    color: #000000 !important;
+}
+.last-result-clicked-aka {
+    background-color: #424242 !important;
+}
+
+/* Multi-Co-Occurrence Suggestions Page */
+#coocurrences-multi {
+    min-height: 80vh;
+    margin-top: 2em;
+}
+
+.contentColumns {
+    display: flex;
+    flex-wrap: wrap-reverse;
+}
+
+.floatingColumn {
+    max-width: 70vw;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+
+/* Shopping Cart */
+
+/* div that is just a column; pinned to right-side of screen */
+#cartColumn {
+    padding-top: 0;
+    overflow: visible;
+    display: none;
+}
+.cart-panel {
+    top: 0;
+    margin-top: 0.75em;
+    position: sticky;
+}
+
+/* actual cart container with outline/shadow styling */
+.cart-panel .panel-block {
+    background-color: #fbfbfb;
+
+    justify-content: right;
+    overflow: visible !important;
+}
+#savedItemsCard > .title {
+    white-space: nowrap;
+    margin-bottom: 1.5em;
+}
+#cart {
+    list-style-type: none;
+    overflow-y: auto; /* hides scrollbar when empty enough */
+    overflow-x: hidden;
+    min-height: 10em;
+    max-height: 70vh;
+}
+#cartItemsPanel {
+    padding-right: 0;
+    padding-top: 0em;
+    padding-left: 0.5em;
+    padding-bottom: 0em;
+}
+
+.cartItem a {
+    color: #363636;
+}
+.cartItem {
+    margin-bottom: -1em;
+}
+
+.cartItemDelete {
+    position: relative;
+    top: -30px;
+    left: -1px;
+}
+
+/* To be used with .has-tooltip-bottom to form a bottom-left tooltip.
+It wasn't too hard to fix the issue of div's cutting off tooltips,
+however, this fixes the issue of the page itself cutting them off too
+*/
+[data-tooltip]:not(.is-disabled).tooltip-bottom-leftshift::before,
+[data-tooltip]:not(.is-loading).tooltip-bottom-leftshift::before,
+[data-tooltip]:not([disabled]).tooltip-bottom-leftshift::before {
+    transform: translate(calc(-100% + 1em), 100%);
+}
+
+.panel-heading {
+    background-color: #f2effb;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Change Log */
+
+#change-log-list > li > div::before {
+    content: attr(data-title);
+    font-weight: bold;
+}
+
+#change-log-list {
+    list-style-type: none;
+    margin: 0;
+}
+
+#change-log-list > li:not(:last-child) {
+    padding-bottom: 1.25em;
+    margin-bottom: 1.25em;
+    border-bottom-style: dotted;
+    border-bottom-color: #baace0;
+    border-bottom-width: 1px;
+}
+
+#change-log-list > li:first-child {
+    padding-top: 1.25em;
+    margin-top: 1.25em;
+    border-top-style: dotted;
+    border-top-color: #baace0;
+    border-top-width: 1px;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Users Page */
+
+.users-card-header {
+    background-color: #f2effb;
+}
+
+.users-new-user-card-header {
+    background-color: #d9e9ff;
+}
+.md-content ol,
+.default-list ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+.md-content ul,
+.default-list ul {
+    list-style-type: disc;
+    list-style-position: inside;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Sidebar */
+
+.menu-list > li > a {
+    font-size: 14px;
+}
+.menu-list > li > ul > li > a {
+    font-size: 14px;
+}
+
+.sidebar {
+    max-height: 80vh;
+    overflow: scroll;
+    width: 100%;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Profile Page */
+.profile-panel .panel-heading {
+    background-color: #f2effb;
+}
+
+/* Full Search */
+mark {
+    background-color: rgb(255, 255, 0, 0.5);
+    color: unset;
+}
+
+.tag > mark {
+    /* Ensures <mark>AAA </mark>BBB looks like "AAA BBB" and not "AAABBB"; other side too */
+    margin-left: 0.15em;
+    margin-right: 0.15em;
+}
+
+#flashing-disable-parent {
+    /* Accessibility toggle to prevent flashing during full search */
+    float: right;
+    transform: scale(0.8);
+}
+
+#searchColumn {
+    min-height: 100vh;
+    padding-bottom: 1.5em;
+}
+
+/* Space between text snippets and AKAs on Technique card */
+.card-content > .ans-path + .tags {
+    margin-top: 1em;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Mismapping */
+#mismappingsContainer > .card + .card {
+    margin-top: 1em;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Edit Tree */
+
+#missingContent {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+#missingContentPanel {
+    position: sticky;
+    top: 0;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Button to jump to the top */
+
+.jump-to-top {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.default-cursor {
+    cursor: default !important;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Style label + input to fit on single row, input fills remaining space */
+
+.label-input-row label {
+    float: left;
+    margin-right: 0.5em;
+}
+
+.label-input-row input {
+    width: 100%;
+}
+
+.label-input-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    white-space: nowrap;
+
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Cart Rename Modal Styling */
+
+.rename-modal-to-overwrite {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+#rename_modal_db_cart_list {
+    background-color: #eeeeee;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Loading Icon & Centered Wrapper */
+
+#loading-message {
+    width: 100%;
+    text-align: center;
+}
+.lds-roller {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+.lds-roller div {
+    animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    transform-origin: 40px 40px;
+}
+.lds-roller div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #7957d5;
+    margin: -4px 0 0 -4px;
+}
+.lds-roller div:nth-child(1) {
+    animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+    top: 63px;
+    left: 63px;
+}
+.lds-roller div:nth-child(2) {
+    animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+    top: 68px;
+    left: 56px;
+}
+.lds-roller div:nth-child(3) {
+    animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+    top: 71px;
+    left: 48px;
+}
+.lds-roller div:nth-child(4) {
+    animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+    top: 72px;
+    left: 40px;
+}
+.lds-roller div:nth-child(5) {
+    animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+    top: 71px;
+    left: 32px;
+}
+.lds-roller div:nth-child(6) {
+    animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+    top: 68px;
+    left: 24px;
+}
+.lds-roller div:nth-child(7) {
+    animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+    top: 63px;
+    left: 17px;
+}
+.lds-roller div:nth-child(8) {
+    animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+    top: 56px;
+    left: 12px;
+}
+@keyframes lds-roller {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* AlpineJS Helpers */
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* MITRE / ATT&CK Color Classes (bulma style) */
+
+.has-text-mitre-blue {
+    color: #005b94;
+}
+
+.has-background-mitre-blue {
+    background-color: #005b94;
+}
+
+.has-text-mitre-highlighter {
+    color: #fff601;
+}
+
+.has-background-mitre-highlighter {
+    background-color: #fff601;
+}
+
+.has-text-mitre-dark-navy {
+    color: #0b2338;
+}
+
+.has-background-mitre-dark-navy {
+    background-color: #0b2338;
+}
+
+.has-text-mitre-navy {
+    color: #0d2f4f;
+}
+
+.has-background-mitre-navy {
+    background-color: #0d2f4f;
+}
+
+.has-text-mitre-light-blue {
+    color: #87deff;
+}
+
+.has-background-mitre-light-blue {
+    background-color: #87deff;
+}
+
+.has-text-attack-orange {
+    color: #c63f1f;
+}
+
+.has-background-attack-orange {
+    background-color: #c63f1f;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Decider Color Classes (bulma style)
+    0 -> 3: increasing darkness
+    purple-0: widely used pastel
+    purple-1: light hover
+    purple-2: strong hover
+    purple-3: intended for links, dark + saturated
+*/
+
+.has-text-decider-purple-0 {
+    color: #f2effb;
+}
+
+.has-background-decider-purple-0 {
+    background-color: #f2effb;
+}
+
+.has-text-decider-purple-1 {
+    color: #ece3ff;
+}
+
+.has-background-decider-purple-1 {
+    background-color: #ece3ff;
+}
+
+.has-text-decider-purple-2 {
+    color: #e0d7fc;
+}
+
+.has-background-decider-purple-2 {
+    background-color: #e0d7fc;
+}
+
+.has-text-decider-purple-3 {
+    color: #7957d5;
+}
+
+.has-background-decider-purple-3 {
+    background-color: #7957d5;
+}
+
+.has-text-decider-purple-1-hov:hover {
+    color: #ece3ff;
+}
+
+.has-background-decider-purple-1-hov:hover {
+    background-color: #ece3ff;
+}
+
+.has-text-decider-purple-2-hov:hover {
+    color: #e0d7fc;
+}
+
+.has-background-decider-purple-2-hov:hover {
+    background-color: #e0d7fc;
+}
+
+/* ----------------------------------------------------------------------------------------------------------------- */
+/* Footer */
+
+#deciderFooter {
+    border-top-width: 1px;
+    border-top-color: #ddd;
+    border-top-style: solid;
+}

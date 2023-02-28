@@ -1,0 +1,145 @@
+{% macro CoOccurrences(success) %}
+{% if g.co_ocs_enabled %}
+<!-- Only display if they were added for this version -->
+
+<!-- Success Section -->
+<section
+    class="section content"
+    x-data="SuccessCooccurrences('{{ success.version }}', '{{ success.id }}')"
+    x-init="initCoocs()"
+    x-show="cooccurrences.length > 0"
+>
+
+    <!-- Title / Tips -->
+    <h3 class="title">
+        Frequently Appears With
+
+        <span
+            class="icon is-medium has-tooltip-bottom has-tooltip-is-hover has-tooltip-multiline"
+            data-tooltip="The presence of {{ success.id }} implies these Techniques may have occurred. Check your reporting and determine if any of these Techniques are mappable. A random subset of these are displayed as to prevent availability bias in mapping. Checking Show All will display all entries. Click the descriptions to expand/collapse them."
+        >
+            <i class="mdi mdi-24px mdi-head-question" style="color: #7957d5;"></i>
+        </span>
+    </h3>
+
+    <!-- Table / Show All Container -->
+    <div>
+        <input type="checkbox" id="coocs-show-all" x-model="showAll" x-effect="updateDisplayed(cooccurrences, showAll)">
+        <label class="is-unselectable" for="coocs-show-all">Show All</label><br>
+
+        <table class="table">
+            <tr>
+                <th>Technique</th>
+                <th>Description</th>
+            </tr>
+
+            <!-- Rows -->
+            <template x-for="cooc in displayedCoocs">
+                <tr>
+                    <td>
+                        <a :href="cooc.url" x-text="`${cooc.tech_name} (${cooc.tech_id})`"></a>
+                    </td>
+                    <td style="vertical-align: middle;">
+                        <div
+                            x-data="CooccurrenceDesc()"
+                            class="cooc-desc"
+                            :class="expanded ? 'cooc-desc-open' : 'cooc-desc-closed'"
+                            x-show="expanded"
+                            x-html="cooc.tech_desc"
+                            @click="toggle()"
+                            x-collapse.min.20px
+                        ></div>
+                    </td>
+                </tr>
+            </template>
+
+        </table>
+    </div>
+
+</section>
+
+<script>
+function SuccessCooccurrences(version, techId) {
+    return {
+        // context
+        version: version,
+        techId : techId,
+
+        // control
+        showAll: false,
+
+        // entries
+        cooccurrences : [],
+        displayedCoocs: [],
+
+        initCoocs() {
+            let paramStr = new URLSearchParams([
+                ["version" , this.version],
+                ["tech_ids", this.techId],
+            ]).toString();
+
+            $.ajax({
+                type    : "GET",
+                url     : `/api/cooccurrences?${paramStr}`,
+                dataType: "json",
+                success : coocs => this.cooccurrences = coocs
+            });
+        },
+
+        updateDisplayed(cooccurrences, showAll) {
+
+            // none to render
+            if (!cooccurrences.length) { return; }
+
+            if (showAll) {
+                this.displayedCoocs = cooccurrences;
+            }
+            else {
+                // Split into 2 arrays by score level: 2+, 1+ (<2)
+                let over_2s = cooccurrences.filter(c => c.score >= 2.0);
+                let over_1s = cooccurrences.filter(c => c.score < 2.0);
+
+                // Determind num of entries to grab [5 default; 10 if there are >5 scores >=2]
+                let max_entries = (over_2s.length > 5) ? 10 : 5;
+
+                let amt_2s = Math.min(max_entries, over_2s.length); // Try to fill max entries, get available at worst
+                let amt_1s = Math.min(max_entries - amt_2s, over_1s.length); // Try to makeup difference, get available at worst
+
+                let pulled_2s = _.sampleSize(over_2s, amt_2s); // Grab >= 2
+                let pulled_1s = _.sampleSize(over_1s, amt_1s); // Grab >= 1 (<2)
+                let combined  = pulled_2s.concat(pulled_1s);
+
+                // Re-order by score descending as prior operations change order
+                combined.sort((a, b) => b.score - a.score);
+
+                this.displayedCoocs = combined;
+            }
+
+        }
+    }
+}
+
+function CooccurrenceDesc() {
+    return {
+        expanded: false,
+
+        toggle() {
+            // don't toggle on link clicks
+            let targetTag = this.$event.target.nodeName.toLowerCase();
+            if (targetTag === "a") {
+                return;
+            }
+
+            // don't toggle on text selection
+            if (window.getSelection().toString().length !== 0) {
+                return;
+            }
+
+            this.expanded = !this.expanded;
+        },
+    }
+}
+</script>
+
+{% endif %}
+{% endmacro %}

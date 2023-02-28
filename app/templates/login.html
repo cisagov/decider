@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-4 is-offset-4">
+
+    <h3 class="title">Login</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="/login" autocomplete="off">
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="" maxlength="320" autocomplete="off">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <input class="input is-large" type="password" name="password" placeholder="Your Password" maxlength="65" autocomplete="off">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                </div>
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Login</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

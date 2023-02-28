@@ -1,0 +1,27 @@
+{% macro Examples(success) %}
+
+{% if success.blurbs|length > 0%}
+	<section class="section content" >
+		<h3 class="title is-4">Examples</h3>
+		<div id="sentenceList">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>File Name</th>
+						<th>Context</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for blurb in success.blurbs %}
+						<tr>
+							<td><a href={{blurb.url}} target="_blank" rel="noopener noreferrer">{{blurb.file_name}}</a></td>
+							<td><p>{{blurb.sentence|safe}}</p></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</section>
+{% endif %}
+
+{% endmacro %}

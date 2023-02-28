@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+{% from 'edit/mismapping_form.html' import Mismapping %}
+
+<script src="/static/js/edit_mismapping.js"></script>
+
+
+<div class="columns is-centered">
+    <div class="column is-2">
+        <nav class="panel">
+            <p class="panel-heading">Techniques</p>
+            <div class="panel-block" id="sideBar">
+            </div>
+        </nav>
+    </div>
+    <div class="column floatingColumn">
+        <div>
+            {{Mismapping(original,'reset-edit-form')}}
+        </div>
+        <br>
+        <div id="mismappingsContainer">
+        </div>
+    </div>
+</div>
+<a class="jump-to-top" onclick="jumpToTop()"><span class="icon is-large"><i class="mdi mdi-48px mdi-arrow-up-circle"></i></span></a>
+
+
+{% endblock %}

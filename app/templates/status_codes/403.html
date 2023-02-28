@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="hero is-medium" style="background-color: #F2EFFB;">
+    <div class="hero-body">
+        <p class="title">
+            403 Permission Denied
+        </p>
+        <p class="subtitle">
+        {% if current_user.is_authenticated %}
+            You should probably go <a href="/"><u><b>home</b></u></a>... or, you can edit the URL if it was entered incorrectly
+        {% else %}
+            You should probably <a href="/login"><u><b>login</b></u></a>... logged-out users can only access the login page anyway
+        {% endif %}
+        </p>
+    </div>
+</section>
+
+{% endblock %}

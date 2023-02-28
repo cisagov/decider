@@ -1,0 +1,244 @@
+{% macro NavBar(current_user) %}
+
+
+<!-- (Logged-in) -->
+{% if current_user.is_authenticated %} <!-- ----------------------------------------------------------------------- -->
+
+<!-- NavBar -->
+<nav id="navbar-top" class="navbar" role="navigation" aria-label="main navigation">
+    <script src="/static/js/full_nav_bar.js"></script>
+
+    <!-- Home Logo + Burger -->
+    <div class="navbar-brand">
+        <a class="navbar-item" id="homeButton" href="/question/{{ g.version_picker.cur_version }}">
+            <b>Decider</b>
+        </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarMenu" class="navbar-menu">
+
+        <!-- Version Selector -->
+        <div class="navbar-start">
+            <div id="versionSelectNavbarItem" class="navbar-item">
+                <div class="select">
+                    <select id="versionSelect" defaultValue="{{g.version_picker.cur_version}}"
+                        onchange="changeVersion(this)" autocomplete="off">
+                    {% for version in g.version_picker.all_versions %}
+                        {% if version == g.version_picker.cur_version %}
+                            <option value="{{ version }}" selected>{{ version }}</option>
+                        {% else %}
+                            <option value="{{ version }}">{{ version }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+
+            <!-- Tactic Dropdown -->
+            <div
+                class="navbar-item has-dropdown is-hoverable"
+                x-data="TacticDropdown('{{ g.version_picker.cur_version }}')"
+                x-init="Init()"
+            >
+                <a class="navbar-link is-unselectable">
+                    Tactics
+                </a>
+
+                <div class="navbar-dropdown">
+                    <template x-for="tact in tactics">
+                        <a
+                            class="navbar-item"
+                            :href="tact.url"
+                            x-text="tact.tactic_name"
+                            onclick="clearFilters('platform'); clearFilters('data_source');"
+                        ></a>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Profile -->
+            <a href="/profile" class="navbar-item">
+                Profile
+            </a>
+
+            <!-- Logout -->
+            <a href="/logout" class="navbar-item">
+                Logout
+            </a>
+
+            <!-- Technique Name miniSearch -->
+            <div class="navbar-item">
+                <div class="dropdown" id="searchDropdown">
+                    <div class="dropdown-trigger control has-icons-right">
+                        <input id="searchBar" autocomplete="off" oninput="miniSearch(this.value)" onkeydown="searchBarNavigate(event)" class="input is-rounded ds-input input-field" type="text" placeholder="Jump to technique..."/>
+                        <span class="icon is-medium is-right" style="pointer-events: initial;">
+                            <a>
+                                <i class="mdi mdi-24px mdi-information-outline" onclick="openModal('#minitech_search_info_modal')"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="dropdown-menu" id="searchBarCompletion" style="display: none;">
+                        <div class="dropdown-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Search Link -->
+            <a class="navbar-item" onclick="gotoFullSearch()">
+                <span class="icon is-medium has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-is-hover" data-tooltip="Go to Full Search">
+                    <i class="mdi mdi-24px mdi-magnify"></i>
+                </span>
+            </a>
+
+            <!-- Toggle Filters Display -->
+            {% if g.filters_enabled %}
+                <a class="navbar-item" onclick="toggleFilter()">
+                    <span class="icon is-medium has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-is-hover" data-tooltip="Hide/show filters">
+                        <i class="mdi mdi-24px mdi-filter"></i>
+                    </span>
+                </a>
+            {% else %}
+                <a class="navbar-item">
+                    <span class="icon is-medium has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-is-hover" data-tooltip="Filters are disabled on this page">
+                        <i class="mdi mdi-24px mdi-filter" style="color: black;"></i>
+                    </span>
+                </a>
+            {% endif %}
+
+            <!-- Open Docs -->
+            <a class="navbar-item" onclick="openModal('#doc_modal')">
+                <span class="icon is-medium has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-is-hover" data-tooltip="Documentation" >
+                    <i class="mdi mdi-24px mdi-head-question"></i>
+                </span>
+            </a>
+
+            <!-- Toggle Cart Display -->
+            {% if g.cart_enabled %}
+                <a class="navbar-item" onclick="toggleCart()">
+                    <span class="icon is-medium has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-is-hover" data-tooltip="Hide/show cart">
+                        <i class="mdi mdi-24px mdi-cart"></i>
+                    </span>
+                </a>
+            {% else %}
+                <div class="navbar-item">
+                    <span class="icon is-medium has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-is-hover" data-tooltip="The cart is disabled on this page">
+                        <i class="mdi mdi-24px mdi-cart" style="color: black;"></i>
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+
+<!-- Doc Modal -->
+<div class="modal" id="doc_modal">
+    <div class="modal-background" onclick="closeModal('#doc_modal')"></div> <!-- Click outside modal to close -->
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Help References</p>
+            <button class="delete" aria-label="close" onclick="closeModal('#doc_modal')"></button>
+        </header>
+        <section class="modal-card-body">
+            <p><span class="tag is-link is-light">Documentation</span>: the definitive Decider manual. Provides a
+            suggested workflow, identifies interface items and their usage.</p>
+            <br>
+            <p><span class="tag is-info is-light">Change Log</span>: provides a reverse-chronological ordered list of
+            dates and the features implemented / modified on those dates.</p>
+        </section>
+        <footer class="modal-card-foot">
+            <!-- Each button will result in the modal closing on press. -->
+            <a class="button is-link" href="/static/documentation.pdf" onclick="closeModal('#doc_modal')" target="_blank">Documentation</a>
+            <a class="button is-info" href="/changelog">Change Log</a>
+        </footer>
+    </div>
+</div>
+
+
+<!-- Minisearch Help Modal -->
+<div class="modal" id="minitech_search_info_modal">
+    <div class="modal-background" onclick="closeModal('#minitech_search_info_modal')"></div> <!-- Click outside modal to close -->
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Mini Technique Search</p>
+            <button class="delete" aria-label="close" onclick="closeModal('#minitech_search_info_modal')"></button>
+        </header>
+        <section class="modal-card-body default-list">
+            <p><b>Capabilities</b></p>
+            <ul>
+                <li>This provides a quick means of jumping to a Technique page.</li>
+                <li>Typing a Technique ID <i>(or part of one)</i> will list all Techniques with IDs containing that
+                    substring.</li>
+                <li>Typing a Technique Name will list Techniques with similar names.</li>
+                <li><b>up-arrow</b> / <b>down-arrow</b> can navigate results and <b>enter</b> can open the selected result.
+                    Moving the mouse and clicking is another option.</li>
+            </ul>
+            <br>
+            <p><b>Limitations</b></p>
+            <ul>
+                <li>This is an ID / name search - it does no content searching.</li>
+                <li>If a Technique ID is typed - name search is ignored. The first Technique ID of multiple is used.</li>
+            </ul>
+            <br>
+            <p><b>Intended Use</b></p>
+            <ul>
+                <li>This bar allows for anyone already familiar with a Technique ID / Name the means to open that page.</li>
+            </ul>
+        </section>
+        <footer class="modal-card-foot"></footer>
+    </div>
+</div>
+
+
+<script>
+
+function TacticDropdown(version) {
+    return {
+        version: version,
+        tactics: [],
+
+        Init() {
+            $.ajax({
+                type: "GET",
+                url: "/api/tactics",
+                data: {
+                    fields: ["tactic_id", "tactic_name", "url"],
+                    version: this.version,
+                },
+                dataType: "json",
+                success: tacts => this.tactics = tacts
+            });
+        }
+    }
+}
+
+</script>
+
+
+<!-- (Logged-out) -->
+{% else %} <!-- --------------------------------------------------------------------------------------------------- -->
+
+<nav id="navbar-top" class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/"><b>Decider</b></a>
+    </div>
+
+    <div class="navbar-end">
+        <a href="/login" class="navbar-item">
+            Login
+        </a>
+    </div>
+</nav>
+
+{% endif %} <!-- -------------------------------------------------------------------------------------------------- -->
+
+
+{%- endmacro %}

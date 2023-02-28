@@ -1,0 +1,23 @@
+{% macro CheckboxFilters(params) %}
+
+
+
+<nav class="panel filter-panel filter-menu">
+    <button id="{{params.kind}}-button" class="button is-link is-light" style="width:100%;" onclick="showHideFilters('{{ params.kind }}')">
+        Filter {{params.title_name | title}}s<i class="mdi mdi-unfold-less-horizontal"></i>
+    </button>
+    
+    <div class="filter-panel-selection" id="{{params.kind}}-selection">
+    {% for item in params['items'] %}
+        <label for="{{ params.kind }}-{{ item.internal_name }}" class="panel-block">
+            <input type="checkbox" id="{{ params.kind }}-{{ item.internal_name }}" onclick="{{ params.funcs['update'] }}">
+        {{ item.human_name }}
+        </label>
+    {% endfor %}
+    </div>
+    <div class="panel-block">
+        <button class="button is-link is-fullwidth" onclick="{{ params.funcs['clear'] }}"> Reset Selections </button>
+    </div>
+</nav>
+
+{%- endmacro %}

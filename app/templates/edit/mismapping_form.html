@@ -1,0 +1,75 @@
+{% macro Mismapping(mismapping,id) %}
+<div class="card">
+    <div class="card-header">
+        {% if mismapping.original %}
+            <p class="card-header-title">Add Mismapping for {{mismapping.original}}</p>
+        {% else %}
+            <p class="card-header-title">Add Mismapping</p>
+        {% endif %}
+    </div>
+    <div class="card-content">
+        <div class="field-group">
+            <div class="field is-inline-block-desktop">
+                <label class="label">Original</label>
+                <div class="control dropdown-container">
+                    <div class="dropdown">
+                        <div class="dropdown-trigger">
+                            <div class="field">
+                                <p class="control is-expanded has-icons-right">
+                                    {% if mismapping.original %}
+                                        <input id="edit-original" class="input" data-field="original" oninput="mismappingSearch(this,this.value)" onkeydown="mismappingNavigate(this,event)" type="text" placeholder="Search for technique... " value="{{mismapping.original}} ({{mismapping.original_techname}})"/>
+                                    {% else %}
+                                        <input id="edit-original" class="input" data-field="original" oninput="mismappingSearch(this,this.value)" onkeydown="mismappingNavigate(this,event)" type="text" placeholder="Search for technique..."/>
+                                    {% endif %}
+                                    <span class="icon is-right"><i class="mdi mdi-18px mdi-menu-down"></i></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" role="menu" style="display: none;">
+                            <div class="dropdown-content mismappingDropdownOriginal">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-inline-block-desktop">
+                <label class="label">Corrected</label>
+                <div class="control dropdown-container">
+                    <div class="dropdown">
+                        <div class="dropdown-trigger">
+                            <div class="field">
+                                <p class="control is-expanded has-icons-right">
+                                <input id="edit-corrected" class="input" data-field="corrected" oninput="mismappingSearch(this,this.value)" onkeydown="mismappingNavigate(this,event)" type="text" placeholder="Search for technique..."/>
+                                    <span class="icon is-right"><i class="mdi mdi-18px mdi-menu-down"></i></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" style="display: none;">
+                            <div class="dropdown-content mismappingDropdownCorrected">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Context</label>
+            <div class="control">
+                    <textarea class="textarea" data-field="context" placeholder="Context"></textarea>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Rationale</label>
+            <div class="control">
+                <textarea class="textarea" data-field="rationale" placeholder="Rationale"></textarea>
+            </div>
+        </div>
+        <div class="control">
+            <button class="button is-link" name="submit" onclick="mismappingSave(this)">Submit</button>
+            <button class="button" name="reset" onclick="mismappingReset(this)" id="{{id}}">Reset</button>
+        </div>
+    </div>
+</div>
+
+{% endmacro %}

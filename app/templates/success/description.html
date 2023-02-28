@@ -1,0 +1,14 @@
+{% macro Description(success) %}
+
+<section class="section content">
+    <h3 class="title is-4">Description</h3>
+    <p>{{ success.description | safe }}</p>
+    <br>
+    <p><b>Platform(s): </b>
+        {% for p in success.platforms %}
+            <span class="tag is-link">{{ p }}</span>
+        {% endfor %}
+    </p>
+</section>
+
+{% endmacro %}

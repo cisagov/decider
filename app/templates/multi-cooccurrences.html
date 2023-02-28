@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns is-centered is-mobile">
+    <div class="column floatingColumn">
+
+        <section
+            class="section content"
+            x-data="MultiCooccurrences()"
+            x-init="initCoocs()"
+        >
+
+            <!-- Title / Tips -->
+            <h3 class="title">Frequently Appears With (<i>cartwide</i>)</h3>
+
+            <!-- Table / Issue Message Container -->
+            <div>
+
+                <!-- Message if empty cart / none -->
+                <p x-show="issueMessage" x-transition x-cloak>
+                    <i x-text="issueMessage"></i>
+                </p>
+
+                <table class="table" x-show="cooccurrences.length > 0" x-cloak>
+                    <tr>
+                        <th>Technique</th>
+                        <th>Description</th>
+                    </tr>
+
+                    <!-- Rows -->
+                    <template x-for="cooc in cooccurrences">
+                        <tr>
+                            <td>
+                                <a :href="cooc.url" x-text="`${cooc.tech_name} (${cooc.tech_id})`"></a>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div
+                                    x-data="CooccurrenceDesc()"
+                                    class="cooc-desc"
+                                    :class="expanded ? 'cooc-desc-open' : 'cooc-desc-closed'"
+                                    x-show="expanded"
+                                    x-html="cooc.tech_desc"
+                                    @click="toggle()"
+                                    x-collapse.min.20px
+                                ></div>
+                            </td>
+                        </tr>
+                    </template>
+
+                </table>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+<script>
+function MultiCooccurrences() {
+    return {
+        // issue message
+        issueMessage: "",
+
+        // entries
+        cooccurrences: [],
+
+        initCoocs() {
+            let cart = getCart();
+            let cartEntries = [...new Set(cart.entries)];
+
+            if (cartEntries.length === 0) {
+                this.issueMessage = "You need to add items to your cart first.";
+                return;
+            }
+
+            let params = [
+                ["version", $("#versionSelect").val()]
+            ];
+
+            cartEntries.forEach(e => params.push(["tech_ids", e.index]));
+
+            let paramStr = new URLSearchParams(params).toString();
+
+            $.ajax({
+                type    : "GET",
+                url     : `/api/cooccurrences?${paramStr}`,
+                dataType: "json",
+                success : coocs => {
+                    this.cooccurrences = coocs;
+                    if (coocs.length === 0) {
+                        this.issueMessage = "There are no suggested Techniques for your cart.";
+                    }
+                }
+            });
+        },
+    }
+}
+
+function CooccurrenceDesc() {
+    return {
+        expanded: false,
+
+        toggle() {
+            // don't toggle on link clicks
+            let targetTag = this.$event.target.nodeName.toLowerCase();
+            if (targetTag === "a") {
+                return;
+            }
+
+            // don't toggle on text selection
+            if (window.getSelection().toString().length !== 0) {
+                return;
+            }
+
+            this.expanded = !this.expanded;
+        },
+    }
+}
+</script>
+
+{% endblock %}

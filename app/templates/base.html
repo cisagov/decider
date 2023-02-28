@@ -1,0 +1,85 @@
+{% from 'navbar.html' import NavBar %}
+{% from 'cart.html' import Cart %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" type="text/css" href="/static/css/materialdesignicons/css/materialdesignicons.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/bulma.min.css">
+
+        <link rel="stylesheet" type="text/css" href="/static/css/buefy.min.css">
+
+        <link rel="stylesheet" type="text/css" href="/static/css/animate.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/bulma-tooltip-min.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/decider.css">
+
+        <script defer src="/static/js/lib/alpinejs-persist.min.js"></script>
+        <script defer src="/static/js/lib/alpinejs-collapse.min.js"></script>
+        <script defer src="/static/js/lib/alpinejs.min.js"></script>
+
+        <script src="/static/js/lib/jquery-3.6.0.min.js"></script>
+        <script src="/static/js/lib/lodash.min.js"></script>
+        <script src="/static/js/lib/minisearch.min.js"></script>
+        <script src="/static/js/lib/jquery.mark.es6.min.js"></script>
+        <script src="/static/js/lib/bulma-toast.min.js"></script>
+
+        <script src="/static/js/shared.js"></script>
+
+        <title>DECIDER</title>
+    </head>
+
+    <script type="text/javascript">
+        var csrf_token = "{{ csrf_token() }}";
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                }
+            }
+        });
+    </script>
+
+    <body style="min-height: 100vh; display: flex; flex-direction: column;">
+        <section class="navbarSection">
+            {% if current_user.is_authenticated %}
+                {% if g.version_picker is defined %}
+                    {{ NavBar(current_user) }}
+                {% else %}
+                    <p class="has-text-danger-dark is-size-2">NO VERSIONS OF ATT&amp;CK&reg; INSTALLED ON SERVER</p>
+                {% endif %}
+            {% else %}
+                {{ NavBar(current_user) }}
+            {% endif %}
+        </section>
+
+        <section class="main-content">
+            <div class="columns is-mobile">
+                <div class="column">
+                    {% block content %}{% endblock %}
+                </div>
+
+                {% if current_user.is_authenticated %}
+                    {% if g.cart_enabled %}
+                        {{ Cart(current_user) }}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </section>
+
+        <div style="flex-grow: 1;"></div>
+
+        <footer id="deciderFooter" class="footer p-4 mx-0 mt-6 mb-0 has-background-decider-purple-0">
+            <div class="content has-text-centered">
+                Decider App Version: {{ g.decider_app_version }}<br>
+
+                This project makes use of MITRE ATT&amp;CK&reg;<br>
+                <a target="_blank" rel="noopener noreferrer" href="https://attack.mitre.org/resources/terms-of-use/">
+                    ATT&amp;CK Terms of Use
+                </a>
+            </div>
+        </footer>
+    </body>
+
+</html>

@@ -1,0 +1,33 @@
+{% macro noTacticSubTechniques(success) %}
+
+<!-- Disables this template for Techniques without sub-techniques -->
+{% if success.tech_and_subs.rows|length > 1 %}
+<section class="section content">
+    <h3 class="title is-4">Technique & Sub-Techniques</h3>
+    <div class="techSubTable">
+        {% for row in success.tech_and_subs.rows %}
+
+            <!-- Seleted row has dead link, black color, and marking arrow -->
+            {% if loop.index0 == success.tech_and_subs.selected %}
+                <span style="color: black;">
+                    <span class="righty">
+                        <i class="mdi mdi-30px mdi-arrow-right-bold""></i>
+                        <b>{{ row.id }}</b>
+                    </span>
+                    <span>{{ row.name }}</span>
+                </span>
+
+            <!-- Other row style -->
+            {% else %}
+                <a href='{{ row.url | replace("question", "no_tactic") }}'>
+                    <span class="righty"><b>{{ row.id }}</b></span>
+                    <span>{{ row.name }}</span>
+                </a>
+
+            {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% endmacro %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% from 'generic_filters.html' import CheckboxFilters %}
+
+{% block content %}
+<div class="columns is-centered is-mobile">
+    <script src="/static/js/search.js"></script>
+
+    <!-- Filtering -->
+    <div class="column is-narrow" id="filterColumn">
+        <div id="tacticSelect">
+            {{ CheckboxFilters(tactic_fs_filters) }}
+        </div>
+        <div id="platformSelect">
+            {{ CheckboxFilters(platform_fs_filters) }}
+        </div>
+        <div id="dataSourceSelect">
+            {{ CheckboxFilters(data_source_fs_filters) }}
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    <div id="searchColumn" class="column floatingColumn">
+        <div style="margin-bottom: 0.5em;" class="control has-icons-right">
+            <input id="full-search-bar" oninput="searchBarInputChange(this.value)" class="input is-rounded" type="text" placeholder="Search techniques..." autocomplete="off" value=""/>
+            <span class="icon is-medium is-right" style="pointer-events: initial;">
+                <a>
+                    <i class="mdi mdi-24px mdi-information-outline" onclick="openModal('#fulltech_search_info_modal')"></i>
+                </a>
+            </span>
+            <label id="flashing-disable-parent" for="flashing-disable"><input type="checkbox" id="flashing-disable" value="en" onclick="toggleFlashReduction(this)"> Reduce flashing</label><br>
+        </div>
+
+        <div id="loading-message" style="display: none;">
+            <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+
+        <div id="technique-search-list">Please type a search query</div>
+    </div>
+
+</div>
+
+<div class="modal" id="fulltech_search_info_modal">
+    <div class="modal-background" onclick="closeModal('#fulltech_search_info_modal')"></div> <!-- Click outside modal to close -->
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Full Technique Search</p>
+            <button class="delete" aria-label="close" onclick="closeModal('#fulltech_search_info_modal')"></button>
+        </header>
+        <section class="modal-card-body default-list">
+            <p><b>Capabilities</b></p>
+            <ul>
+                <li>Searches Technique IDs, names, and descriptions.</li>
+                <li>Word stemming.</li>
+                <li>Boolean search <i>(terms are <b>and</b>'ed together by default)</i>.<br>
+                    - <b>()</b> are used for operation order.<br>
+                    - <b>|</b> will <b>or</b> terms/()s/&quot;&quot;s together.<br>
+                    - <b>&amp;</b> will <b>and</b> terms/()s/&quot;&quot;s together.<br>
+                    - <b>~</b> will <b>negate</b> the term/()/&quot;&quot; directly to the right of it (no spaces).<br>
+                    - <b>*</b> will <b>prefix-search</b> for words completing the term/&quot;&quot; directly to the left of it (no spaces).<br>
+                        For &quot;&quot;s, it will prefix-search each word in the phrase.<br>
+                    - <b>&quot;&quot;</b> are used to search for a chain of terms together as a phrase in the text.<br>
+                    - <b>NOTE:</b> no special characters can be searched for. Words are considered to be continuous blocks of letters/numbers.<br>
+                    - <b>Example: <code>(silver | gold*) & ticket</code></b>
+                </li>
+            </ul>
+            <br>
+            <p><b>Limitations</b></p>
+            <ul>
+                <li>No support for fuzziness.</li>
+                <li>No support suffix search.</li>
+                <li>Either T1055 or 1055 will match a Tech ID, but currently only T1055 will highlight it.</li>
+            </ul>
+            <br>
+            <p><b>Intended Use</b></p>
+            <ul>
+                <li>The boolean support allows for more complex searches for Techniques by their content.</li>
+                <li>This serves as an alternative to manually navigating the question tree - it also serves as an
+                    alternative to the ATT&CK website search.</li>
+            </ul>
+        </section>
+        <footer class="modal-card-foot"></footer>
+    </div>
+</div>
+{% endblock %}
