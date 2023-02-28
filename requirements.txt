@@ -28,7 +28,7 @@ Flask-SQLAlchemy==2.5.1
 python-dotenv==0.19.2
 cffi==1.15.0
 pycparser==2.21
-cryptography==35.0.0
+cryptography==39.0.1
 bcrypt==3.2.0
 Markdown==3.3.4
 packaging==21.2
