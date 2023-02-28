@@ -1,0 +1,7 @@
+printWidth: 119
+tabWidth: 4
+useTabs: false
+semi: true
+trailingComma: es5
+bracketSpacing: true
+bracketSameLine: false

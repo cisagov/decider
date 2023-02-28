@@ -1,0 +1,14 @@
+# Don't need our database content formatted
+*.json
+
+# Don't need errors on HTML templates
+# There is a plugin for this (https://github.com/justrhysism/prettier-plugin-nunjucks),
+#     but it is a work-in-progress.
+*.html
+
+# Don't need libraries formatted
+**/js/lib/*
+
+# Only format our css file
+*.css
+!decider.css

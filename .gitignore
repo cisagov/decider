@@ -1,0 +1,36 @@
+# Python Environment
+/venv/
+/env/
+.python-version
+
+# IDE Settings
+.vscode
+.idea
+
+# Python Cache et al
+__pycache__/
+*.py[cod]
+*$py.class
+UNKNOWN.egg-info/
+
+# OS Cache
+.DS_Store
+
+# App Logs
+*.log
+
+# Certificates
+*.key
+*.pem
+*.csr
+
+# Secrets
+/.env
+user.json
+/init.sql
+
+# ATT&CK STIX Clone
+/attack-stix-data/
+
+# Scratch / testing notebook
+SCRATCH.ipynb
