@@ -13,7 +13,7 @@ six==1.16.0
 Flask==2.0.2
 Jinja2==3.0.3
 MarkupSafe==2.0.1
-Werkzeug==2.0.2
+Werkzeug==2.2.3
 click==8.0.3
 itsdangerous==2.0.1
 Flask-Login==0.5.0
