@@ -39,7 +39,7 @@ soupsieve==2.3
 beautifulsoup4==4.10.0
 boolean.py==3.8
 regex==2021.11.10
-lxml==4.6.5
+lxml==4.9.1
 PyYAML==6.0
 psycopg2-binary==2.9.1
 
