@@ -1,0 +1,2952 @@
+{
+    "TA0043": {
+        "__name": "Reconnaissance",
+        "question": "How is the adversary trying to **gather information** to support targeting in future operations?",
+        "answer": "**Collecting information** about a victim&#x27;s organization, system, or staff/personnel to **support targeting/plan future operations**."
+    },
+    "TA0042": {
+        "__name": "Resource Development",
+        "question": "How is the adversary trying to **create, purchase, or compromise resources** to support operations?",
+        "answer": "**Developing resources** by creating, purchasing, compromising, or stealing **infrastructure, accounts, or capabilities.**"
+    },
+    "TA0001": {
+        "__name": "Initial Access",
+        "question": "How is the adversary **obtaining initial access**?",
+        "answer": "**Gaining a foothold** within a network using various **entry vectors**."
+    },
+    "TA0002": {
+        "__name": "Execution",
+        "question": "How is the adversary trying to **execute malicious code** on either a local or remote system?",
+        "answer": "**Executing malicious code** on a local or remote system."
+    },
+    "TA0003": {
+        "__name": "Persistence",
+        "question": "How is the adversary trying to **maintain a foothold** in the network?",
+        "answer": "**Maintaining a foothold** in a network."
+    },
+    "TA0004": {
+        "__name": "Privilege Escalation",
+        "question": "How is the adversary attempting to **escalate privileges**?",
+        "answer": "Gaining **higher-level permissions.**"
+    },
+    "TA0005": {
+        "__name": "Defense Evasion",
+        "question": "How is the adversary attempting to **evading defenses**?",
+        "answer": "**Evading detection** or concealing their activities."
+    },
+    "TA0006": {
+        "__name": "Credential Access",
+        "question": "How is the adversary **gaining access to credentials** like account names or passwords?",
+        "answer": "**Stealing credentials** such as account names and passwords."
+    },
+    "TA0007": {
+        "__name": "Discovery",
+        "question": "What type of **information** is the adversary trying to **discover**, or what commands are they running?",
+        "answer": "**Acquiring information** about the victim environment (e.g. internal network, system)."
+    },
+    "TA0008": {
+        "__name": "Lateral Movement",
+        "question": "How did the adversary **move laterally**?",
+        "answer": "**Moving laterally** through the victim&#x27;s environment."
+    },
+    "TA0009": {
+        "__name": "Collection",
+        "question": "What **type of data** did the adversary **collect**?\n\nOr, in **what ways** did the adversary **interact with collected data**?",
+        "answer": "**Collecting data of interest** relevant to their goal."
+    },
+    "TA0011": {
+        "__name": "Command and Control",
+        "question": "What channels or actions did the adversary use to **conduct C2 communication**?",
+        "answer": "**Communicating with compromised systems** to **control** them."
+    },
+    "TA0010": {
+        "__name": "Exfiltration",
+        "question": "How is the adversary **exfiltrating data**?",
+        "answer": "**Exfiltrating data** from a network."
+    },
+    "TA0040": {
+        "__name": "Impact",
+        "question": "How is the attacker taking actions to **manipulate, degrade, or destroy systems, services, and/or data**?",
+        "answer": "Manipulating, interrupting, or destroying systems and data to **disrupt availability or compromise integrity**."
+    },
+    "T1001": {
+        "__name": "Data Obfuscation",
+        "question": "In what manner did the adversary **obfuscate data**?",
+        "answer": "**Obfuscating data** to make the content of C2 traffic more challenging to detect."
+    },
+    "T1001.001": {
+        "__name": "Junk Data",
+        "question": null,
+        "answer": "Employing **junk data **, e.g., random or meaningless additional data in communications, to reduce likelihood of detecting or interpreting C2."
+    },
+    "T1001.002": {
+        "__name": "Steganography",
+        "question": null,
+        "answer": "Employing **steganography** (hiding data in large digital files such as images or executables) to exchange C2."
+    },
+    "T1001.003": {
+        "__name": "Protocol Impersonation",
+        "question": null,
+        "answer": "Employing a **common protocol channel (e.g., https)** but use **non-standard commands or strings** (e.g. fake certificate exchange, unsupported http &quot;verbs&quot; vs standard GET/POST/PUT, etc.) to evade detection."
+    },
+    "T1003": {
+        "__name": "OS Credential Dumping",
+        "question": "From what location(s)/stores is the adversary **dumping credentials**?",
+        "answer": "**Dumping credentials** to obtain account login and credential information."
+    },
+    "T1003.001": {
+        "__name": "LSASS Memory",
+        "question": null,
+        "answer": "Accessing credentials stored in **LSASS process memory**."
+    },
+    "T1003.002": {
+        "__name": "Security Account Manager",
+        "question": null,
+        "answer": "Accessing credentials from the **Security Account Manager (SAM) database**."
+    },
+    "T1003.003": {
+        "__name": "NTDS",
+        "question": null,
+        "answer": "Accessing credentials from the **NTDS files** on the domain controller."
+    },
+    "T1003.004": {
+        "__name": "LSA Secrets",
+        "question": null,
+        "answer": "Accessing credentials from **LSA Secrets** from the registry or from memory dumps."
+    },
+    "T1003.005": {
+        "__name": "Cached Domain Credentials",
+        "question": null,
+        "answer": "Accessing **cached domain credentials**.  "
+    },
+    "T1003.006": {
+        "__name": "DCSync",
+        "question": null,
+        "answer": "Accessing credentials by using **DCSync/NetSync**."
+    },
+    "T1003.007": {
+        "__name": "Proc Filesystem",
+        "question": null,
+        "answer": "Accessing credentials from the **Proc filesystem or `/proc`**."
+    },
+    "T1003.008": {
+        "__name": "/etc/passwd and /etc/shadow",
+        "question": null,
+        "answer": "Accessing credentials by **dumping the  `/etc/passwd` and `/etc/shadow` files**."
+    },
+    "T1005": {
+        "__name": "Data from Local System",
+        "question": null,
+        "answer": "Searching for **local system sources** such as file system or local databases."
+    },
+    "T1006": {
+        "__name": "Direct Volume Access",
+        "question": null,
+        "answer": "**Accessing a volume** to bypass file access controls and file system monitoring."
+    },
+    "T1007": {
+        "__name": "System Service Discovery",
+        "question": null,
+        "answer": "Collecting information **on local system services** using commands such as `sc query`, `tasklist /svc`, `system --type=service`, and `net start`."
+    },
+    "T1008": {
+        "__name": "Fallback Channels",
+        "question": null,
+        "answer": "Employing **multiple communication channels and methods** to maintain C2 (e.g. alternative C2 domains, websites, or alternative port or protocol)."
+    },
+    "T1010": {
+        "__name": "Application Window Discovery",
+        "question": null,
+        "answer": "Obtaining a list **open application windows**."
+    },
+    "T1011": {
+        "__name": "Exfiltration Over Other Network Medium",
+        "question": "How is the adversary **exfiltrating over an other network medium**?",
+        "answer": "**Using a different network medium** than the C2 channel."
+    },
+    "T1011.001": {
+        "__name": "Exfiltration Over Bluetooth",
+        "question": null,
+        "answer": "**Using Bluetooth** rather than the existing C2 channel."
+    },
+    "T1012": {
+        "__name": "Query Registry",
+        "question": null,
+        "answer": "**Obtaining information about the Windows Registry**, its configuration, or installed software."
+    },
+    "T1014": {
+        "__name": "Rootkit",
+        "question": null,
+        "answer": "Using **rootkits** or malicious programs to **hide malware** or **modify operating system API calls**."
+    },
+    "T1016": {
+        "__name": "System Network Configuration Discovery",
+        "question": "Is the adversary **looking for details about the network configuration and settings**, such as IP and/or MAC addresses?",
+        "answer": "**Searching for details about the network configuration and settings** such as IP and/or MAC addresses."
+    },
+    "T1016.001": {
+        "__name": "Internet Connection Discovery",
+        "question": null,
+        "answer": "**Checking for Internet connectivity** on compromised systems, using Ping, tracert, GET requests, or other methods."
+    },
+    "T1018": {
+        "__name": "Remote System Discovery",
+        "question": null,
+        "answer": "**Searching other systems on a network** by IP addresses, host names, or other identifiers (i.e., using `ping`, `net view`, or information from local host files)."
+    },
+    "T1020": {
+        "__name": "Automated Exfiltration",
+        "question": "Was **automated exfiltration** used? ",
+        "answer": "Using **automated exfiltration** via automated processing."
+    },
+    "T1020.001": {
+        "__name": "Traffic Duplication",
+        "question": null,
+        "answer": "Using **traffic mirroring (duplication)** to automate data exfiltration over compromised network infrastructure. \n"
+    },
+    "T1021": {
+        "__name": "Remote Services",
+        "question": "What **remote service** is the adversary using?",
+        "answer": "Using a **remote service** such as telnet, SSH, VNC, or other."
+    },
+    "T1021.001": {
+        "__name": "Remote Desktop Protocol",
+        "question": null,
+        "answer": "Using **Remote Desktop Protocol (RDP)** to log into a computer."
+    },
+    "T1021.002": {
+        "__name": "SMB/Windows Admin Shares",
+        "question": null,
+        "answer": "Using **Server Message Block (SMB)** to access a remote network share."
+    },
+    "T1021.003": {
+        "__name": "Distributed Component Object Model",
+        "question": null,
+        "answer": "Using **Distributed Component Object Model (DCOM)** to access remote computers."
+    },
+    "T1021.004": {
+        "__name": "SSH",
+        "question": null,
+        "answer": "Logging into remote computers using **Secure Shell (SSH)**."
+    },
+    "T1021.005": {
+        "__name": "VNC",
+        "question": null,
+        "answer": "Accessing remote computers using **Virtual Network Computing (VNC)**."
+    },
+    "T1021.006": {
+        "__name": "Windows Remote Management",
+        "question": null,
+        "answer": "Accessing remote computers using **Windows Remote Management (WinRM)**."
+    },
+    "T1025": {
+        "__name": "Data from Removable Media",
+        "question": null,
+        "answer": "Searching for connected **removable media** (such as optical disk drives, USB memory, etc.) for data."
+    },
+    "T1027": {
+        "__name": "Obfuscated Files or Information",
+        "question": "Did the adversary attempt to make an **executable or file difficult to discover by encrypting, encoding, or obfuscating its contents**?",
+        "answer": "**Obfuscating a file or information** by encrypting encoding its contents."
+    },
+    "T1027.001": {
+        "__name": "Binary Padding",
+        "question": null,
+        "answer": "Using **binary padding** to add junk data and change the on-disk representation of malware."
+    },
+    "T1027.002": {
+        "__name": "Software Packing",
+        "question": null,
+        "answer": "Using **software packing utility** or **VM software protection** to compress or encrypt an executable."
+    },
+    "T1027.003": {
+        "__name": "Steganography",
+        "question": null,
+        "answer": "Using **steganography** to hide data, commands, or scripts in digital media (e.g., images, audio tracks, video clips, text files)."
+    },
+    "T1027.004": {
+        "__name": "Compile After Delivery",
+        "question": null,
+        "answer": "Delivering malicious payloads that **compile after delivery**. "
+    },
+    "T1027.005": {
+        "__name": "Indicator Removal from Tools",
+        "question": null,
+        "answer": "**Removing indicators from tools** to avoid detection."
+    },
+    "T1027.006": {
+        "__name": "HTML Smuggling",
+        "question": null,
+        "answer": "Hiding malicious payloads **inside HTML files**. "
+    },
+    "T1029": {
+        "__name": "Scheduled Transfer",
+        "question": null,
+        "answer": "**Scheduling data exfiltration** to be performed only at **certain times of day or at intervals**."
+    },
+    "T1030": {
+        "__name": "Data Transfer Size Limits",
+        "question": null,
+        "answer": "**Splitting up and exfiltrating data in fixed size chunks** instead of whole files."
+    },
+    "T1033": {
+        "__name": "System Owner/User Discovery",
+        "question": null,
+        "answer": "**Identifying the primary user/system owner** using various utilities or commands."
+    },
+    "T1036": {
+        "__name": "Masquerading",
+        "question": "What is the adversary doing to make itself appear legitimate (AKA **masquerading**)?",
+        "answer": "**Manipulating** the name or location of an object (e.g. file, tool) to **make them appear legitimate.**\n"
+    },
+    "T1036.001": {
+        "__name": "Invalid Code Signature",
+        "question": null,
+        "answer": "Attempting to **mimic features of valid code signatures** to deceive a user, analyst, or tool. \n"
+    },
+    "T1036.002": {
+        "__name": "Right-to-Left Override",
+        "question": null,
+        "answer": "Abusing the **right-to-left override (RTLO or RLO) character (U+202E)** to trick user user into executing an assumed benign file type. RTLO causes the following text to be displayed in reverse."
+    },
+    "T1036.003": {
+        "__name": "Rename System Utilities",
+        "question": null,
+        "answer": "**Renaming legitimate system utilities** to evade security mechanisms. "
+    },
+    "T1036.004": {
+        "__name": "Masquerade Task or Service",
+        "question": null,
+        "answer": "**Manipulating the name of a task or service** to make it appear legitimate or benign."
+    },
+    "T1036.005": {
+        "__name": "Match Legitimate Name or Location",
+        "question": null,
+        "answer": "**Matching or approximated the name or location of legitimate files or resources** when naming/ placing them. \n"
+    },
+    "T1036.006": {
+        "__name": "Space after Filename",
+        "question": null,
+        "answer": "Hiding a program&#x27;s true filetype by changing the extension of a file, such as **adding a space to the filename**."
+    },
+    "T1036.007": {
+        "__name": "Double File Extension",
+        "question": null,
+        "answer": "Adding a **double extension in the filename** to mask the the true file type. "
+    },
+    "T1037": {
+        "__name": "Boot or Logon Initialization Scripts",
+        "question": "How is the adversary **utilizing boot or logon scripts**?",
+        "answer": "Using **scripts to automatically execute boot or logon initialization**."
+    },
+    "T1037.001": {
+        "__name": "Logon Script (Windows)",
+        "question": null,
+        "answer": "Using **Windows logon scripts** and adding a path to the `HKCU\\Environment\\UserInitMprLogonScript` Registry key."
+    },
+    "T1037.002": {
+        "__name": "Login Hook",
+        "question": null,
+        "answer": "Using macOS **logon scripts (logon hooks)** to insert malicious code."
+    },
+    "T1037.003": {
+        "__name": "Network Logon Script",
+        "question": null,
+        "answer": "Using **network logon scripts** to create persistence."
+    },
+    "T1037.004": {
+        "__name": "RC Scripts",
+        "question": null,
+        "answer": "Modifying **rc.common scripts** maliciously (i.e., to hide code)."
+    },
+    "T1037.005": {
+        "__name": "Startup Items",
+        "question": null,
+        "answer": "Executing **startup items** (found in `StartupParameters.plist`) during the boot process for persistence."
+    },
+    "T1039": {
+        "__name": "Data from Network Shared Drive",
+        "question": null,
+        "answer": "Searching for **network shares** connected to compromised devices to find files of interest."
+    },
+    "T1040": {
+        "__name": "Network Sniffing",
+        "question": null,
+        "answer": "**Sniffing network traffic** to capture information about an environment, including authentication material passed over the network."
+    },
+    "T1041": {
+        "__name": "Exfiltration Over C2 Channel",
+        "question": null,
+        "answer": "Using an **existing C2 channel.**"
+    },
+    "T1046": {
+        "__name": "Network Service Discovery",
+        "question": null,
+        "answer": "**Identifying list of services running on remote hosts** by using port and vulnerability scanning tools or discovery services for cloud hosts."
+    },
+    "T1047": {
+        "__name": "Windows Management Instrumentation",
+        "question": null,
+        "answer": "Using **Windows Management Instrumentation (WMI)** to execute malicious code.Gre"
+    },
+    "T1048": {
+        "__name": "Exfiltration Over Alternative Protocol",
+        "question": "How is the adversary **exfiltrating over an alternative protocol**?",
+        "answer": "Using an **alternative protocol** than the existing C2 channel."
+    },
+    "T1048.001": {
+        "__name": "Exfiltration Over Symmetric Encrypted Non-C2 Protocol",
+        "question": null,
+        "answer": "Using a **symmetrically encrypted network protocol** (e.g. RC4, AES) rather than existing C2 channel."
+    },
+    "T1048.002": {
+        "__name": "Exfiltration Over Asymmetric Encrypted Non-C2 Protocol",
+        "question": null,
+        "answer": "Using an **asymmetric encryption protocol** (e.g. HTTPS/TLS/SSL)."
+    },
+    "T1048.003": {
+        "__name": "Exfiltration Over Unencrypted Non-C2 Protocol",
+        "question": null,
+        "answer": "Using an **un-encrypted network protocol** to an alternate network location."
+    },
+    "T1049": {
+        "__name": "System Network Connections Discovery",
+        "question": null,
+        "answer": "Searching for for a **listing of network connections** to/from the compromised system (i.e., requesting information over the network or mapping virtual private clouds or virtual networks)."
+    },
+    "T1052": {
+        "__name": "Exfiltration Over Physical Medium",
+        "question": "How is the adversary **exfiltrating over a physical medium**?",
+        "answer": "Using a **physical medium** (e.g. removable drive)  **to exfiltrate data**."
+    },
+    "T1052.001": {
+        "__name": "Exfiltration over USB",
+        "question": null,
+        "answer": "Using a **USB connected physical device**."
+    },
+    "T1053": {
+        "__name": "Scheduled Task/Job",
+        "question": "How is the adversary **abusing scheduling tasks or jobs**?",
+        "answer": "**Abusing task scheduling** to  schedule programs or scripts on a **specific date and time**."
+    },
+    "T1053.002": {
+        "__name": "At",
+        "question": null,
+        "answer": "Abusing **the `at.exe` utility** to perform task scheduling facilitate initial or recurring execution of malicious code."
+    },
+    "T1053.003": {
+        "__name": "Cron",
+        "question": null,
+        "answer": "Abusing **the `cron`** utility to perform task scheduling facilitate initial or recurring execution of malicious code."
+    },
+    "T1053.005": {
+        "__name": "Scheduled Task",
+        "question": null,
+        "answer": "Abusing the **Windows Task Scheduler** (`schtasks`) to perform task scheduling facilitate initial or recurring execution of malicious code."
+    },
+    "T1053.006": {
+        "__name": "Systemd Timers",
+        "question": null,
+        "answer": "Abusing **systemd** timers via the `systemct1` utility to perform task scheduling facilitate initial or recurring execution of malicious code."
+    },
+    "T1053.007": {
+        "__name": "Container Orchestration Job",
+        "question": null,
+        "answer": "Abusing **container orchestration tools** (e.g. Kubernetes) to schedule container deployment configured to facilitate initial or recurring execution of malicious code."
+    },
+    "T1055": {
+        "__name": "Process Injection",
+        "question": "How is the adversary utilizing **process injection**?",
+        "answer": "**Injecting code into processes** to evade defenses and elevate privileges."
+    },
+    "T1055.001": {
+        "__name": "Dynamic-link Library Injection",
+        "question": null,
+        "answer": "**Injecting dynamic-link libraries (DLLs) into processes** to evade defenses or elevate privileges."
+    },
+    "T1055.002": {
+        "__name": "Portable Executable Injection",
+        "question": null,
+        "answer": "**Injecting portable executables (PE) into processes** to evade defenses or elevate privileges."
+    },
+    "T1055.003": {
+        "__name": "Thread Execution Hijacking",
+        "question": null,
+        "answer": "**Injecting malicious code into hijacked processes** to evade defenses or elevate privileges to evade defenses or elevate privileges."
+    },
+    "T1055.004": {
+        "__name": "Asynchronous Procedure Call",
+        "question": null,
+        "answer": "Injecting malicious code into processes via the **asynchronous procedure call (APC) queue** to evade defenses or elevate privileges."
+    },
+    "T1055.005": {
+        "__name": "Thread Local Storage",
+        "question": null,
+        "answer": "Injecting malicious code into processes via thread **local storage (TLS) callbacks** to defenses or privileges."
+    },
+    "T1055.008": {
+        "__name": "Ptrace System Calls",
+        "question": null,
+        "answer": "Injecting malicious code into processes via **`ptrace` (process trace) system calls** to evade defenses or elevate privileges."
+    },
+    "T1055.009": {
+        "__name": "Proc Memory",
+        "question": null,
+        "answer": "Injecting malicious code into processes via the **/proc filesystem** to evade defenses or elevate privileges."
+    },
+    "T1055.011": {
+        "__name": "Extra Window Memory Injection",
+        "question": null,
+        "answer": "Injecting malicious code into process via **Extra Window Memory (EWM)** to evade defenses or elevate privileges."
+    },
+    "T1055.012": {
+        "__name": "Process Hollowing",
+        "question": null,
+        "answer": "Injecting malicious code into **hollowed processes** to evade defenses."
+    },
+    "T1055.013": {
+        "__name": "Process Doppelg\u00e4nging",
+        "question": null,
+        "answer": "Injecting malicious code using **process doppelg\u00e4nging** to execute arbitrary code in the address space of a separate live process. "
+    },
+    "T1055.014": {
+        "__name": "VDSO Hijacking",
+        "question": null,
+        "answer": "Injecting malicious code into processes via **Virtual Shared Dynamic Objects (VDSO) hijacking** to evade defenses or elevate privileges. "
+    },
+    "T1055.015": {
+        "__name": "ListPlanting",
+        "question": null,
+        "answer": "Abusing **list-view controls** to inject malicious code into hijacked processes** in order to evade process-based defenses as well as possibly elevate privileges."
+    },
+    "T1056": {
+        "__name": "Input Capture",
+        "question": "How did the adversary **capture input**?",
+        "answer": "Using methods of **capturing user input** to obtain credentials or collect information."
+    },
+    "T1056.001": {
+        "__name": "Keylogging",
+        "question": null,
+        "answer": "**Capturing user keystrokes** to intercept credentials as the user types them."
+    },
+    "T1056.002": {
+        "__name": "GUI Input Capture",
+        "question": null,
+        "answer": "**Mimicking common OS GUI components to capture user credentials** with a seemingly legitimate prompt."
+    },
+    "T1056.003": {
+        "__name": "Web Portal Capture",
+        "question": null,
+        "answer": "Installing code to **capture user credentials on web portals,** such as a VPN login page. "
+    },
+    "T1056.004": {
+        "__name": "Credential API Hooking",
+        "question": null,
+        "answer": "Capturing user credentials by **hooking into Windows API** functions."
+    },
+    "T1057": {
+        "__name": "Process Discovery",
+        "question": null,
+        "answer": "Obtaining information about the **processes** running on a system based on the operating system:\n\n- **Windows:** the adversary used the **Tasklist** utility via cmd, **Get-Process** via PowerShell, or a Native API call such as **CreateToolhelp32Snapshot**.\n- **macOS/Linux:** the adversary used the **ps** command or enumerated processes via **/proc**."
+    },
+    "T1059": {
+        "__name": "Command and Scripting Interpreter",
+        "question": "How is the adversary utilizing the **command and scripting interpreter**?",
+        "answer": "**Abusing command and script interpreters** to execute commands, scripts, or binaries."
+    },
+    "T1059.001": {
+        "__name": "PowerShell",
+        "question": null,
+        "answer": " Abusing **PowerShell commands and scripts** to execute code, discover information, or run Internet executables (e.g. Empire, PowerSploit, PoshC2)."
+    },
+    "T1059.002": {
+        "__name": "AppleScript",
+        "question": null,
+        "answer": "Abusing **AppleScript** to control applications and parts of the OS via **AppleEvents**."
+    },
+    "T1059.003": {
+        "__name": "Windows Command Shell",
+        "question": null,
+        "answer": "Abusing the **Windows Command Shell** control a system by using SSH, batch files, or the `cmd` utility."
+    },
+    "T1059.004": {
+        "__name": "Unix Shell",
+        "question": null,
+        "answer": "Abusing the **Unix shell commands and scripts* to control a system by using SSH or shell scripts."
+    },
+    "T1059.005": {
+        "__name": "Visual Basic",
+        "question": null,
+        "answer": "Abusing **Visual Basic (VB)** to support Visual Basic Applications and (VBA) and VisualScript."
+    },
+    "T1059.006": {
+        "__name": "Python",
+        "question": null,
+        "answer": "Abusing **Python libraries** via `python.exe` or scripts (`.py`)."
+    },
+    "T1059.007": {
+        "__name": "JavaScript",
+        "question": null,
+        "answer": "Abusing implementations of **JavaScript** to host, download, or execute malicious scripts."
+    },
+    "T1059.008": {
+        "__name": "Network Device CLI",
+        "question": null,
+        "answer": "Abusing **scripting or built-in command line interpreters (CLI) on network devices** to manipulate traffic flow, intercept or manipulate data, modify startup configurations, or disable security features."
+    },
+    "T1068": {
+        "__name": "Exploitation for Privilege Escalation",
+        "question": null,
+        "answer": "Identifying a specific **vulnerability** to **exploit for privilege escalation**."
+    },
+    "T1069": {
+        "__name": "Permission Groups Discovery",
+        "question": "What type of **permission groups is the adversary trying to discover**?\n\nWhat actions is the adversary performing?",
+        "answer": "**Searching group and permission settings** that can help adversaries determine user accounts, groups, and permissions."
+    },
+    "T1069.001": {
+        "__name": "Local Groups",
+        "question": null,
+        "answer": "*ANY of these occurred:*\n\n- The adversary tried to find local system groups and permission settings.\n- Any of the following commands were used: **net localgroup** (Windows), **dscl .-list /Groups** (macOS), or **groups** (Linux)."
+    },
+    "T1069.002": {
+        "__name": "Domain Groups",
+        "question": null,
+        "answer": "*ANY of these occurred:*\n\n- The adversary tried to find **domain-level** groups and permission settings.\n- Any of the following commands were used: `net group /domain` (Windows), `dscacheutil -q group` (macOS), or `ldapsearch` (Linux)."
+    },
+    "T1069.003": {
+        "__name": "Cloud Groups",
+        "question": null,
+        "answer": "*ANY of these occurred:*\n\n- The adversary tried to find **cloud groups and permission settings**.\n- The `Get-MsolRole` PowerShell cmdlet was used to obtain roles and permission groups for Exchange and Office 365 accounts.\n- **Azure CLI:** **az ad user get-member-groups** was used to obtain permissions groups."
+    },
+    "T1070": {
+        "__name": "Indicator Removal on Host",
+        "question": "What indicators did the adversary **try and remove**?\n\nWhat actions did the adversary take?",
+        "answer": "**Deleting or altering artifacts on a host system**, including logs or captured files such as quarantined malware"
+    },
+    "T1070.001": {
+        "__name": "Clear Windows Event Logs",
+        "question": null,
+        "answer": "**Clear Windows Event Logs** to hide intrusion activity."
+    },
+    "T1070.002": {
+        "__name": "Clear Linux or Mac System Logs",
+        "question": null,
+        "answer": " **Clearing Linux or Mac system logs** to hide intrusion activity. "
+    },
+    "T1070.003": {
+        "__name": "Clear Command History",
+        "question": null,
+        "answer": "**Clearing the command history** of a compromised account to hide intrusion activity."
+    },
+    "T1070.004": {
+        "__name": "File Deletion",
+        "question": null,
+        "answer": "**Deleting files** to hide evidence of intrusion activity.\n"
+    },
+    "T1070.005": {
+        "__name": "Network Share Connection Removal",
+        "question": null,
+        "answer": "**Removing share connections** to hide evidence of intrusion activity. modify file time attributes to hide new or changes to existing files"
+    },
+    "T1070.006": {
+        "__name": "Timestomp",
+        "question": null,
+        "answer": "**Modifying file time attributes** to hide new or changes to existing files."
+    },
+    "T1071": {
+        "__name": "Application Layer Protocol",
+        "question": "What **protocol(s)/type of protocol(s)** were used for C2 communication?",
+        "answer": "Using **standard Application layer protocols** to communicate network traffic between systems."
+    },
+    "T1071.001": {
+        "__name": "Web Protocols",
+        "question": null,
+        "answer": "Using **http or https protocols** to perform command and control operations (e.g. GET or POST requests)."
+    },
+    "T1071.002": {
+        "__name": "File Transfer Protocols",
+        "question": null,
+        "answer": "Using **ftp, tftp, sftp or other file transfer protocols**."
+    },
+    "T1071.003": {
+        "__name": "Mail Protocols",
+        "question": null,
+        "answer": "Using **mail protocols** (e.g. SMTP, POP, IMAP) to exploit the protocol fields or via the mail content itself."
+    },
+    "T1071.004": {
+        "__name": "DNS",
+        "question": null,
+        "answer": "Employing **DNS** to exchange C2 by exploiting protocol fields or the content of DNS requests and responses."
+    },
+    "T1072": {
+        "__name": "Software Deployment Tools",
+        "question": null,
+        "answer": "**Using third-party software**, such as administration, monitoring, and deployment systems, to **move laterally through the network**."
+    },
+    "T1074": {
+        "__name": "Data Staged",
+        "question": "In which manner did the adversary **&quot;stage&quot; collected data**?",
+        "answer": "**Staging collected data** in a central location **prior to final exfiltration**."
+    },
+    "T1074.001": {
+        "__name": "Local Data Staging",
+        "question": null,
+        "answer": "Collecting data from a **single system staged locally in a common location** prior to exfiltration."
+    },
+    "T1074.002": {
+        "__name": "Remote Data Staging",
+        "question": null,
+        "answer": "Collecting data from **multiple systems staged on a central system on one system** prior to exfiltration."
+    },
+    "T1078": {
+        "__name": "Valid Accounts",
+        "question": "How is the adversary using **valid accounts**?",
+        "answer": "Compromising credentials on a **valid account** to bypass access controls."
+    },
+    "T1078.001": {
+        "__name": "Default Accounts",
+        "question": null,
+        "answer": "Abusing the credentials of a **default account** (e.g. Guest or Administrator) built into the OS."
+    },
+    "T1078.002": {
+        "__name": "Domain Accounts",
+        "question": null,
+        "answer": "Compromising a **domain account** via OS Credential Dumping or password reuse."
+    },
+    "T1078.003": {
+        "__name": "Local Accounts",
+        "question": null,
+        "answer": "Abusing the credentials of a  **local account** to elevate privileges and harvest credentials through OS Credential Dumping."
+    },
+    "T1078.004": {
+        "__name": "Cloud Accounts",
+        "question": null,
+        "answer": "Abusing the credentials of a **cloud account** to harvest sensitive data from online databases."
+    },
+    "T1080": {
+        "__name": "Taint Shared Content",
+        "question": null,
+        "answer": "**Delivering payloads to remote systems** by adding malicious content (e.g. **tainting**) to shared storage locations, such as network drives or internal code repositories."
+    },
+    "T1082": {
+        "__name": "System Information Discovery",
+        "question": null,
+        "answer": "**Obtaining detailed information about the operating system and hardware**, including version, patches, hotfixes, service packs, and architecture."
+    },
+    "T1083": {
+        "__name": "File and Directory Discovery",
+        "question": null,
+        "answer": "**Enumerating files and directories** in specific locations of a host or network share for file system information."
+    },
+    "T1087": {
+        "__name": "Account Discovery",
+        "question": "What type of **accounts is the adversary trying to discover** and through what means?",
+        "answer": "**Obtaining a list of account information** on a system or within an environment."
+    },
+    "T1087.001": {
+        "__name": "Local Account",
+        "question": null,
+        "answer": "Obtaining information about ** local system accounts.**"
+    },
+    "T1087.002": {
+        "__name": "Domain Account",
+        "question": null,
+        "answer": "Obtaining information about ** domain accounts**."
+    },
+    "T1087.003": {
+        "__name": "Email Account",
+        "question": null,
+        "answer": "Obtaining information about ** email addresses and accounts**."
+    },
+    "T1087.004": {
+        "__name": "Cloud Account",
+        "question": null,
+        "answer": "Obtaining information about ** cloud accounts**."
+    },
+    "T1090": {
+        "__name": "Proxy",
+        "question": "What **type of proxy** did the adversary leverage?",
+        "answer": "**Using a connection proxy** to direct network traffic between systems, act as intermediary for network communications to a C2 server, and avoid direct connections to victim infrastructure."
+    },
+    "T1090.001": {
+        "__name": "Internal Proxy",
+        "question": null,
+        "answer": "Establishing a **proxy within the compromised organization/network** to direct internal C2 and reduce the number of outbound connections to an external controller."
+    },
+    "T1090.002": {
+        "__name": "External Proxy",
+        "question": null,
+        "answer": "Employing an **external proxy** to redirect or buffer connections for C2 using tools such as HTRAN, ZXProxy, and ZXPortMap."
+    },
+    "T1090.003": {
+        "__name": "Multi-hop Proxy",
+        "question": null,
+        "answer": "Using **multiple chained proxies** to hide the original C2 server (i.e., using TOR network or other compromised hosts)."
+    },
+    "T1090.004": {
+        "__name": "Domain Fronting",
+        "question": null,
+        "answer": "**Replacing the server name in the HTTPS SNI field** with a malicious attacker-controlled server, usually in the same domain or CDN network to bypass detection of malicious domains.\n\n*Note*: This technique is less common attack now, since major Cloud / CDN providers block this method."
+    },
+    "T1091": {
+        "__name": "Replication Through Removable Media",
+        "question": null,
+        "answer": "**Moving onto systems** (including air-gapped ones) by **copying malware to removable media** and **using Autorun** to load the media and execute the code."
+    },
+    "T1092": {
+        "__name": "Communication Through Removable Media",
+        "question": null,
+        "answer": "**Using removable media **(e.g. USB thumbdrive, optical disk) between compromised systems to conduct C2 activities."
+    },
+    "T1095": {
+        "__name": "Non-Application Layer Protocol",
+        "question": null,
+        "answer": "Employing a **non-application layer protocols**, such as network-layer protocol (e.g. ICMP), Transport Layer protocol (TCP/UDP), or Session layer protocol (e.g. SOCKS) for exchange of C2 information."
+    },
+    "T1098": {
+        "__name": "Account Manipulation",
+        "question": "How is the adversary **manipulating accounts**?",
+        "answer": "**Manipulating accounts** to maintain access to victim systems."
+    },
+    "T1098.001": {
+        "__name": "Additional Cloud Credentials",
+        "question": null,
+        "answer": "**Adding a new adversary-controlled credentials to a cloud account** to maintain persistent access to victim accounts and instances within the environment"
+    },
+    "T1098.002": {
+        "__name": "Additional Email Delegate Permissions",
+        "question": null,
+        "answer": "Granting **additional permission levels** to an **adversary-controlled email account** to maintain persistent access."
+    },
+    "T1098.003": {
+        "__name": "Additional Cloud Roles",
+        "question": null,
+        "answer": "**Adding roles or permissions to an adversary-controlled cloud account** to maintain persistent access to a tenant."
+    },
+    "T1098.004": {
+        "__name": "SSH Authorized Keys",
+        "question": null,
+        "answer": "**Modifying the SSH** `authorized_keys` file to add **their own public keys** to maintain persistence on a victim host."
+    },
+    "T1098.005": {
+        "__name": "Device Registration",
+        "question": null,
+        "answer": "**Registering a device to an adversary-controlled account**, such as  a multi-factor authentication (MFA) system to maintain persistence."
+    },
+    "T1102": {
+        "__name": "Web Service",
+        "question": "In which manner did the adversary **use legitimate web services** as a C2 communication channel?",
+        "answer": "Using an **existing, legitimate external Web service** (e.g. Google and Twitter services) to  relay data to and from a compromised system."
+    },
+    "T1102.001": {
+        "__name": "Dead Drop Resolver",
+        "question": null,
+        "answer": "Using legitimate web services as a mechanism for C2 to **host &quot;dead drop&quot; information**."
+    },
+    "T1102.002": {
+        "__name": "Bidirectional Communication",
+        "question": null,
+        "answer": "Employing a legitimate web service / social media site to exchange posts, tweets, or other common actions for **two-way C2 commands and responses**"
+    },
+    "T1102.003": {
+        "__name": "One-Way Communication",
+        "question": null,
+        "answer": "Leveraging legitimate, popular websites or social media **to post C2 commands without receiving a response** (or response via a different C2 channel)."
+    },
+    "T1104": {
+        "__name": "Multi-Stage Channels",
+        "question": null,
+        "answer": "Creating **multiple C2 stages and employ multiple Remote Access Tools (RAT)** to perform different C2 functions at each stage if the intrusion."
+    },
+    "T1105": {
+        "__name": "Ingress Tool Transfer",
+        "question": null,
+        "answer": "**Downloading tools, software, or malware from an external host** to a compromised host through C2 or alternate protocols (e.g. FTP)."
+    },
+    "T1106": {
+        "__name": "Native API",
+        "question": null,
+        "answer": "Using the **native OS application programming interface (API)** to access other functions such as the Windows API `CreateProcess()`, GNU `fork()`, or in higher level software frameworks such as Microsoft .NET and macOS Cocoa."
+    },
+    "T1110": {
+        "__name": "Brute Force",
+        "question": "How did the adversary **brute force credentials**?",
+        "answer": "**Systematically guessing** the password using a **repetitive or iterative mechanism**."
+    },
+    "T1110.001": {
+        "__name": "Password Guessing",
+        "question": null,
+        "answer": "**Guessing account passwords without prior knowledge** of legitimate credentials within the system or environment."
+    },
+    "T1110.002": {
+        "__name": "Password Cracking",
+        "question": null,
+        "answer": "**&quot;Cracking&quot; the password** by employing a **previously stolen password hash** and making **multiple guesses offline** (i.e., using a &quot;rainbow&quot; look-up table)."
+    },
+    "T1110.003": {
+        "__name": "Password Spraying",
+        "question": null,
+        "answer": "Using a **list of common passwords** to find at least one account with weak password choice."
+    },
+    "T1110.004": {
+        "__name": "Credential Stuffing",
+        "question": null,
+        "answer": "Using **username/password lists obtained from breaches of other third party service compromises** (e.g. social media, personal, business accounts)."
+    },
+    "T1111": {
+        "__name": "Multi-Factor Authentication Interception",
+        "question": null,
+        "answer": "**Intercepting communications for multi-factor authentication (MFA)** mechanisms (e.g. smart cards, token generators) to access credentials."
+    },
+    "T1112": {
+        "__name": "Modify Registry",
+        "question": null,
+        "answer": "Interacting with the **Windows Registry** to **hide configuration information within Registry keys**, remove information as part of cleaning up, or aid in persistence and execution."
+    },
+    "T1113": {
+        "__name": "Screen Capture",
+        "question": null,
+        "answer": "Employing **screen captures** to collect information via API call (e.g. `CopyFromScreen`, `xwd`, or `screencapture`), a utility, or malicious code."
+    },
+    "T1114": {
+        "__name": "Email Collection",
+        "question": "In which manner did the adversary **collect emails**?",
+        "answer": "**Collecting or forwarding emails** to obtain sensitive information."
+    },
+    "T1114.001": {
+        "__name": "Local Email Collection",
+        "question": null,
+        "answer": "Collecting user emails from a **local system**, such as via Outlook data files (e.g. .ost or .pst files)."
+    },
+    "T1114.002": {
+        "__name": "Remote Email Collection",
+        "question": null,
+        "answer": "Compromising a **mail server** (e.g., Exchange server or O365) or mail account to **collect emails**."
+    },
+    "T1114.003": {
+        "__name": "Email Forwarding Rule",
+        "question": null,
+        "answer": "Using the **email forwarding rule** to forward messages to an internal or external account or to monitor the activities of the victim."
+    },
+    "T1115": {
+        "__name": "Clipboard Data",
+        "question": null,
+        "answer": "**Capturing data from the clipboard** via the Windows API or `pbpaste` (macOS)."
+    },
+    "T1119": {
+        "__name": "Automated Collection",
+        "question": null,
+        "answer": "Using **pre-programmed scripts or code**, such as a command and scripting interpreter, to **search for and collect internal data fitting set criteria**."
+    },
+    "T1120": {
+        "__name": "Peripheral Device Discovery",
+        "question": null,
+        "answer": "**Obtaining information** about **attached peripheral devices and components connected to a computer system** (e.g. keyboards, printers, cameras, smart card readers, removable storage or other connected items)."
+    },
+    "T1123": {
+        "__name": "Audio Capture",
+        "question": null,
+        "answer": "Leveraging peripheral devices (e.g. microphones and webcams) or applications (e.g. voice and video call services) to **capture audio recordings**."
+    },
+    "T1124": {
+        "__name": "System Time Discovery",
+        "question": null,
+        "answer": "**Obtaining information about the system time** and or time/zone (i.e., using the command `net time \\hostname` or `w32tm /tz`)."
+    },
+    "T1125": {
+        "__name": "Video Capture",
+        "question": null,
+        "answer": "**Capturing video or images** via integrated **cameras, webcam or video conference services**, to collect information."
+    },
+    "T1127": {
+        "__name": "Trusted Developer Utilities Proxy Execution",
+        "question": "How is the adversary **taking advantage of trusted developer utilities to proxy execution** of malicious payloads?",
+        "answer": "**Using trusted developer utilities** (e.g. software development environment, debuggers) to proxy execution of malicious code\n"
+    },
+    "T1127.001": {
+        "__name": "MSBuild",
+        "question": null,
+        "answer": "Using the `MSBuild.exe` **(Microsoft Build Engine) to proxy execute code** through a trusted Windows utility. "
+    },
+    "T1129": {
+        "__name": "Shared Modules",
+        "question": null,
+        "answer": "Loading DLLs from arbitrary local paths and Universal Naming Conventions (UNC) using **shared modules** (e.g. Windows module loader)."
+    },
+    "T1132": {
+        "__name": "Data Encoding",
+        "question": "What type of **data encoding** did the adversary use?",
+        "answer": "**Encoding data** to make the content of C2 traffic more challenging to detect (i.e., leveraging ASCII, Unicode, Base64, MIME, or other binary-to-text and character encoding systems)."
+    },
+    "T1132.001": {
+        "__name": "Standard Encoding",
+        "question": null,
+        "answer": "Employing a **standard data encoding scheme** (e.g. ASCII, Unicode, Base64 etc.) to exchange C2 information."
+    },
+    "T1132.002": {
+        "__name": "Non-Standard Encoding",
+        "question": null,
+        "answer": "Employing a **non-standard encoding method** (structured, possibly a variant of standard encoding such as base64) to exchange C2 information."
+    },
+    "T1133": {
+        "__name": "External Remote Services",
+        "question": null,
+        "answer": "Using **external-facing remote services** such as VPNs, Citrix, or other remote services to **connect to a victim enterprise network.**"
+    },
+    "T1134": {
+        "__name": "Access Token Manipulation",
+        "question": "How is the adversary **manipulating access tokens**?",
+        "answer": "**Modifying access tokens** to appear as a different user or system process to perform actions and bypass access controls."
+    },
+    "T1134.001": {
+        "__name": "Token Impersonation/Theft",
+        "question": null,
+        "answer": "**Impersonating or stealing another user&#x27;s token** to escalate privileges and bypass access controls."
+    },
+    "T1134.002": {
+        "__name": "Create Process with Token",
+        "question": null,
+        "answer": "**Creating a new process with a different token** to escalate privileges and bypass access controls."
+    },
+    "T1134.003": {
+        "__name": "Make and Impersonate Token",
+        "question": null,
+        "answer": "**Creating or impersonating tokens** to escalate privileges and bypass access controls."
+    },
+    "T1134.004": {
+        "__name": "Parent PID Spoofing",
+        "question": null,
+        "answer": "**Spoofing the parent process identifier (PPID) of a new process** to evade defenses or elevate privileges."
+    },
+    "T1134.005": {
+        "__name": "SID-History Injection",
+        "question": null,
+        "answer": "**Using SID-History Injection** to escalate privileges and bypass access controls."
+    },
+    "T1135": {
+        "__name": "Network Share Discovery",
+        "question": null,
+        "answer": "*ANY of these occurred:*\n\n- **Folders or drives on remote systems were searched**.\n- The `net view \\remotesystem` or `net share` commands were used (Windows).\n- The `sharing -l` command was used (macOS)\n- The `NetShareEnum` API call was employed."
+    },
+    "T1136": {
+        "__name": "Create Account",
+        "question": "How is the adversary **abusing account creation**?",
+        "answer": "**Creating accounts** on victim systems (e.g. local systems, within domains, or cloud tenants)."
+    },
+    "T1136.001": {
+        "__name": "Local Account",
+        "question": null,
+        "answer": "**Creating a local account** e.g., using the `net user /add` command (Windows) to maintain access to victim systems)."
+    },
+    "T1136.002": {
+        "__name": "Domain Account",
+        "question": null,
+        "answer": "**Creating a domain account in AD Domain services** (e.g., for user, administrator, and service accounts) to maintain access to victim systems."
+    },
+    "T1136.003": {
+        "__name": "Cloud Account",
+        "question": null,
+        "answer": "**Creating a cloud account** to maintain access to victim systems."
+    },
+    "T1137": {
+        "__name": "Office Application Startup",
+        "question": "How is the adversary **abusing Office application startup**?",
+        "answer": "Using **MS Office applications** to **gain persistence between startups**."
+    },
+    "T1137.001": {
+        "__name": "Office Template Macros",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- Using **Microsoft Office templates** to execute code.\n- Inserting Office **Visual Basic for Applications (VBA) macros** into in a MS Office template (Word, Excel) to execute code.\n- Modifying the **GlobalDotName registry key** to specify a different location, file name, or file extension to load at application startup."
+    },
+    "T1137.002": {
+        "__name": "Office Test",
+        "question": null,
+        "answer": "Using the **MS Office &#x27;Office Test&#x27; Registry key** by adding a malicious DLL to **execute code** when an Office application started."
+    },
+    "T1137.003": {
+        "__name": "Outlook Forms",
+        "question": null,
+        "answer": "Creating **custom Outlook forms** to execute malicious code."
+    },
+    "T1137.004": {
+        "__name": "Outlook Home Page",
+        "question": null,
+        "answer": "Exploiting **MS Outlook&#x27;s customizable Home Page feature** by linking to a **malicious HTML** page to execute code."
+    },
+    "T1137.005": {
+        "__name": "Outlook Rules",
+        "question": null,
+        "answer": "Exploiting **MS Outlook rules** by adding malicious rules** to a user&#x27;s mailbox to trigger **automated behavior** such as code execution or moving emails to a folder."
+    },
+    "T1137.006": {
+        "__name": "Add-ins",
+        "question": null,
+        "answer": "Using **MS Office product add-ins** (e.g. Word/Excel (WLL/XLL), VBA, Office COM, VBA Editor (VBE), Visual Studio Tools for Office (VSTO), and Outlook) to **obtain persistence on a compromised system**."
+    },
+    "T1140": {
+        "__name": "Deobfuscate/Decode Files or Information",
+        "question": null,
+        "answer": "**Obfuscating code data** to **hide artifacts from an intrusion analysis** using utilities present in the system (e.g. `certutil` or `copy /b`)."
+    },
+    "T1176": {
+        "__name": "Browser Extensions",
+        "question": null,
+        "answer": "Abusing **extensions to Internet browsers** (e.g. Chrome, Safari, other) to **establish persistent access** and **steal user information stored in the browser** (including credentials)."
+    },
+    "T1185": {
+        "__name": "Browser Session Hijacking",
+        "question": null,
+        "answer": "Leveraging **browser vulnerabilities or built-in functionality** to intercept information, change content, or modify browser behavior."
+    },
+    "T1187": {
+        "__name": "Forced Authentication",
+        "question": null,
+        "answer": "Deceiving a user into providing **authentication credentials** to an **attacker-controlled source.**"
+    },
+    "T1189": {
+        "__name": "Drive-by Compromise",
+        "question": null,
+        "answer": "Compromising a system through a user on a **compromised website** (e.g. watering hole or **strategic web compromise**)."
+    },
+    "T1190": {
+        "__name": "Exploit Public-Facing Application",
+        "question": null,
+        "answer": "**Exploiting a weaknesses** in an **Internet-facing computer or program** such as websites, databases, or other applications with Internet-accessible open sockets."
+    },
+    "T1195": {
+        "__name": "Supply Chain Compromise",
+        "question": "How is the adversary using **supply chain compromise**?",
+        "answer": "**Compromising products or product delivery mechanisms** prior to delivery."
+    },
+    "T1195.001": {
+        "__name": "Compromise Software Dependencies and Development Tools",
+        "question": null,
+        "answer": "**Software dependencies or development tools external to, but required for a software** is compromised in the supply chain"
+    },
+    "T1195.002": {
+        "__name": "Compromise Software Supply Chain",
+        "question": null,
+        "answer": "**Application software was compromised** in the supply chain"
+    },
+    "T1195.003": {
+        "__name": "Compromise Hardware Supply Chain",
+        "question": null,
+        "answer": "**hardware components** were compromised in the **supply chain**"
+    },
+    "T1197": {
+        "__name": "BITS Jobs",
+        "question": null,
+        "answer": "Abusing **Windows Background Intelligent Transfer Service (BITS)** to execute or clean up after malicious payloads."
+    },
+    "T1199": {
+        "__name": "Trusted Relationship",
+        "question": null,
+        "answer": "Abusing a **trusted second or third-party relationship** (e.g., MSP, HVAC contractor, etc.) to gain access to the victim."
+    },
+    "T1200": {
+        "__name": "Hardware Additions",
+        "question": null,
+        "answer": "Introducing **computer accessories**, **networking hardware, or computing devices** into a system or network to gain access."
+    },
+    "T1201": {
+        "__name": "Password Policy Discovery",
+        "question": null,
+        "answer": "**Obtaining information about the password policy** though commands such as: `net accounts (/domain)`, `Get-ADDefaultDomainPasswordPolicy`, `chage -l`,  `cat /etc/pam.d/common-password`, `Get-PassPol`, `pwpolicy getaccountpolicies`."
+    },
+    "T1202": {
+        "__name": "Indirect Command Execution",
+        "question": null,
+        "answer": "**Abusing utilities allowing for command execution** to bypass security restrictions that prevent or limit the use of **command-line interpreters**.\n"
+    },
+    "T1203": {
+        "__name": "Exploitation for Client Execution",
+        "question": null,
+        "answer": "**Exploiting software vulnerabilities in client applications** such as browsers, productivity suites (e.g. MS Office) or third-party apps to perform **arbitrary or remote code execution**."
+    },
+    "T1204": {
+        "__name": "User Execution",
+        "question": "How is the adversary **abusing user execution**?",
+        "answer": "**Relying on specific actions by a user**, such as clicking on a link or opening a file **for code execution**."
+    },
+    "T1204.001": {
+        "__name": "Malicious Link",
+        "question": null,
+        "answer": "Deceiving a user to **click on a link** (usually a spearphishing link) to exploit browser or application vulnerability or execute malicious code."
+    },
+    "T1204.002": {
+        "__name": "Malicious File",
+        "question": null,
+        "answer": "Deceiving a user to open a masked **malicious file** (e.g., .doc, .pdf, .xls, .rtf, .scr, .exe, .lnk, .pif, and .cpl)."
+    },
+    "T1204.003": {
+        "__name": "Malicious Image",
+        "question": null,
+        "answer": "Deceiving users into opening a **malicious image** that contains malicious code."
+    },
+    "T1205": {
+        "__name": "Traffic Signaling",
+        "question": "How is the adversary **abusing traffic signaling**?",
+        "answer": "Using a **magic value or sequence sent to a system** to perform a function, such as opening a closed port, hide open ports, or executing a malicious tasks.\n"
+    },
+    "T1205.001": {
+        "__name": "Port Knocking",
+        "question": null,
+        "answer": "**Sending a series of packets** or connection attempts to a **pre-determined set** of closed ports to **initiate a connection** with a C2 server."
+    },
+    "T1207": {
+        "__name": "Rogue Domain Controller",
+        "question": null,
+        "answer": "**Registering a rogue Domain Controller** in the victim network to **enable manipulation of Active Directory data**."
+    },
+    "T1210": {
+        "__name": "Exploitation of Remote Services",
+        "question": null,
+        "answer": "**Exploiting a remote service** of internal systems for **lateral movement** to access a remote system."
+    },
+    "T1211": {
+        "__name": "Exploitation for Defense Evasion",
+        "question": null,
+        "answer": "**Exploiting a system or application vulnerability** to **bypass security features**."
+    },
+    "T1212": {
+        "__name": "Exploitation for Credential Access",
+        "question": null,
+        "answer": "Exploiting a **specific code or configuration vulnerability** in a software application or hardware."
+    },
+    "T1213": {
+        "__name": "Data from Information Repositories",
+        "question": "From **which information repository** did the adversary collect data?",
+        "answer": "Collecting from a **common information repository** (e.g., Sharepoint, Confluence, SQL Server)."
+    },
+    "T1213.001": {
+        "__name": "Confluence",
+        "question": null,
+        "answer": "Collecting from a **Confluence** repository."
+    },
+    "T1213.002": {
+        "__name": "Sharepoint",
+        "question": null,
+        "answer": "Collecting from **SharePoint** repository."
+    },
+    "T1213.003": {
+        "__name": "Code Repositories",
+        "question": null,
+        "answer": "Collecting from **internally or privately on third party sites** such as Github, GitLab, SourceForge, and BitBucket."
+    },
+    "T1216": {
+        "__name": "System Script Proxy Execution",
+        "question": "In what manner is the adversary **proxying the execution** of malicious content with **signed scripts**?",
+        "answer": "Using **trusted scripts**, often signed with certificates, to **proxy the execution of malicious files**."
+    },
+    "T1216.001": {
+        "__name": "PubPrn",
+        "question": null,
+        "answer": "Using `PubPrn.vbs` to proxy execute **malicious payloads hosted on remote sites**."
+    },
+    "T1217": {
+        "__name": "Browser Bookmark Discovery",
+        "question": null,
+        "answer": "Enumerating **browser bookmarks** by accessing any of the following: `AppData\\Local\\Google\\Chrome\\User Data\\Default`, `C:\\Users\\[username]\\Favorites`,`C:\\Users\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\&lt;profile&gt;\\`."
+    },
+    "T1218": {
+        "__name": "System Binary Proxy Execution",
+        "question": "How is the adversary proxying the execution of malicious content with **signed binaries**?",
+        "answer": "Using a **signed, trusted binary to bypass digital signature validation** in executing malicious code."
+    },
+    "T1218.001": {
+        "__name": "Compiled HTML File",
+        "question": null,
+        "answer": "Leveraging **compiled HTML files (.chm) to hide malicious code**, possibly employing references to hh.exe or the HTML Help executable program in .chm files.\n"
+    },
+    "T1218.002": {
+        "__name": "Control Panel",
+        "question": null,
+        "answer": "Abusing **Windows Control Panel process binary  (control.exe)** to proxy execution of malicious payloads."
+    },
+    "T1218.003": {
+        "__name": "CMSTP",
+        "question": null,
+        "answer": "Abusing **Microsoft Connection Manager Profile Installer (CMSTP.exe)** to proxy execution of malicious code."
+    },
+    "T1218.004": {
+        "__name": "InstallUtil",
+        "question": null,
+        "answer": "Using **InstallUtil** (`InstallUtil.exe`), a command-line utility, to proxy execute code through a trusted Windows utility."
+    },
+    "T1218.005": {
+        "__name": "Mshta",
+        "question": null,
+        "answer": "**Abusing `mshta.exe` to proxy execute malicious .hta files and Javascript or VBScript** through a trusted Windows utility."
+    },
+    "T1218.007": {
+        "__name": "Msiexec",
+        "question": null,
+        "answer": "**Abusing `msiexec.exe` to proxy execute malicious payloads**. `Msiexec.exe` is the command-line utility associated with executing installation packages (.msi) but may also execute DLLS ."
+    },
+    "T1218.008": {
+        "__name": "Odbcconf",
+        "question": null,
+        "answer": "*Any of these:*\n\n- **Using `obdcconf.exe` to proxy execution of malicious payloads**\n- Using the Regsvr flag to execute DLLs (ex: `obdcconf.exe /S /A {REGSVR &quot;C:\\Users\\Public\\file.dll&quot;}`)"
+    },
+    "T1218.009": {
+        "__name": "Regsvcs/Regasm",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- **Using `Regsvcs` or `Regasm` to proxy execution of malicious code**.\n- Using attributes within the binary to specify code that should be run before registration or unregistration.\n- Using the `ComRegisterFunction` or `ComUnregisterFunction` attribute class"
+    },
+    "T1218.010": {
+        "__name": "Regsvr32",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- **Using `Regsvr32.exe` to proxy execution of malicious code**.\n- Loading COM scriptlets or executing DLLs under user permissions.\n- Passing a URL to a file on a web server as an argument during invocation.\n- Employing a **&quot;Squiblydoo&quot; attack**."
+    },
+    "T1218.011": {
+        "__name": "Rundll32",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- **Using `Rundll32` to proxy execution of malicious code**.\n- Using the commands `Control\\_RunDLL` or `Control\\_RullDLLAsUser`.\n- Using `Rundll32` to execute a .cpl file.\n- Using `Rundll32` to execute JavaScript.\n- Executing a command that includes &quot;rundll32.exe javascript&quot;."
+    },
+    "T1218.012": {
+        "__name": "Verclsid",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- **Using `verclsid.exe` to proxy execution of malicious code**.\n- Executing a command similar to `verclsid.exe /S /C {{CLSID}}`.\n- Loading a COM scriptlet from a remote server."
+    },
+    "T1218.013": {
+        "__name": "Mavinject",
+        "question": null,
+        "answer": "*ANY of THESE:*\n\n- **Using `mavinject.exe` to inject malicious DLLs into running processes** (ex. `C:\\Windows\\system32\\mavinject.exe PID /INJECTRUNNING PATH_DLL)`\n- Using the `/HMODULE` parameter of `mavinject.exe` to inject an import table into a specified module (ex. `mavinject.exe PID /HMODULE=BASE_ADDRESS PATH_DLL ORDINAL_NUMBER`).\n"
+    },
+    "T1218.014": {
+        "__name": "MMC",
+        "question": null,
+        "answer": "**Using `mmc.exe` to proxy execution of malicious `.msc` files** to create &quot;snap-ins&quot;, or perform malicious tasks such as deleting the backup via  `mmc wbadmin.msc delete catalog -quiet`."
+    },
+    "T1219": {
+        "__name": "Remote Access Software",
+        "question": null,
+        "answer": "Using **remote access software** (e.g. VNC, Team Viewer, etc.) to **establish interactive C2** and target compromised networks or leverage remote access tools as alternate C2 channels to ensure persistent access."
+    },
+    "T1220": {
+        "__name": "XSL Script Processing",
+        "question": null,
+        "answer": "Bypassing application control and obscure execution of code by **embedding scripts inside XSL files**."
+    },
+    "T1221": {
+        "__name": "Template Injection",
+        "question": null,
+        "answer": "Creation or modification of references in **user document templates** to conceal malicious code or force authentication attempts"
+    },
+    "T1222": {
+        "__name": "File and Directory Permissions Modification",
+        "question": "How is the adversary attempting to **evade access control lists or modify file/directory permissions**?",
+        "answer": "**Modifying file or directory permissions** or attributes to evade access control lists (ACLs) or access protected files. "
+    },
+    "T1222.001": {
+        "__name": "Windows File and Directory Permissions Modification",
+        "question": null,
+        "answer": "Using commands such as `icacls, cacls, takeown, or attrib`  or PowerShell cmdlets were used to **modify permissions on files or folders**.\n"
+    },
+    "T1222.002": {
+        "__name": "Linux and Mac File and Directory Permissions Modification",
+        "question": null,
+        "answer": "Using commands like `chown` and `chmod` to **modify permissions on files or folders**."
+    },
+    "T1480": {
+        "__name": "Execution Guardrails",
+        "question": "How is the adversary **constraining their execution/actions** based upon **environmental conditions**?\n\nWhat actions are they performing?",
+        "answer": "**Constraining execution or actions** based on adversary **supplied and environment specific conditions** that are expected to be present on the target."
+    },
+    "T1480.001": {
+        "__name": "Environmental Keying",
+        "question": null,
+        "answer": "Employing **cryptography to constrain execution or actions** based on environment specific conditions."
+    },
+    "T1482": {
+        "__name": "Domain Trust Discovery",
+        "question": null,
+        "answer": "Obtaining information on **domain trust relationships** that may be used to identify lateral movement opportunities."
+    },
+    "T1484": {
+        "__name": "Domain Policy Modification",
+        "question": "How is the adversary **modifying domain policy**?",
+        "answer": "Modifying the **domain settings** by altering the **Group Policy Objects (GPOs)** or changing **trust settings**."
+    },
+    "T1484.001": {
+        "__name": "Group Policy Modification",
+        "question": null,
+        "answer": "**Modifying Group Policy Objects (GPOs)** to subvert discretionary access controls for a domain to escalate privileges."
+    },
+    "T1484.002": {
+        "__name": "Domain Trust Modification",
+        "question": null,
+        "answer": "**Adding or or modifying the properties of domain trusts** to evade defenses and/or elevate privileges."
+    },
+    "T1485": {
+        "__name": "Data Destruction",
+        "question": null,
+        "answer": "**Deleting or corrupting specific data or files** on systems to disrupt system availability."
+    },
+    "T1486": {
+        "__name": "Data Encrypted for Impact",
+        "question": null,
+        "answer": "**Encrypting user or system** to impair system or data availability, usually as part of an extortion or ransomware scheme."
+    },
+    "T1489": {
+        "__name": "Service Stop",
+        "question": null,
+        "answer": "**Shutting down particular services** to impair availability to legitimate users or encrypt or destroy data."
+    },
+    "T1490": {
+        "__name": "Inhibit System Recovery",
+        "question": null,
+        "answer": "Attempting to **prevent system recovery** by turning off recovery services or removing recovery data"
+    },
+    "T1491": {
+        "__name": "Defacement",
+        "question": "How did the adversary **deface** the target?",
+        "answer": "**Modifying or defacing** internal or external systems in order to **mislead or intimidate users**"
+    },
+    "T1491.001": {
+        "__name": "Internal Defacement",
+        "question": null,
+        "answer": "**Modifying or defacing internal systems**, such as internal websites or user desktop environment (e.g., wallpaper), in order to mislead or intimidate users"
+    },
+    "T1491.002": {
+        "__name": "External Defacement",
+        "question": null,
+        "answer": "**Defacing or otherwise visibly modifying an externally facing website or other system**, in order to propagate their message, mislead users or the general public, intimidate or otherwise mislead users and the general public"
+    },
+    "T1495": {
+        "__name": "Firmware Corruption",
+        "question": null,
+        "answer": "Overwriting or **corrupting the BIOS or other firmware devices in the system** to disable the system."
+    },
+    "T1496": {
+        "__name": "Resource Hijacking",
+        "question": null,
+        "answer": "Utilizing **co-opting the victim&#x27;s resources** (e.g., compromised server processing or storage) **to perform their own functions** (e.g. cryptocurrency mining, botnet, stolen data store)."
+    },
+    "T1497": {
+        "__name": "Virtualization/Sandbox Evasion",
+        "question": "In what manner did the adversary **alter its functionality** when they realized they were in a **virtual environment**?",
+        "answer": "**Detecting or evading virtualization and analysis environments** by looking for and altering virtual machine environment (VME) artifacts. "
+    },
+    "T1497.001": {
+        "__name": "System Checks",
+        "question": null,
+        "answer": "Using **system checks or VME artifacts** to detect the presence of a virtualization environment.\n"
+    },
+    "T1497.002": {
+        "__name": "User Activity Based Checks",
+        "question": null,
+        "answer": "Searching **user activity** to detect the presence of a virtualization environment.\n"
+    },
+    "T1497.003": {
+        "__name": "Time Based Evasion",
+        "question": null,
+        "answer": "Using **time-based methods** to detect the presence of a virtualization environment."
+    },
+    "T1498": {
+        "__name": "Network Denial of Service",
+        "question": "How did the adversary perform a **denial of service on the network**?",
+        "answer": "**Degrading network access via volumetric attacks** (i.e. high traffic)."
+    },
+    "T1498.001": {
+        "__name": "Direct Network Flood",
+        "question": null,
+        "answer": "Employing **large volumes of network traffic directed at the target**."
+    },
+    "T1498.002": {
+        "__name": "Reflection Amplification",
+        "question": null,
+        "answer": "Leveraging **&quot;reflection amplifying&quot;** services (e.g., DNS, NTP, memcache), third-party server intermediary, and spoofing the request source address with the target&#x27;s network address."
+    },
+    "T1499": {
+        "__name": "Endpoint Denial of Service",
+        "question": "How did the adversary perform a **denial of service on the endpoint**?",
+        "answer": "**Denying service to an endpoint system** (vs a network) by attacking the OS, Service, or application with either large volumes/flood or via an exploit."
+    },
+    "T1499.001": {
+        "__name": "OS Exhaustion Flood",
+        "question": null,
+        "answer": "Attempting to **exhaust operating system limits and resources** (particularly network resources targeting the TCP state table, such as a SYN flood) to impair system and network availability"
+    },
+    "T1499.002": {
+        "__name": "Service Exhaustion Flood",
+        "question": null,
+        "answer": "Attempting to **overwhelm specific applications or servers**, such as web, DNS, or other network accessible services to impair availability of that service"
+    },
+    "T1499.003": {
+        "__name": "Application Exhaustion Flood",
+        "question": null,
+        "answer": "**Targeting resource intensive features of an application**, such as some web applications to cause a denial of service (DoS)"
+    },
+    "T1499.004": {
+        "__name": "Application or System Exploitation",
+        "question": null,
+        "answer": "Leveraging a **particular application or system vulnerability to disable or impair availability** of the service or application."
+    },
+    "T1505": {
+        "__name": "Server Software Component",
+        "question": "How is the adversary **abusing server software components**?",
+        "answer": "Abusing **legitimate extensible development features** of servers to **install malicious components** to establish persistent access to systems."
+    },
+    "T1505.001": {
+        "__name": "SQL Stored Procedures",
+        "question": null,
+        "answer": "Creating or modifying **SQL stored procedures** such as `xp_cmdshell` for MSSQL Server."
+    },
+    "T1505.002": {
+        "__name": "Transport Agent",
+        "question": null,
+        "answer": "Abusing **Microsoft Exchange transport agents**, such as registering a malicious transport agent for persistence on the Exchange Server that can be triggered by adversary-specified email events."
+    },
+    "T1505.003": {
+        "__name": "Web Shell",
+        "question": null,
+        "answer": "Installing a **backdoor web shell** such as China Chopper Web shell client in a victim&#x27;s **Web server**."
+    },
+    "T1505.004": {
+        "__name": "IIS Components",
+        "question": null,
+        "answer": "Installing a **malicious ISAPI extensions and filters **to observe and/or modify traffic, execute commands on compromised machines, or proxy command and control traffic."
+    },
+    "T1505.005": {
+        "__name": "Terminal Services DLL",
+        "question": null,
+        "answer": "Abusing components of **Terminal Services** such as `svchost.exe`, `ServiceDll`, and `termsrv.dll` to enable persistent access to systems."
+    },
+    "T1518": {
+        "__name": "Software Discovery",
+        "question": "What **type of software** is the adversary trying to **discover**?\n\nWhat actions are the adversary performing?",
+        "answer": "Obtaining a list of **software** or **software versions** that are installed on a system or cloud environment."
+    },
+    "T1518.001": {
+        "__name": "Security Software Discovery",
+        "question": null,
+        "answer": "Obtaining information about **security software or its configurations, defensive tools, or sensors**, such as firewall rules, IDS systems, AV software, or used the commands: `netsh`, `reg query` (reg), `dir` (cmd), or `Tasklist`."
+    },
+    "T1525": {
+        "__name": "Implant Internal Image",
+        "question": null,
+        "answer": "Implanting malicious code into the **cloud** or **container images** to establish persistence after gaining access to an environment."
+    },
+    "T1526": {
+        "__name": "Cloud Service Discovery",
+        "question": null,
+        "answer": "*ANY of these occurred:*\n\n- The adversary **enumerated the cloud services** running on the system.\n- The adversary enumerated resources and services, including applications, management groups, resources and policy definitions using an API or CLI.\n- The adversary used **Stormspotter** or **Pacu**."
+    },
+    "T1528": {
+        "__name": "Steal Application Access Token",
+        "question": null,
+        "answer": "**Stealing application access tokens** to make API requests to remote system and resources."
+    },
+    "T1529": {
+        "__name": "System Shutdown/Reboot",
+        "question": null,
+        "answer": "**Initiating shutdown or reboot** to interrupt or destroy system or services."
+    },
+    "T1530": {
+        "__name": "Data from Cloud Storage Object",
+        "question": null,
+        "answer": "**Accessing data from insecure cloud storage facilities** such as Amazon S3, Azure Storage, Google Cloud Storage."
+    },
+    "T1531": {
+        "__name": "Account Access Removal",
+        "question": null,
+        "answer": "**Deleting, locking, or manipulating** legitimate accounts to interrupt availability of system and network resources."
+    },
+    "T1534": {
+        "__name": "Internal Spearphishing",
+        "question": null,
+        "answer": "**Exploiting internal organization accounts** to gain access to additional information or exploit other users"
+    },
+    "T1535": {
+        "__name": "Unused/Unsupported Cloud Regions",
+        "question": null,
+        "answer": "Creating a **cloud instance in an unused geographic service regions**."
+    },
+    "T1537": {
+        "__name": "Transfer Data to Cloud Account",
+        "question": null,
+        "answer": "**Transferring data** to **adversary-controlled cloud account** on same service."
+    },
+    "T1538": {
+        "__name": "Cloud Service Dashboard",
+        "question": null,
+        "answer": "Using **cloud service dashboard GUI** with stolen credentials to gain useful information from an operational cloud environment, such as specific services, resources, and features."
+    },
+    "T1539": {
+        "__name": "Steal Web Session Cookie",
+        "question": null,
+        "answer": "Stealing **web session cookie was stolen** to obtain access to web applications and services (i.e., identifying cookies on disk, in browser or application process memory, or in network traffic)."
+    },
+    "T1542": {
+        "__name": "Pre-OS Boot",
+        "question": "How is the adversary **abusing pre-os boot**?",
+        "answer": "Loading or altering **BIOS** or **UEFI firmware** to operating system **prior to OS boot**."
+    },
+    "T1542.001": {
+        "__name": "System Firmware",
+        "question": null,
+        "answer": "**Overwriting or modifying data in boot drivers or firmware** such as BIOS (Basic Input/Output System), the Unified Extensible Firmware Interface (UEFI), or Extensible Firmware Interface (EFI) using rootkits or other tools."
+    },
+    "T1542.002": {
+        "__name": "Component Firmware",
+        "question": null,
+        "answer": "Modifying or overwriting **component firmware** to survive disk formatting , OS reinstall, and/or evade host software-based defenses and integrity checks."
+    },
+    "T1542.003": {
+        "__name": "Bootkit",
+        "question": null,
+        "answer": "Using a malware variant that modifies the boot sectors of a hard drive, including the **Master Boot Record (MBR) and Volume Boot Record (VBR)**."
+    },
+    "T1542.004": {
+        "__name": "ROMMONkit",
+        "question": null,
+        "answer": "Abusing the **ROM Monitor (ROMMON)** by loading an unauthorized firmware with adversary code to provide persistent access and manipulate device behavior that is difficult to detect."
+    },
+    "T1542.005": {
+        "__name": "TFTP Boot",
+        "question": null,
+        "answer": "Abusing the netbooting to load an unauthorized network device operating system from a **Trivial File Transfer Protocol (TFTP) server**."
+    },
+    "T1543": {
+        "__name": "Create or Modify System Process",
+        "question": "How is the adversary **creating or modifying system processes**?",
+        "answer": "**Creating or modifying services** to escalate adversary privileges."
+    },
+    "T1543.001": {
+        "__name": "Launch Agent",
+        "question": null,
+        "answer": "Executing malicious payloads by **installing launch agents** through .plist files located in ` /System/Library/LaunchAgents`, `/Library/LaunchAgents`, and `~/Library/LaunchAgents`."
+    },
+    "T1543.002": {
+        "__name": "Systemd Service",
+        "question": null,
+        "answer": "Creating or modifying **a file in `/etc/systemd/system` or `/usr/lib/systemd/system`**."
+    },
+    "T1543.003": {
+        "__name": "Windows Service",
+        "question": null,
+        "answer": "Executing malicious payloads by **setting or modifying Windows service configurations** via system utilities, Windows registry, or Windows API."
+    },
+    "T1543.004": {
+        "__name": "Launch Daemon",
+        "question": null,
+        "answer": "Creating or modifying **Launch Daemons** to execute malicious payloads, such as adding plist files in `\\*/Library/LaunchDaemons` directories."
+    },
+    "T1546": {
+        "__name": "Event Triggered Execution",
+        "question": "How is the adversary **abusing event triggered executions**?",
+        "answer": "Altering system or application settings to trigger execution of malicious code based on **specific user or application events.**"
+    },
+    "T1546.001": {
+        "__name": "Change Default File Association",
+        "question": null,
+        "answer": "Altering **system file associations** under `HKEY_CLASSES_ROOT.[extension]` to trigger execution of malicious content after opening a file."
+    },
+    "T1546.002": {
+        "__name": "Screensaver",
+        "question": null,
+        "answer": "Altering **screensaver settings** in `HKCU\\Control Panel\\Desktop\\` registry to trigger execution of malicious content after user inactivity."
+    },
+    "T1546.003": {
+        "__name": "Windows Management Instrumentation Event Subscription",
+        "question": null,
+        "answer": "Altering or creating **event subscriptions** in Windows Management Instrumentation to trigger execution of malicious content at time of event."
+    },
+    "T1546.004": {
+        "__name": "Unix Shell Configuration Modification",
+        "question": null,
+        "answer": "Modifying a **`.bash_profile`** or **`.bashrc file`** to launch malicious commands or code."
+    },
+    "T1546.005": {
+        "__name": "Trap",
+        "question": null,
+        "answer": "Using the `trap` command to allow programs and shells to specify commands that will be **executed upon receiving interrupt signals**."
+    },
+    "T1546.006": {
+        "__name": "LC_LOAD_DYLIB Addition",
+        "question": null,
+        "answer": "Altering **MACH-O binary headers** (e.g., LC\\_LOAD\\_DYLIB) to load malicious dylibs after binary is executed."
+    },
+    "T1546.007": {
+        "__name": "Netsh Helper DLL",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- Using the **netsh.exe (aka Netshell)** to launch malicious helper DLLs.\n- Registering a malicious DLL in `HKLM\\SOFTWARE\\Microsoft\\Netsh`."
+    },
+    "T1546.008": {
+        "__name": "Accessibility Features",
+        "question": null,
+        "answer": "Modifying the **accessibility-related binaries** or its associated registry pointers."
+    },
+    "T1546.009": {
+        "__name": "AppCert DLLs",
+        "question": null,
+        "answer": "Modifying the **AppCertDLLs** registry key under `HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Session Manager\\`) and then loading a malicious DLL via one of the CreateProcess API functions."
+    },
+    "T1546.010": {
+        "__name": "AppInit DLLs",
+        "question": null,
+        "answer": "Modifying the **AppInitDLLs registry key** under `HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Session Manager\\`), and then loading a malicious DLL via one of the CreateProcess API functions."
+    },
+    "T1546.011": {
+        "__name": "Application Shimming",
+        "question": null,
+        "answer": "Triggering **application shims** (e.g. Microsoft Windows Application Compatibility Infrastructure/Framework) to execute malicious code."
+    },
+    "T1546.012": {
+        "__name": "Image File Execution Options Injection",
+        "question": null,
+        "answer": "Setting a malicious **&quot;debugger&quot; program** in the registry &quot;Debugger&quot; values via the GFlags tool."
+    },
+    "T1546.013": {
+        "__name": "PowerShell Profile",
+        "question": null,
+        "answer": "Modifying the **powershell profile (profile.psl) modified** to launch a malicious program."
+    },
+    "T1546.014": {
+        "__name": "Emond",
+        "question": null,
+        "answer": "Creating **malicious entries in `/etc/emond.d/rules/`** directory to trigger execution of malicious content\nafter a **defined event occurs**."
+    },
+    "T1546.015": {
+        "__name": "Component Object Model Hijacking",
+        "question": null,
+        "answer": "Modifying a reference to a **legitimate COM object** to point to a malicious component."
+    },
+    "T1547": {
+        "__name": "Boot or Logon Autostart Execution",
+        "question": "In what manner is the adversary **abusing boot or logon autostart execution**?",
+        "answer": "Altering system settings to execute a program during **system boot or account logon.**"
+    },
+    "T1547.001": {
+        "__name": "Registry Run Keys / Startup Folder",
+        "question": null,
+        "answer": "Adding or referencing a program to a **startup folder** with a **registry run key** to execute program during user login."
+    },
+    "T1547.002": {
+        "__name": "Authentication Package",
+        "question": null,
+        "answer": "Executing malicious DLLs during **LSA authentication** \nand adding binary reference to registry keys (`HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\registry`)."
+    },
+    "T1547.003": {
+        "__name": "Time Providers",
+        "question": null,
+        "answer": "Registering malicious DLLs as **time providers** in registry keys (`HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\W32Time\\TimeProviders\\`)."
+    },
+    "T1547.004": {
+        "__name": "Winlogon Helper DLL",
+        "question": null,
+        "answer": "Altering **Winlogon** registry keys (`HKLM\\Software[\\Wow6432Node\\]\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\` / `HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\`) to execute malicious DLLs."
+    },
+    "T1547.005": {
+        "__name": "Security Support Provider",
+        "question": null,
+        "answer": "Abusing the **security support providers (SSPs)** to execute DLLs when the system boots."
+    },
+    "T1547.006": {
+        "__name": "Kernel Modules and Extensions",
+        "question": null,
+        "answer": "Loading **LKMs** or  **kexts** into kernel to execute programs during system boot."
+    },
+    "T1547.007": {
+        "__name": "Re-opened Applications",
+        "question": null,
+        "answer": "Adding **malicious application path** to `com.apple.loginwindow.[UUID].plist` to execute payloads during user login."
+    },
+    "T1547.008": {
+        "__name": "LSASS Driver",
+        "question": null,
+        "answer": "Altering or adding **LSASS drivers** to execute malicious payloads through LSA operations."
+    },
+    "T1547.009": {
+        "__name": "Shortcut Modification",
+        "question": null,
+        "answer": "**Creating or editing shortcuts (.LNK file)** to run a malicious program during system boot or user login."
+    },
+    "T1547.010": {
+        "__name": "Port Monitors",
+        "question": null,
+        "answer": "*Any of the following occurs:*\n\n- Using **port monitor** by calling `AddMonitor` to run DLL in `C:\\Windows\\System32` during system boot.\n- Loading DLL to registry key.\n- `HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Monitors`."
+    },
+    "T1547.012": {
+        "__name": "Print Processors",
+        "question": null,
+        "answer": "Abusing **print processors to run malicious DLLs **during system boot for persistence or privilege escalation."
+    },
+    "T1547.013": {
+        "__name": "XDG Autostart Entries",
+        "question": null,
+        "answer": "Creating or altering **XDG autostart entries** (`/etc/xdg/autostart` / `~/.config/autostart` directories to execute malicious commands and payloads after user login."
+    },
+    "T1547.014": {
+        "__name": "Active Setup",
+        "question": null,
+        "answer": "Creating **malicious keys under `HKLM\\SOFTWARE\\Microsoft\\Active Setup\\Installed Components\\`** while setting a malicious value `StubPath`."
+    },
+    "T1547.015": {
+        "__name": "Login Items",
+        "question": null,
+        "answer": "Adding **login items** via **shared file list or Service Management Framework** to execute upon user login."
+    },
+    "T1548": {
+        "__name": "Abuse Elevation Control Mechanism",
+        "question": "How is the adversary **abusing elevation control mechanisms**?",
+        "answer": "Circumventing or abusing **elevation control mechanisms.**"
+    },
+    "T1548.001": {
+        "__name": "Setuid and Setgid",
+        "question": null,
+        "answer": "*Any of the following occured:*\n\n- **Abusing setuid** bit configurations using `chmod`, `chmod 4777 [file]`, or `chmod u+s [file]`\n- **Abusing setgid** bit configurations using `chmod 2755` or `chmod g+s`"
+    },
+    "T1548.002": {
+        "__name": "Bypass User Account Control",
+        "question": null,
+        "answer": "**Bypassing UAC mechanisms** by executing `rundll32.exe` or `eventvwr.exe` to load **COM**."
+    },
+    "T1548.003": {
+        "__name": "Sudo and Sudo Caching",
+        "question": null,
+        "answer": "*Any of the following occured:*\n\n- Abusing **sudo** or **sudo caching** configurations.\n- Disabling or altering `tty_tickets` via `echo \\&#x27;Defaults !tty_tickets\\&#x27; &gt;&gt; /etc/sudoers`."
+    },
+    "T1548.004": {
+        "__name": "Elevated Execution with Prompt",
+        "question": null,
+        "answer": "Leveraging `AuthorizationExecuteWithPrivileges` API to **prompt user credentials** and **perform operations with root privileges** or install persistence mechanisms."
+    },
+    "T1550": {
+        "__name": "Use Alternate Authentication Material",
+        "question": "What type of **alternative auth matrial** is the adversary using?\n\nWhat actions did they perform?",
+        "answer": "Using **alternate authentication material** such as password hashes, Kerberos tickets, or access tokens to **access accounts, information, or services**."
+    },
+    "T1550.001": {
+        "__name": "Application Access Token",
+        "question": null,
+        "answer": "Using **stolen application access tokens** such as OAuth to initiate **API requests** and access cloud and SaaS resources."
+    },
+    "T1550.002": {
+        "__name": "Pass the Hash",
+        "question": null,
+        "answer": "Authenticating as a user **without having access to the user&#x27;s cleartext password**,bypassing normal system access controls. "
+    },
+    "T1550.003": {
+        "__name": "Pass the Ticket",
+        "question": null,
+        "answer": "Authenticating to a system using **Kerberos tickets**, like Silver Tickets or Golden Tickets, without having access to an account&#x27;s password."
+    },
+    "T1550.004": {
+        "__name": "Web Session Cookie",
+        "question": null,
+        "answer": "Using **stolen session cookies** to authenticate to web applications and services."
+    },
+    "T1552": {
+        "__name": "Unsecured Credentials",
+        "question": "How is the adversary gaining **unsecured credentials**?",
+        "answer": "Searching **compromised systems** via plaintext files, repositories, or other specialized files."
+    },
+    "T1552.001": {
+        "__name": "Credentials In Files",
+        "question": null,
+        "answer": "Obtaining credentials from **files containing passwords** created by users, configuration files, stored on local file system or network file shares."
+    },
+    "T1552.002": {
+        "__name": "Credentials in Registry",
+        "question": null,
+        "answer": "Obtaining **credentials from the registry**."
+    },
+    "T1552.003": {
+        "__name": "Bash History",
+        "question": null,
+        "answer": "Searching **bash command history** or `.bash_history` file."
+    },
+    "T1552.004": {
+        "__name": "Private Keys",
+        "question": null,
+        "answer": "Obtaining credentials **from private key files** (e.g. files commonly ending in .key, .pgp, .gpg, .p12, .pem, .pfx, .cer, .p7b, .asc)."
+    },
+    "T1552.005": {
+        "__name": "Cloud Instance Metadata API",
+        "question": null,
+        "answer": "Using the **Cloud Instance Metadata API** to query the **Instance Metadata API** or exploit an **SSRF** vulnerability."
+    },
+    "T1552.006": {
+        "__name": "Group Policy Preferences",
+        "question": null,
+        "answer": "Employing **Group Policy Preferences (GPP)** to obtain credentials, including local accounts."
+    },
+    "T1552.007": {
+        "__name": "Container API",
+        "question": null,
+        "answer": "Collecting logs from **container APIs**."
+    },
+    "T1553": {
+        "__name": "Subvert Trust Controls",
+        "question": "How does the adversary **subvert trust controls**?",
+        "answer": "**Subverting trust controls** by modifying permissions or stealing code signing certificates."
+    },
+    "T1553.001": {
+        "__name": "Gatekeeper Bypass",
+        "question": null,
+        "answer": "*ANY of these:*\n\n-adversary modified the file attribute **com.apple.quarantine**\n-the adversary subverted **Gatekeeper** controls\n- the adversary removed the com.apple.quarantine attribute using the command `&quot;sudo xattr -r -d com.apple.quarantine /path/to/MyApp.app&quot;`"
+    },
+    "T1553.002": {
+        "__name": "Code Signing",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- Did the adversary create, steal or otherwise obtain **signing material** to establish authenticity for their binaries\n- Did the adversary use a certificate to establish a **valid signature**"
+    },
+    "T1553.003": {
+        "__name": "SIP and Trust Provider Hijacking",
+        "question": null,
+        "answer": "Tampering with **SIP and trust provider components to mislead the operating system** and application control tools when conducting signature validation checks."
+    },
+    "T1553.004": {
+        "__name": "Install Root Certificate",
+        "question": null,
+        "answer": "Installing a ** root certificate** on a compromised system to avoid warnings when connecting to adversary controlled web servers."
+    },
+    "T1553.005": {
+        "__name": "Mark-of-the-Web Bypass",
+        "question": null,
+        "answer": "Abusing **container files not tagged with MOTW** to deliver malicious payloads."
+    },
+    "T1553.006": {
+        "__name": "Code Signing Policy Modification",
+        "question": null,
+        "answer": "Altering **code signing policies** to enable **unsigned** or **self-signed code** and bypass security controls."
+    },
+    "T1554": {
+        "__name": "Compromise Client Software Binary",
+        "question": null,
+        "answer": "Modifying **client software binaries** to establish persistent access to systems. (e.g. SSH clients, FTP clients, email clients, and web browsers)."
+    },
+    "T1555": {
+        "__name": "Credentials from Password Stores",
+        "question": "How did the adversary **obtain credentials from the password stores**?",
+        "answer": "Searching **common password storage locations**."
+    },
+    "T1555.001": {
+        "__name": "Keychain",
+        "question": null,
+        "answer": "*Any of the following occur:*\n\n- Using `security dump-keychain -d` command to view dumped Login **Keychain** credentials.\n- Inspecting the`~/Library/Keychains/login.keychain` file."
+    },
+    "T1555.002": {
+        "__name": "Securityd Memory",
+        "question": null,
+        "answer": "Inspecting **securityd&#x27;s memory** to identify **key sequences** and decrypt logon keychain."
+    },
+    "T1555.003": {
+        "__name": "Credentials from Web Browsers",
+        "question": null,
+        "answer": "Inspecting **web browser** files or process memories."
+    },
+    "T1555.004": {
+        "__name": "Windows Credential Manager",
+        "question": null,
+        "answer": "*To list credentials from the* **Windows Credential Manager,** *any of the following occurred:*\n\n- Executing `vaultcmd.exe`.\n- Abusing a Windows API such as `CredEnumerateA`.\n- Using password recovery tools to obtain plaintext password."
+    },
+    "T1555.005": {
+        "__name": "Password Managers",
+        "question": null,
+        "answer": "Extracting **master password** of a **third party password manager** via brute force or software exploitation."
+    },
+    "T1556": {
+        "__name": "Modify Authentication Process",
+        "question": "How did the adversary **modify the authentication process**?",
+        "answer": "Modifying an **authentication mechanism** to **bypass authentication** or **reveal credentials**."
+    },
+    "T1556.001": {
+        "__name": "Domain Controller Authentication",
+        "question": null,
+        "answer": "Compromising a **domain controller and modify or patch the authentication process** to capture credentials or bypass authentication."
+    },
+    "T1556.002": {
+        "__name": "Password Filter DLL",
+        "question": null,
+        "answer": "Registering **malicious password filter DLLs** (e.g. `Remsec` and `Strider`) to acquire user credentials ."
+    },
+    "T1556.003": {
+        "__name": "Pluggable Authentication Modules",
+        "question": null,
+        "answer": "Modifying **pluggable authentication modules** to access user credentials or bypass authentication or fake credentials."
+    },
+    "T1556.004": {
+        "__name": "Network Device Authentication",
+        "question": null,
+        "answer": "Using a Patch System Image to **hard code a password** in the operating system."
+    },
+    "T1556.005": {
+        "__name": "Reversible Encryption",
+        "question": null,
+        "answer": "Reversing the **Active Directory encryption** by enabling `AllowReversiblePasswordEncryption` using the following:\n\n- Encrypted password (`G$RADIUSCHAP`)\n- 16-byte random value (`G$RADIUSCHAPKEY`) from `userParameters\n- Global LSA secret (`G$MSRADIUSCHAPKEY`)\n- Static key hardcoded in Remote Access Subauthentication DLL (`RASSFM.DLL`)"
+    },
+    "T1557": {
+        "__name": "Adversary-in-the-Middle",
+        "question": "How did the adversary perfrom a **man in the middle**?",
+        "answer": "*Using an* **adversary-in-the-middle approach** *to do the following:*\n\n- Force a device to communicate through an adversary controlled system.\n- Manipulate DNS settings to block legitimate activities and further malicious ones.\n- Monitor, modify, or block traffic flow."
+    },
+    "T1557.001": {
+        "__name": "LLMNR/NBT-NS Poisoning and SMB Relay",
+        "question": null,
+        "answer": "Spoofing legitimate **name resolution sources** to capture credential information (e.g. hashes) via Link-Local Multicast Name Resolution (LLMNR) on UDP port 5355 and NetBIOS Name Service (NBT-NS) on port UDP 137."
+    },
+    "T1557.002": {
+        "__name": "ARP Cache Poisoning",
+        "question": null,
+        "answer": "**&quot;Poisoning&quot; the **Address Resolution Protocol (ARP) cache of a targeted system** (i.e. spoofing responses to ARP requests to redirect traffic and capture credentials)."
+    },
+    "T1557.003": {
+        "__name": "DHCP Spoofing",
+        "question": null,
+        "answer": "**Redirecting network traffic to adversary-owned systems** by **spoofing Dynamic Host Configuration Protocol (DHCP)** traffic and acting as a malicious DHCP server on the victim network, AKA adversary-in-the-middle (AiTM)."
+    },
+    "T1558": {
+        "__name": "Steal or Forge Kerberos Tickets",
+        "question": "How did the adversary **steal or forge Kerberos Tickets**?",
+        "answer": "**Stealing or forging Kerberos tickets** to bypass authentication."
+    },
+    "T1558.001": {
+        "__name": "Golden Ticket",
+        "question": null,
+        "answer": "Leveraging the **KRBTGT (Kerberos Ticket Granting Ticket)** password hash, to forge a TGT (aka &quot;Golden Ticket&quot;) and generate authentication material for active directory accounts."
+    },
+    "T1558.002": {
+        "__name": "Silver Ticket",
+        "question": null,
+        "answer": "Leveraging the **password hash of a target service account** (e.g. sharepoint or mssql) to forge TGS tickets for that service."
+    },
+    "T1558.003": {
+        "__name": "Kerberoasting",
+        "question": null,
+        "answer": "**Abusing a valid Kerberos ticket** to obtain a ticket granting service ticket."
+    },
+    "T1558.004": {
+        "__name": "AS-REP Roasting",
+        "question": null,
+        "answer": "Exploiting accounts that have disabled the Kerberos pre-authentication protection via weakly encrypted TGT contained in the **Authentication Server Response message (AS-REP)**."
+    },
+    "T1559": {
+        "__name": "Inter-Process Communication",
+        "question": "How is the adversary utilizing **inter-process communication** (IPC)?",
+        "answer": "*ANY of these occurred:*\n\n- **IPC being used to execute arbitrary code or commands** using programming languages/libraries or by Windows interfaces such as Dynamic Data Exchange or Component Object Model.\n- **Higher level OS programs** such as command and scripting interpreters being used to **leverage IPC mechanisms.**"
+    },
+    "T1559.001": {
+        "__name": "Component Object Model",
+        "question": null,
+        "answer": "Using **Windows Component Object Model (COM)** to call server objects such as Dynamic Link Libraries (DLL) or executables (EXE)."
+    },
+    "T1559.002": {
+        "__name": "Dynamic Data Exchange",
+        "question": null,
+        "answer": "Using **Windows Dynamic Data Exchange (DDE)** to poison Microsoft Office documents delivered via phishing campaigns, hosted Web content, or on a compromised machine."
+    },
+    "T1559.003": {
+        "__name": "XPC Services",
+        "question": null,
+        "answer": "Sending malicious content to an **XPC Service daemon** using `C API` or `NSXPCConnection API`."
+    },
+    "T1560": {
+        "__name": "Archive Collected Data",
+        "question": "Through what means did the adversary **compress or encrypt the data**?",
+        "answer": "**Compressing or encrypting collected data** prior to exfiltration."
+    },
+    "T1560.001": {
+        "__name": "Archive via Utility",
+        "question": null,
+        "answer": "**Abusing third party utilities** such as `tar` or `zip`."
+    },
+    "T1560.002": {
+        "__name": "Archive via Library",
+        "question": null,
+        "answer": "Using an **archival and/or compression library** function such as `zlib`, Python `rarfile`, or `libzip`."
+    },
+    "T1560.003": {
+        "__name": "Archive via Custom Method",
+        "question": null,
+        "answer": "Archiving, encrypting, or encoding data that employs **custom code or custom implementations of compression algorithms** rather than built-in system libraries or utilities."
+    },
+    "T1561": {
+        "__name": "Disk Wipe",
+        "question": "How did the adversary **wipe the disk**?",
+        "answer": "**Erasing or overwriting** all or part of a **disk**."
+    },
+    "T1561.001": {
+        "__name": "Disk Content Wipe",
+        "question": null,
+        "answer": "**Erasing or overwriting the entire contents of a disk** in order to interfere with system or data availability"
+    },
+    "T1561.002": {
+        "__name": "Disk Structure Wipe",
+        "question": null,
+        "answer": "**Wiping disk structures such as the master boot record (MBR) or partition table** to render a disk **unable to boot or be mounted / read**, with the intent of interfering with system or data availability"
+    },
+    "T1562": {
+        "__name": "Impair Defenses",
+        "question": "In what manner is the adversary **imparing the target&#x27;s defenses**?\n\nWhat is the adversary doing?",
+        "answer": "**Manipulating capabilities** (e.g., firewalls, SIEM, or analytic platform, etc.) to **hinder** defenders to **detect or audit** malicious behavior."
+    },
+    "T1562.001": {
+        "__name": "Disable or Modify Tools",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- **Disabling security tools**.\n- Halting security software, logging processes, or deleting registry keys."
+    },
+    "T1562.002": {
+        "__name": "Disable Windows Event Logging",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- **Disabling Windows event logs**.\n- **Manipulating Windows Event logs** in totality or for a specific application."
+    },
+    "T1562.003": {
+        "__name": "Impair Command History Logging",
+        "question": null,
+        "answer": "Manipulating **command history** logging, such as modifying/disabling `HISTCONTROL`, `HISTFILE`, AND `PSReadLine`."
+    },
+    "T1562.004": {
+        "__name": "Disable or Modify System Firewall",
+        "question": null,
+        "answer": "Modifying or disabling a victim **firewall**.\n\n*AND ANY of these:*\n\n- **Adding, modifying, or deleting firewall rules**.\n- Leveraging system resources (e.g. command line, registry keys, control panel) to modify the firewall."
+    },
+    "T1562.006": {
+        "__name": "Indicator Blocking",
+        "question": null,
+        "answer": "Attempting to **block sensors** from capturing **IOCs** and/or **events**.\n\n*AND ANY of these:*\n\n- Disabling host-based sensors by manipulating settings that control collection and transmission of event telemetry.\n- Modifying configuration files, the Windows Registry, or leveraged administrative utilities to adjust collection and transmission of event telemetry.\n- Manipulating the Event Tracing for Windows using PowerShell cmdlets (e.g., Set-EtwTraceProvider).\n- Inhibiting traffic to centralized analysis tools and/or event management systems."
+    },
+    "T1562.007": {
+        "__name": "Disable or Modify Cloud Firewall",
+        "question": null,
+        "answer": "*ANY of these:*\n\n- The adversary modified a **firewall** in a **cloud** environment to alter access to cloud resources.\n- **Creating, modifying, or disabling firewall rules** or policies to enable access to a victim&#x27;s environment."
+    },
+    "T1562.008": {
+        "__name": "Disable Cloud Logs",
+        "question": null,
+        "answer": "**Disabling** or otherwise **impairing logging capabilities** in a **cloud environment**."
+    },
+    "T1562.009": {
+        "__name": "Safe Mode Boot",
+        "question": null,
+        "answer": "Abusing **safe mode** to **disable endpoint defenses** and add malicious applications."
+    },
+    "T1562.010": {
+        "__name": "Downgrade Attack",
+        "question": null,
+        "answer": "**Downgrading or use versions of system features that may be outdated, vulnerable,** and/or does not support updated security controls such as logging."
+    },
+    "T1563": {
+        "__name": "Remote Service Session Hijacking",
+        "question": "What **remote service** is the adversary **hijacking**?",
+        "answer": "**Hijacking any existing user sessions** with remote services."
+    },
+    "T1563.001": {
+        "__name": "SSH Hijacking",
+        "question": null,
+        "answer": "**Hijacking a legitimate user&#x27;s SSH session** to move laterally."
+    },
+    "T1563.002": {
+        "__name": "RDP Hijacking",
+        "question": null,
+        "answer": "**Hijacking the remote desktop (RDP) session** to move laterally."
+    },
+    "T1564": {
+        "__name": "Hide Artifacts",
+        "question": "What is the adversary doing in order to **hide artifacts**?\n\nWhat is the environment?",
+        "answer": "Attempting to **hide artifacts** associated with their activities to evade being detected."
+    },
+    "T1564.001": {
+        "__name": "Hidden Files and Directories",
+        "question": null,
+        "answer": "**Setting files or directories to be hidden**."
+    },
+    "T1564.002": {
+        "__name": "Hidden Users",
+        "question": null,
+        "answer": "**Setting and using hidden users** to conceal the presence of user accounts they create or modify."
+    },
+    "T1564.003": {
+        "__name": "Hidden Window",
+        "question": null,
+        "answer": "Using **hidden windows** to conceal malicious activity from the **plain sight of users**."
+    },
+    "T1564.004": {
+        "__name": "NTFS File Attributes",
+        "question": null,
+        "answer": "Using **New Technology File System (NTFS) file attributes to hide their malicious data** in order to evade detection."
+    },
+    "T1564.005": {
+        "__name": "Hidden File System",
+        "question": null,
+        "answer": "Using a **hidden file system** to conceal malicious activity from users and security tools"
+    },
+    "T1564.006": {
+        "__name": "Run Virtual Instance",
+        "question": null,
+        "answer": "Using a **virtual instance** (e.g., virtual machine, virtual networking) to avoid detection."
+    },
+    "T1564.007": {
+        "__name": "VBA Stomping",
+        "question": null,
+        "answer": "**Hiding malicious Visual Basic for Applications (VBA) payloads** embedded within MS Office documents by **replacing the VBA source code with benign data**."
+    },
+    "T1564.008": {
+        "__name": "Email Hiding Rules",
+        "question": null,
+        "answer": "Using **email rules to hide inbound emails** in a compromised user&#x27;s mailbox."
+    },
+    "T1564.009": {
+        "__name": "Resource Forking",
+        "question": null,
+        "answer": "**Abusing resource forks** to hide malicious code or executables to evade detection and bypass security applications."
+    },
+    "T1564.010": {
+        "__name": "Process Argument Spoofing",
+        "question": null,
+        "answer": "Attempting to **hide process command-line arguments** by overwriting process memory. Process command-line arguments are stored in the process environment block (PEB)."
+    },
+    "T1565": {
+        "__name": "Data Manipulation",
+        "question": "How did the adversary **manipulate data**?",
+        "answer": "Attempting to **insert, delete, or manipulate data** in order to impact the targeted organization&#x27;s systems, services, or mission"
+    },
+    "T1565.001": {
+        "__name": "Stored Data Manipulation",
+        "question": null,
+        "answer": "Attempting to insert, delete, or manipulate **Data At Rest** in order to manipulate external outcomes or hide activity."
+    },
+    "T1565.002": {
+        "__name": "Transmitted Data Manipulation",
+        "question": null,
+        "answer": "Attempting to alter **Data In Transit** to storage or other systems in order to manipulate external outcomes or hide activity."
+    },
+    "T1565.003": {
+        "__name": "Runtime Data Manipulation",
+        "question": null,
+        "answer": "Manipulating **Data At Runtime** - modify systems in order to manipulate the data as it is accessed and displayed to an end user."
+    },
+    "T1566": {
+        "__name": "Phishing",
+        "question": "How is the adversary using **phishing**?",
+        "answer": "Sending **phishing messages** to gain access to a victim&#x27;s systems."
+    },
+    "T1566.001": {
+        "__name": "Spearphishing Attachment",
+        "question": null,
+        "answer": "Emails sent contain **malicious attachments** (.doc, .exe. PDF, archived file, etc.)\n\n*(Typically coupled with User Execution: Malicious File, T1204.002 if the user did, in fact, open the attachment.)*"
+    },
+    "T1566.002": {
+        "__name": "Spearphishing Link",
+        "question": null,
+        "answer": "Emails sent contain **malicious links**\n\n*(Typically coupled with User Execution: Malicious Link, T1024.001, if the user did, in fact, click on the link.)*"
+    },
+    "T1566.003": {
+        "__name": "Spearphishing via Service",
+        "question": null,
+        "answer": "Spearphishing **messages are sent via third-party services** like social media services, personal webmail, and non-enterprise controlled services to gain access to victim systems."
+    },
+    "T1567": {
+        "__name": "Exfiltration Over Web Service",
+        "question": "How is the adversary exfiltrating over a **web service**?",
+        "answer": "Using an existing **external Web service**."
+    },
+    "T1567.001": {
+        "__name": "Exfiltration to Code Repository",
+        "question": null,
+        "answer": "Exfiltrating data to a **code repository** (e.g. Github)."
+    },
+    "T1567.002": {
+        "__name": "Exfiltration to Cloud Storage",
+        "question": null,
+        "answer": "Exfiltrating data to a **cloud storage** service (e.g. Dropbox, Google Docs, OneDrive)."
+    },
+    "T1568": {
+        "__name": "Dynamic Resolution",
+        "question": "In which manner did the adversary d**ynamically establish connections**?",
+        "answer": "**Establishing dynamic connections** (e.g., using malware sharing a common algorithm with the infrastructure) to C2 infrastructure"
+    },
+    "T1568.001": {
+        "__name": "Fast Flux DNS",
+        "question": null,
+        "answer": "**Changing IP address references in DNS rapidly** (i.e., by employing a short Time to Live (TTL) for the DNS record) to hide a C2 channel or evade detection or IP-layer firewall blocks."
+    },
+    "T1568.002": {
+        "__name": "Domain Generation Algorithms",
+        "question": null,
+        "answer": "Employing **Domain Generation Algorithms (DGAs)** to dynamically identify a destination domain for C2 traffic."
+    },
+    "T1568.003": {
+        "__name": "DNS Calculation",
+        "question": null,
+        "answer": "Performing **calculations on addresses returned in DNS queries** to determine which port and IP address to use for C2."
+    },
+    "T1569": {
+        "__name": "System Services",
+        "question": "How is the adversary using **system services**?",
+        "answer": "Using **system services** or **daemons** to modify or create **startup services** or to run as a **one-time execution**."
+    },
+    "T1569.001": {
+        "__name": "Launchctl",
+        "question": null,
+        "answer": "Abusing the **`launchctl` utility** to interface with launchd, the service management framework for **macOS**, to run malicious scripts. "
+    },
+    "T1569.002": {
+        "__name": "Service Execution",
+        "question": null,
+        "answer": "Abusing the **Windows service control manager (services.exe)**, through PsExec to execute malicious commands or payloads.\n"
+    },
+    "T1570": {
+        "__name": "Lateral Tool Transfer",
+        "question": null,
+        "answer": "**Transferring malicious tools or files** between systems in the compromised environment."
+    },
+    "T1571": {
+        "__name": "Non-Standard Port",
+        "question": null,
+        "answer": "Employing a **non-standard port for a given protocol to exchange C2** (e.g., port 1827 for HTTP vs. port 80)."
+    },
+    "T1572": {
+        "__name": "Protocol Tunneling",
+        "question": null,
+        "answer": "Tunneling **C2 traffic within another protocol to exchange C2**, possibly in conjunction with Proxy and/or Protocol Impersonation, to further conceal C2 communications and infrastructure."
+    },
+    "T1573": {
+        "__name": "Encrypted Channel",
+        "question": "What **type of encryption** did the adversary use?",
+        "answer": "Leveraging a **known encryption algorithm** to conceal C2 traffic."
+    },
+    "T1573.001": {
+        "__name": "Symmetric Cryptography",
+        "question": null,
+        "answer": "Encrypting C2 with **a symmetric key encryption method** (e.g. AES, RC4, DES)."
+    },
+    "T1573.002": {
+        "__name": "Asymmetric Cryptography",
+        "question": null,
+        "answer": "Encrypting C2 with **an asymmetric key encryption method** (e.g. public/private key pair RSA)."
+    },
+    "T1574": {
+        "__name": "Hijack Execution Flow",
+        "question": "How is the adversary **hijacking execution flow**?",
+        "answer": "Hijacking **operating systems&#x27; programs** by manipulating how the OS locates programs or libraries."
+    },
+    "T1574.001": {
+        "__name": "DLL Search Order Hijacking",
+        "question": null,
+        "answer": "*Any of the following activities occurred*:\n\n- Placing a DLL has been in a directory searched before default location of legit DLL.\n- A **.manifest** or **.local redirection file** has been altered to point to a different location for the malicious DLL.\n- Manipulating the registry key `(HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\KnownDLLs)`."
+    },
+    "T1574.002": {
+        "__name": "DLL Side-Loading",
+        "question": null,
+        "answer": "Planting a **malicious DLL** in a search path for a legitimate program and invoking that program to load the DLL."
+    },
+    "T1574.004": {
+        "__name": "Dylib Hijacking",
+        "question": null,
+        "answer": "**Placing a malicious Dynamic Library (DyLib)** in a path earlier than the missing original DyLib."
+    },
+    "T1574.005": {
+        "__name": "Executable Installer File Permissions Weakness",
+        "question": null,
+        "answer": "Hijacking the binaries used by an installer to **overwrite a legitimate binary with a malicious one**."
+    },
+    "T1574.006": {
+        "__name": "Dynamic Linker Hijacking",
+        "question": null,
+        "answer": "Modifying the environment variable `LD_PRELOAD` or the `ld.so.preload` file to **point to malicious libraries.**"
+    },
+    "T1574.007": {
+        "__name": "Path Interception by PATH Environment Variable",
+        "question": null,
+        "answer": "Modifying the **PATH environment variable** by placing a program in an earlier directory given that a directory is listed before the `%SystemRoot%\\System32` directory."
+    },
+    "T1574.008": {
+        "__name": "Path Interception by Search Order Hijacking",
+        "question": null,
+        "answer": "Placing a **malicious program** in the same directory as a calling program to **execute before the legitimate program**."
+    },
+    "T1574.009": {
+        "__name": "Path Interception by Unquoted Path",
+        "question": null,
+        "answer": "Hijacking vulnerable path references by **exploiting unquoted paths**."
+    },
+    "T1574.010": {
+        "__name": "Services File Permissions Weakness",
+        "question": null,
+        "answer": "Exploiting weak permissions of **Services files** to **overwrite the service&#x27;s `.exe`.**"
+    },
+    "T1574.011": {
+        "__name": "Services Registry Permissions Weakness",
+        "question": null,
+        "answer": "Modifying a **service registry key**."
+    },
+    "T1574.012": {
+        "__name": "COR_PROFILER",
+        "question": null,
+        "answer": "**Modifying a `COR_PROFILER`** environment variable to **hijack the execution flow**."
+    },
+    "T1574.013": {
+        "__name": "KernelCallbackTable",
+        "question": null,
+        "answer": "Modifying `KernelCallbackTable` to replace the callback function with a **malicious payload**."
+    },
+    "T1578": {
+        "__name": "Modify Cloud Compute Infrastructure",
+        "question": "In what way did the adversary **modify the cloud infrastructure**?\n\nWhat actions did the adversary perform?",
+        "answer": "Modifying the **cloud account&#x27;s service infrastructure **."
+    },
+    "T1578.001": {
+        "__name": "Create Snapshot",
+        "question": null,
+        "answer": "Attempting to **create a snapshot or data backup within a cloud account to evade defenses."
+    },
+    "T1578.002": {
+        "__name": "Create Cloud Instance",
+        "question": null,
+        "answer": "Attempting to **create a new instance or virtual machine (VM)** within the compute service of a cloud account to evade defenses, possibly with less restrictive security policy."
+    },
+    "T1578.003": {
+        "__name": "Delete Cloud Instance",
+        "question": null,
+        "answer": "Attempting to **delete a cloud instance** after performing malicious activities in an attempt to evade detection and remove evidence of their presence."
+    },
+    "T1578.004": {
+        "__name": "Revert Cloud Instance",
+        "question": null,
+        "answer": "Attempting to **revert changes made to a cloud instance** after the adversary performed malicious activities in attempt to evade detection and remove evidence of their presence."
+    },
+    "T1580": {
+        "__name": "Cloud Infrastructure Discovery",
+        "question": null,
+        "answer": "*ANY of these occurred:*\n\n- The adversary tried to identify resources that are available in an **infrastructure-as-a-service (IaaS)** environment.\n- Instances, VMs, snapshots, storage, or database services were enumerated.\n- A cloud API or CLI was used to obtain information about infrastructure resources.\n- **AWS:** Use of **DescribeInstances** or **ListBuckets** API.\n- **GCP Cloud SDK CLI:** Use of **gcloud compute instances list** command.\n- **Azure CLI:** Use of **az vm list** command."
+    },
+    "T1583": {
+        "__name": "Acquire Infrastructure",
+        "question": "How did the adversary **acquire infrastructure**?",
+        "answer": "**Acquiring infrastructure** (i.e., **buying, leasing, or renting** servers, domains, or botnets)."
+    },
+    "T1583.001": {
+        "__name": "Domains",
+        "question": null,
+        "answer": "**Purchasing domains** to use during targeting operations."
+    },
+    "T1583.002": {
+        "__name": "DNS Server",
+        "question": null,
+        "answer": "Setting up **Domain Name System (DNS) servers** prior to compromising a victim."
+    },
+    "T1583.003": {
+        "__name": "Virtual Private Server",
+        "question": null,
+        "answer": "Using **Virtual Private Servers (VPSs)** to use during targeting operations."
+    },
+    "T1583.004": {
+        "__name": "Server",
+        "question": null,
+        "answer": "Using**physical servers** to stage, launch, and execute operations."
+    },
+    "T1583.005": {
+        "__name": "Botnet",
+        "question": null,
+        "answer": "Using a **network of compromised systems** to perform **coordinated attacks**."
+    },
+    "T1583.006": {
+        "__name": "Web Services",
+        "question": null,
+        "answer": "Registering for **third-party web services** (e.g. GitHub, Twitter, Dropbox, Google)."
+    },
+    "T1584": {
+        "__name": "Compromise Infrastructure",
+        "question": "How did the adversary **compromise infrastructure**?",
+        "answer": "**Compromising third-party infrastructure** (e.g. physical or cloud servers, domains, and third-party web services)."
+    },
+    "T1584.001": {
+        "__name": "Domains",
+        "question": null,
+        "answer": "**Hijacking domains** and/or subdomains."
+    },
+    "T1584.002": {
+        "__name": "DNS Server",
+        "question": null,
+        "answer": "Altering **Domain Name System (DNS)** records to reorganize traffic and obtain credentials."
+    },
+    "T1584.003": {
+        "__name": "Virtual Private Server",
+        "question": null,
+        "answer": "Compromising a third-party **Virtual Private Server (VPS)**."
+    },
+    "T1584.004": {
+        "__name": "Server",
+        "question": null,
+        "answer": "Compromising a third-party **physical server**."
+    },
+    "T1584.005": {
+        "__name": "Botnet",
+        "question": null,
+        "answer": "Compromising or building a **botnet** to perform coordinated tasks."
+    },
+    "T1584.006": {
+        "__name": "Web Services",
+        "question": null,
+        "answer": "Abusing **third-party web services** (e.g. GitHub, Twitter, Dropbox, Google) as infrastructure in support of malicious operations."
+    },
+    "T1585": {
+        "__name": "Establish Accounts",
+        "question": "How did the adversary **establish accounts**?",
+        "answer": "**Creating accounts** on social media or other sites to build a persona and collect information."
+    },
+    "T1585.001": {
+        "__name": "Social Media Accounts",
+        "question": null,
+        "answer": "Creating **social media accounts** (e.g. Facebook, LinkedIn, Twitter)."
+    },
+    "T1585.002": {
+        "__name": "Email Accounts",
+        "question": null,
+        "answer": "Creating **email accounts**."
+    },
+    "T1586": {
+        "__name": "Compromise Accounts",
+        "question": "How did the adversary **compromise accounts**?",
+        "answer": "Compromising **existing accounts** during targeting operations."
+    },
+    "T1586.001": {
+        "__name": "Social Media Accounts",
+        "question": null,
+        "answer": "Compromising **social media accounts** through phishing, purchasing credentials from third parties, or brute forcing."
+    },
+    "T1586.002": {
+        "__name": "Email Accounts",
+        "question": null,
+        "answer": "Compromising **email accounts** through phishing, purchasing credentials from third parties, or brute forcing."
+    },
+    "T1587": {
+        "__name": "Develop Capabilities",
+        "question": "How is the adversary **developing capabilities**?",
+        "answer": "**Building capabilities** by developing or outsourcing their own capabilities during targeting operations."
+    },
+    "T1587.001": {
+        "__name": "Malware",
+        "question": null,
+        "answer": "Developing **malware tools** (e.g., payloads, droppers, post-compromise tools, backdoors, packers, C2 protocols, and/or infected removable media)."
+    },
+    "T1587.002": {
+        "__name": "Code Signing Certificates",
+        "question": null,
+        "answer": "Creating **self-signed code signing certificates** to disguise authenticity."
+    },
+    "T1587.003": {
+        "__name": "Digital Certificates",
+        "question": null,
+        "answer": "Creating **self-signed SSL/TLS certificates** with information about the **key, its owner&#x27;s identity, and digital signature**."
+    },
+    "T1587.004": {
+        "__name": "Exploits",
+        "question": null,
+        "answer": "Developing **exploits** (e.g. fuzzing, patch analysis) to uncover vulnerabilities."
+    },
+    "T1588": {
+        "__name": "Obtain Capabilities",
+        "question": "How did the adversary **obtain capabilities**?",
+        "answer": "**Buying and/or stealing capabilities** (e.g. malware, software, exploits, certificates, or vulnerability information)."
+    },
+    "T1588.001": {
+        "__name": "Malware",
+        "question": null,
+        "answer": "Purchasing, stealing, or downloading **malware tools** (e.g., payloads, droppers, backdoors, packers, and C2 protocols)."
+    },
+    "T1588.002": {
+        "__name": "Tool",
+        "question": null,
+        "answer": "Purchasing, stealing, or cracking trial versions of commercial **software tools**."
+    },
+    "T1588.003": {
+        "__name": "Code Signing Certificates",
+        "question": null,
+        "answer": "Purchasing or stealing **code signing certificates**."
+    },
+    "T1588.004": {
+        "__name": "Digital Certificates",
+        "question": null,
+        "answer": "Purchasing or stealing **SSL/TLS certificates**."
+    },
+    "T1588.005": {
+        "__name": "Exploits",
+        "question": null,
+        "answer": "Purchasing, stealing, or downloading **exploits**."
+    },
+    "T1588.006": {
+        "__name": "Vulnerabilities",
+        "question": null,
+        "answer": "Collecting **information about vulnerabilities** by searching open or closed databases."
+    },
+    "T1589": {
+        "__name": "Gather Victim Identity Information",
+        "question": "How is the adversary **gathering victim identity information**?",
+        "answer": "Collecting information about the victim&#x27;s **identity**."
+    },
+    "T1589.001": {
+        "__name": "Credentials",
+        "question": null,
+        "answer": "Gathering **credentials**."
+    },
+    "T1589.002": {
+        "__name": "Email Addresses",
+        "question": null,
+        "answer": "Gathering **email addresses**."
+    },
+    "T1589.003": {
+        "__name": "Employee Names",
+        "question": null,
+        "answer": "Gathering **employee names**."
+    },
+    "T1590": {
+        "__name": "Gather Victim Network Information",
+        "question": "How is the adversary gathering victim **network** information?",
+        "answer": "Collecting information about the victim **network**."
+    },
+    "T1590.001": {
+        "__name": "Domain Properties",
+        "question": null,
+        "answer": "Gathering information about the victim&#x27;s **network domains**."
+    },
+    "T1590.002": {
+        "__name": "DNS",
+        "question": null,
+        "answer": "Gathering information about the victim&#x27;s **DNS**."
+    },
+    "T1590.003": {
+        "__name": "Network Trust Dependencies",
+        "question": null,
+        "answer": "Gathering information about the victim&#x27;s **network trust dependencies**."
+    },
+    "T1590.004": {
+        "__name": "Network Topology",
+        "question": null,
+        "answer": "Gathering information about the victim&#x27;s network **topology**."
+    },
+    "T1590.005": {
+        "__name": "IP Addresses",
+        "question": null,
+        "answer": "Gathering information about the victim\u2019s **IP address space**."
+    },
+    "T1590.006": {
+        "__name": "Network Security Appliances",
+        "question": null,
+        "answer": "Gathering information about the victim\u2019s **network security appliances**."
+    },
+    "T1591": {
+        "__name": "Gather Victim Org Information",
+        "question": "How is the adversary **gathering victim organization information**?",
+        "answer": "Collecting information about the **victim&#x27;s organization**."
+    },
+    "T1591.001": {
+        "__name": "Determine Physical Locations",
+        "question": null,
+        "answer": "Collecting information about the victim&#x27;s **physical location**."
+    },
+    "T1591.002": {
+        "__name": "Business Relationships",
+        "question": null,
+        "answer": "Collecting information about the victim&#x27;s **business relationships**."
+    },
+    "T1591.003": {
+        "__name": "Identify Business Tempo",
+        "question": null,
+        "answer": "**Identifying the details of victim&#x27;s business tempo**, including operational hours/days of the week."
+    },
+    "T1591.004": {
+        "__name": "Identify Roles",
+        "question": null,
+        "answer": "Collecting information about the **roles** in a victim organization and the **data/resources** they have access to."
+    },
+    "T1592": {
+        "__name": "Gather Victim Host Information",
+        "question": "How is the adversary **gathering victim host information**?",
+        "answer": "Collecting information about **victim host(s)**."
+    },
+    "T1592.001": {
+        "__name": "Hardware",
+        "question": null,
+        "answer": "Collecting information about **hardware**."
+    },
+    "T1592.002": {
+        "__name": "Software",
+        "question": null,
+        "answer": "Collecting information about **software**."
+    },
+    "T1592.003": {
+        "__name": "Firmware",
+        "question": null,
+        "answer": "Collecting information about **firmware**."
+    },
+    "T1592.004": {
+        "__name": "Client Configurations",
+        "question": null,
+        "answer": "Collecting information about a **client configuration**."
+    },
+    "T1593": {
+        "__name": "Search Open Websites/Domains",
+        "question": "How is the adversary searching **open websites and domains**?",
+        "answer": "Collecting information about a victim from **open-source** or **free websites and domains**."
+    },
+    "T1593.001": {
+        "__name": "Social Media",
+        "question": null,
+        "answer": "Collecting information from **social media profiles**."
+    },
+    "T1593.002": {
+        "__name": "Search Engines",
+        "question": null,
+        "answer": "Collecting information from **search engines**."
+    },
+    "T1594": {
+        "__name": "Search Victim-Owned Websites",
+        "question": null,
+        "answer": "Collecting information from **victim-owned websites**."
+    },
+    "T1595": {
+        "__name": "Active Scanning",
+        "question": "How is the adversary performing **active scanning**?",
+        "answer": "Probing victim infrastructure using **active scanning** via network traffic."
+    },
+    "T1595.001": {
+        "__name": "Scanning IP Blocks",
+        "question": null,
+        "answer": "Scanning **public IP address blocks**."
+    },
+    "T1595.002": {
+        "__name": "Vulnerability Scanning",
+        "question": null,
+        "answer": "**Scanning for vulnerabilities** by checking configurations of a host / application."
+    },
+    "T1595.003": {
+        "__name": "Wordlist Scanning",
+        "question": null,
+        "answer": "Enumerating/**brute force checking** resources against **wordlists** (e.g. non-public URL paths)."
+    },
+    "T1596": {
+        "__name": "Search Open Technical Databases",
+        "question": "How is the adversary searching **open technical databases**?",
+        "answer": "Collecting **open information** by searching freely available **technical databases**."
+    },
+    "T1596.001": {
+        "__name": "DNS/Passive DNS",
+        "question": null,
+        "answer": "Searching for **DNS data**."
+    },
+    "T1596.002": {
+        "__name": "WHOIS",
+        "question": null,
+        "answer": "Searching publicly available **WHOIS data**."
+    },
+    "T1596.003": {
+        "__name": "Digital Certificates",
+        "question": null,
+        "answer": "Searching public **digital certificate data**."
+    },
+    "T1596.004": {
+        "__name": "CDNs",
+        "question": null,
+        "answer": "Collecting information on victim from a **content delivery network (CDN)**."
+    },
+    "T1596.005": {
+        "__name": "Scan Databases",
+        "question": null,
+        "answer": "Searching **public scan databases** (e.g. active IP addresses, hostnames, open ports, certificates, server banners)."
+    },
+    "T1597": {
+        "__name": "Search Closed Sources",
+        "question": "How is the adversary **searching closed sources** for use in targeting?",
+        "answer": "Collecting information using **closed sources** (e.g. purchasable sources)."
+    },
+    "T1597.001": {
+        "__name": "Threat Intel Vendors",
+        "question": null,
+        "answer": "Obtaining information from **threat intel vendors**."
+    },
+    "T1597.002": {
+        "__name": "Purchase Technical Data",
+        "question": null,
+        "answer": "**Purchasing information** (e.g., databases, subscriptions to feeds, data aggregation services)."
+    },
+    "T1598": {
+        "__name": "Phishing for Information",
+        "question": "How is the adversary **phishing** for information?",
+        "answer": "Sending **phishing** messages to **elicit sensitive information**."
+    },
+    "T1598.001": {
+        "__name": "Spearphishing Service",
+        "question": null,
+        "answer": "Using a **third-party service** to send messages."
+    },
+    "T1598.002": {
+        "__name": "Spearphishing Attachment",
+        "question": null,
+        "answer": "Sending a **fraudulent form** as an email attachment to **trick targets** into divulging sensitive information for a plausible reason."
+    },
+    "T1598.003": {
+        "__name": "Spearphishing Link",
+        "question": null,
+        "answer": "Sending a socially-engineered **malicious link** in a message to **trick targets** into divulging sensitive information for a plausible reason."
+    },
+    "T1599": {
+        "__name": "Network Boundary Bridging",
+        "question": "In what manner did the adversary **traverse a network boundary**?",
+        "answer": "**Bridging network boundaries** by compromising perimeter network devices or internal devices responsible for network segmentation."
+    },
+    "T1599.001": {
+        "__name": "Network Address Translation Traversal",
+        "question": null,
+        "answer": "**Modifying** a network device&#x27;s **Network Address Translation (NAT) configuration**."
+    },
+    "T1600": {
+        "__name": "Weaken Encryption",
+        "question": "In what manner did the adversary **reduce the effectivity of the encryption of a network device**?",
+        "answer": "Compromising **network device\u2019s encryption capabilities** to bypass encryption that would protect data communications."
+    },
+    "T1600.001": {
+        "__name": "Reduce Key Space",
+        "question": null,
+        "answer": "Modifying**the cipher strength of encrypted communications** or other encryption parameters."
+    },
+    "T1600.002": {
+        "__name": "Disable Crypto Hardware",
+        "question": null,
+        "answer": "**Disabling a network device\u2019s dedicated hardware encryption**, possibly leveraging weaknesses in software encryption in order to reduce the effort involved in collecting, manipulating, and exfiltrating transmitted data."
+    },
+    "T1601": {
+        "__name": "Modify System Image",
+        "question": "In what way did the adversary **modify the system image**?\n\nWhat actions did they take?",
+        "answer": "Modifying the OS of an **embedded network device**."
+    },
+    "T1601.001": {
+        "__name": "Patch System Image",
+        "question": null,
+        "answer": "**Modifying the operating system** of a network device to introduce new capabilities or weaken existing defenses."
+    },
+    "T1601.002": {
+        "__name": "Downgrade System Image",
+        "question": null,
+        "answer": "Attempting to **weaken security by installing an older version of an OS** and configured the device to boot from this older version."
+    },
+    "T1602": {
+        "__name": "Data from Configuration Repository",
+        "question": "In which manner did the adversary **capture configuration data** from **managed devices**?",
+        "answer": "**Capturing enterprise device data** from a management configuration system or repository."
+    },
+    "T1602.001": {
+        "__name": "SNMP (MIB Dump)",
+        "question": null,
+        "answer": "Capturing **MIB (Management Information Base)** data from an **SNMP management repository**."
+    },
+    "T1602.002": {
+        "__name": "Network Device Configuration Dump",
+        "question": null,
+        "answer": "Collecting data on **device configuration** from a **configuration repository** using common management mechanisms such as **SNMP command, Smart Install (SMI), or remote CLI**."
+    },
+    "T1606": {
+        "__name": "Forge Web Credentials",
+        "question": "How is the adversary **forging credentials** to gain access to web resources or Internet services?",
+        "answer": "**Forging credentials** to gain access to web resources."
+    },
+    "T1606.001": {
+        "__name": "Web Cookies",
+        "question": null,
+        "answer": "Forging **web cookies** to gain access to web resources."
+    },
+    "T1606.002": {
+        "__name": "SAML Tokens",
+        "question": null,
+        "answer": "Forging **SAML tokens** to gain access to web resources."
+    },
+    "T1608": {
+        "__name": "Stage Capabilities",
+        "question": "Is the adversary uploading, installing, or otherwise **preparing capabilities** for use during targeting?",
+        "answer": "**Uploading, installing, or setting up capabilities** during targeting operations."
+    },
+    "T1608.001": {
+        "__name": "Upload Malware",
+        "question": null,
+        "answer": "**Uploading malware** to third-party or adversary controlled infrastructure."
+    },
+    "T1608.002": {
+        "__name": "Upload Tool",
+        "question": null,
+        "answer": "**Uploading tools** to third-party or adversary controlled infrastructure."
+    },
+    "T1608.003": {
+        "__name": "Install Digital Certificate",
+        "question": null,
+        "answer": "**Installing SSL/TLS certificates** to be used during targeting."
+    },
+    "T1608.004": {
+        "__name": "Drive-by Target",
+        "question": null,
+        "answer": "**Uploading or injecting malicious web content** into websites in order to **infect systems** that visit websites while browsing. "
+    },
+    "T1608.005": {
+        "__name": "Link Target",
+        "question": null,
+        "answer": "**Establishing resources** that are referenced by a **link** to be used during targeting."
+    },
+    "T1609": {
+        "__name": "Container Administration Command",
+        "question": null,
+        "answer": "Abusing **a container administration service** to execute commands within a container (e.g. the Docker daemon, Kubernetes API server, or the Kublet)."
+    },
+    "T1610": {
+        "__name": "Deploy Container",
+        "question": null,
+        "answer": "**Deploying a container** into an environment to facilitate execution or evade defenses."
+    },
+    "T1611": {
+        "__name": "Escape to Host",
+        "question": null,
+        "answer": "**Breaking out of a container** to gain access to the underlying host."
+    },
+    "T1612": {
+        "__name": "Build Image on Host",
+        "question": null,
+        "answer": "**Building a container image** on a host to bypass defenses that monitor for the retrieval of malicious images from a public registry."
+    },
+    "T1613": {
+        "__name": "Container and Resource Discovery",
+        "question": null,
+        "answer": "**Discovering containers and other resources** that are available within a container\u2019s environment."
+    },
+    "T1614": {
+        "__name": "System Location Discovery",
+        "question": "How is the adversary gathering information in an attempt to calculate the **geographical location** of a victim host?",
+        "answer": "Gathering information in an attempt to calculate the **geographical location** of a victim host."
+    },
+    "T1614.001": {
+        "__name": "System Language Discovery",
+        "question": null,
+        "answer": "Gathering information about the **system language** of a victim in order to infer the geographical location of that host."
+    },
+    "T1615": {
+        "__name": "Group Policy Discovery",
+        "question": null,
+        "answer": "*Any of the following:*\n\n-Gathering information on **Group Policy settings** to identify paths for privilege escalation, security measures applied within a domain.\n-  Discovering patterns in domain objects that can be manipulated or used to blend in the environment."
+    },
+    "T1619": {
+        "__name": "Cloud Storage Object Discovery",
+        "question": null,
+        "answer": "Enumerating objects in **cloud storage infrastructure**."
+    },
+    "T1620": {
+        "__name": "Reflective Code Loading",
+        "question": null,
+        "answer": "**Reflectively loading code** into a process to conceal the execution of malicious payloads."
+    },
+    "T1621": {
+        "__name": "Multi-Factor Authentication Request Generation",
+        "question": null,
+        "answer": "**Bypassing multi-factor authentication (MFA) mechanisms** and gaining account access by **generating MFA requests** sent to users."
+    },
+    "T1622": {
+        "__name": "Debugger Evasion",
+        "question": null,
+        "answer": "**Evading a system&#x27;s debuggers** by altering malware or disengaging from the target system."
+    },
+    "T1647": {
+        "__name": "Plist File Modification",
+        "question": null,
+        "answer": "Modifying **property list files (plist files)** to enable malicious activity and bypass system defenses."
+    }
+}

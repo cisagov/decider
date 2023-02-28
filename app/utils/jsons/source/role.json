@@ -1,0 +1,17 @@
+[
+    {
+        "role_id": 1,
+        "name": "member",
+        "description": "Normal User"
+    },
+    {
+        "role_id": 2,
+        "name": "editor",
+        "description": "Allows for modification of content"
+    },
+    {
+        "role_id": 3,
+        "name": "admin",
+        "description": "Allows for modification of users"
+    }
+]
