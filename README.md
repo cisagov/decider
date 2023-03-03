@@ -38,7 +38,7 @@ This is documented inside of Decider's Admin Guide.
 
 #### Post Installation
 
--   The database will need a new login made., Tthis login will be used by Decider to make queries. There is no default login for security purposes.
+-   The database will need a new login made., This login will be used by Decider to make queries. There is no default login for security purposes.
 -   You can create a login by running:
     -   `python3 initial_setup.py`
     -   The **Database Setup** section of the Decider Admin Guide has a detailed set of steps to follow.
