@@ -21,9 +21,9 @@ class DefaultConfig(Config):
         drivername="postgresql",
         username=DB_USER_NAME,
         password=DB_USER_PASS,
-        host="decider-db",
+        host="localhost",
         port=5432,
-        database="production_5000_all_mii",
+        database="decider",
     )
 
 
@@ -32,54 +32,13 @@ class ProductionConfig(Config):
         drivername="postgresql",
         username=DB_USER_NAME,
         password=DB_USER_PASS,
-        host="decider-db",
+        host="localhost",
         port=5432,
-        database="production_5000_all_mii",
+        database="decider",
     )
-
-
-class StagingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
-        drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="decider-db",
-        port=5432,
-        database="staging_9000_cti_only",
-    )
-
-
-class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
-        drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="decider-db",
-        port=5432,
-        database="staging_9000_cti_only",
-    )
-    LOG_LEVEL = "DEBUG"
-    TESTING = True
-    DEBUG = True
-    WTF_CSRF_CHECK_DEFAULT = False
-
-
-class PytestConfig(Config):
-    SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
-        drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="decider-db",
-        port=5432,
-        database="staging_9000_cti_only",
-    )
-    WTF_CSRF_CHECK_DEFAULT = False
 
 
 conf_configs = [
     DefaultConfig,
     ProductionConfig,
-    StagingConfig,
-    DevelopmentConfig,
-    PytestConfig,
 ]
