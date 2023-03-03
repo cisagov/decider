@@ -1,0 +1,28 @@
+services:
+  web:
+    depends_on:
+      - db
+    build:
+      context: .
+    ports:
+      - '5000:5000'
+    environment:
+      DB_HOSTNAME: db
+      DB_USERNAME: user
+      DB_PASSWORD: password
+      DB_DATABASE: db
+      DB_PORT: 5432
+      ADMIN_EMAIL: admin@admin.com
+      ADMIN_PASS: admin
+      CART_ENC_KEY: 12345678901234567890123456789012
+  db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

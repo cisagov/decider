@@ -1,6 +1,6 @@
 # Database connection
 
-from app.env_vars import DB_USER_NAME, DB_USER_PASS
+from app.env_vars import DB_USERNAME, DB_PASSWORD, DB_HOSTNAME, DB_PORT, DB_DATABASE
 
 import sqlalchemy as sqlalch
 
@@ -19,67 +19,14 @@ class Config:
 class DefaultConfig(Config):
     SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
         drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="decider-db",
-        port=5432,
-        database="production_5000_all_mii",
+        username=DB_USERNAME,
+        password=DB_PASSWORD,
+        host=DB_HOSTNAME,
+        port=DB_PORT,
+        database=DB_DATABASE,
     )
-
-
-class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
-        drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="decider-db",
-        port=5432,
-        database="production_5000_all_mii",
-    )
-
-
-class StagingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
-        drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="decider-db",
-        port=5432,
-        database="staging_9000_cti_only",
-    )
-
-
-class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
-        drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="decider-db",
-        port=5432,
-        database="staging_9000_cti_only",
-    )
-    LOG_LEVEL = "DEBUG"
-    TESTING = True
-    DEBUG = True
-    WTF_CSRF_CHECK_DEFAULT = False
-
-
-class PytestConfig(Config):
-    SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
-        drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="decider-db",
-        port=5432,
-        database="staging_9000_cti_only",
-    )
-    WTF_CSRF_CHECK_DEFAULT = False
 
 
 conf_configs = [
     DefaultConfig,
-    ProductionConfig,
-    StagingConfig,
-    DevelopmentConfig,
-    PytestConfig,
 ]

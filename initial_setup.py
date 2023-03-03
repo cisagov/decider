@@ -8,14 +8,11 @@ import os
 import re
 
 from app.routes.utils import email_validator, password_validator
+from app.env_vars import DB_USERNAME, DB_PASSWORD, DB_HOSTNAME, DB_PORT, DB_DATABASE, CART_ENC_KEY, ADMIN_EMAIL, ADMIN_PASS
 
 
 init_sql_template = """\
 -- Flask Connection / Only User
-CREATE USER {db_user_name} WITH LOGIN PASSWORD '{db_user_pass}';
-CREATE DATABASE decider;
-\\c decider;
-GRANT ALL PRIVILEGES ON DATABASE decider to {db_user_name};
 
 -- Used for top-right Technique search - WORD_SIMILARITY()
 CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
@@ -59,17 +56,6 @@ email_format_regex = re.compile(
     r"""((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))"""
 )
 
-
-def prompt_until_condition(prompt, cond_func):
-    """Repeats an input (prompt) string until the provided condition function (cond_func) is satisfied"""
-    while True:
-        value = input(prompt).strip()
-        if cond_func(value):
-            return value
-        else:
-            print("    (requirements not met, try again)\n")
-
-
 file_info = {
     "init.sql": {"rel_path": "./init.sql"},
     ".env": {"rel_path": "./.env"},
@@ -95,67 +81,16 @@ def main():
         print("WARNING: This script has been run before.")
         print(f"- The following files were already created: {existing_files}.")
         print("- Unless existing carts were cleared, changing CART_ENC_KEY will cause errors and inaccessible carts.")
-        print("- DB_USER_NAME and DB_USER_PASS can be changed at any time directly in the .env file.")
+        print("- DB_USERNAME and DB_PASSWORD can be changed at any time directly in the .env file.")
         print("- Additional admin accounts can be added in-app at any time.")
         print("\nPlease Ctrl-C out, backup your files, and only run this if you have reason.\n")
 
-        try:
-            input("[Enter to confirm deletion]")
-        except KeyboardInterrupt:
-            print("\nExiting!")
-            sys.exit(1)
 
-    # -----------------------------------------------------------------------------------------------------------------
-    # remove files if they exist
-
-    for info in file_info.values():
-        if info["exists"]:
-            os.remove(info["abs_path"])
-
-    # -----------------------------------------------------------------------------------------------------------------
-    # prompt for fields
-
-    print(
-        f"\n{horiz_sep}\nDB_USER_NAME is the username for the Postgres user that Decider will use to make queries.\n"
-        "- Length must be 1-63.\n"
-        "- Lower-case letters only, no spaces.\n"
-    )
-    db_user_name = prompt_until_condition(
-        "DB_USER_NAME = ", lambda s: (0 < len(s) < 64) and all((c in ascii_lowercase) for c in s)
-    )
-
-    print(
-        f"\n{horiz_sep}\n"
-        "DB_USER_PASS is the password for the prior-mentioned Postgres user.\n"
-        "- Must contain: 2 lowercase, 2 uppercase, 2 numbers, and 2 specials.\n"
-        "- ASCII only, and a length in 8-99.\n"
-    )
-    db_user_pass = prompt_until_condition("DB_USER_PASS = ", functools.partial(password_validator, max_len=99))
-
-    print(
-        f"\n{horiz_sep}\n"
-        "CART_ENC_KEY is used to encrypt carts saved to the DB.\n"
-        "- Basically just a password.\n"
-        "- Must contain: 2 lowercase, 2 uppercase, 2 numbers, and 2 specials.\n"
-        "- ASCII only, and a length in 8-99.\n"
-    )
-    cart_enc_key = prompt_until_condition("CART_ENC_KEY = ", functools.partial(password_validator, max_len=99))
-
-    print(
-        f"\n{horiz_sep}\n"
-        "APP_ADMIN_EMAIL is the email for the Decider admin account that you will use in the web app.\n"
-        "- More admins can always be made later - but only this account has access at the start.\n"
-        "- Must be valid in format (but doesn't actually have to be real).\n"
-    )
-    app_admin_email = prompt_until_condition("APP_ADMIN_EMAIL = ", email_validator).lower()
-
-    print(
-        f"\n{horiz_sep}\n"
-        "APP_ADMIN_PASS is the password for the prior-mentioned Decider admin account.\n"
-        "- Must contain: 2 lowercase, 2 uppercase, 2 numbers, and 2 specials.\n"
-        "- ASCII only, and a length in 8-48.\n"
-    )
-    app_admin_pass = prompt_until_condition("APP_ADMIN_PASS = ", password_validator)
+    db_user_name = DB_USERNAME
+    db_user_pass = DB_PASSWORD
+    cart_enc_key = CART_ENC_KEY
+    app_admin_email = ADMIN_EMAIL
+    app_admin_pass = ADMIN_PASS
 
     # -----------------------------------------------------------------------------------------------------------------
     # create files
@@ -168,15 +103,6 @@ def main():
                 db_user_name=db_user_name.replace("'", "''"), db_user_pass=db_user_pass.replace("'", "''")
             )
         )
-    print("done!")
-
-    # create file, then use dotenv setter (slash escaping fixed issues)
-    print("Creating .env...      ", end="")
-    dotenv_path = file_info[".env"]["abs_path"]
-    open(dotenv_path, "xt").close()
-    dotenv.set_key(dotenv_path, "DB_USER_NAME", db_user_name.replace("\\", "\\\\"))
-    dotenv.set_key(dotenv_path, "DB_USER_PASS", db_user_pass.replace("\\", "\\\\"))
-    dotenv.set_key(dotenv_path, "CART_ENC_KEY", cart_enc_key.replace("\\", "\\\\"))
     print("done!")
 
     # add entry with hashed password

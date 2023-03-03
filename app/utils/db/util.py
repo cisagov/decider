@@ -82,11 +82,12 @@ def option_selector(
 
 
 def app_config_selector(cmdline_config):
-    return option_selector(
-        get_config_option_map(),
-        default="DefaultConfig",
-        initial_msg="Available app/database configs",
-        prompt_msg="Which config to use",
-        invalid_msg="is NOT a valid config from",
-        cmdline_pick=cmdline_config,
-    )
+    # return option_selector(
+    #     get_config_option_map(),
+    #     default="DefaultConfig",
+    #     initial_msg="Available app/database configs",
+    #     prompt_msg="Which config to use",
+    #     invalid_msg="is NOT a valid config from",
+    #     cmdline_pick=cmdline_config,
+    # )
+    return conf_configs[0]
