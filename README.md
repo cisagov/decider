@@ -4,6 +4,18 @@ A web application that assists network defenders, analysts, and researcher in th
 
 This project makes use of MITRE ATT&CK - [ATT&CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/)
 
+## Notices & Updates
+
+### All Users - Dockerization in Progress
+- Deployment is currently unwieldy
+- Decider on Docker is currently underway to make deployment easier
+  - Completion is tentatively next week
+
+### MacBook M1 Users - Pip Install Woes
+- Before `pip install -r requirements.txt`
+  - Run `brew install postgresql`
+  - This fixes an issue where *psycopg2-binary* isn't using a pre-built binary and tries to compile from scratch. Compilation fails if *pg_config* isn't found.
+
 ## Developer Instructions
 
 Before developing, please set up a virtualenv and install the pre-commit git hook scripts.  
