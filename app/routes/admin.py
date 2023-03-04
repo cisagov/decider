@@ -77,7 +77,7 @@ def admin_user_post():
     logger.debug("querying Roles to ensure the specified role exists")
     new_user_role = Role.query.filter_by(role_id=role_id).first()
     if new_user_role is None:
-        logger.error("request failed - non-existant role_id specified")
+        logger.error("request failed - non-existent role_id specified")
         return jsonify(message="Specified role does not exist."), 400
 
     # get new id, hash pass, add user
