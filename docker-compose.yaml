@@ -1,9 +1,11 @@
 services:
   web:
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     build:
       context: .
+      dockerfile: ./docker/web/Dockerfile
     ports:
       - '5000:5000'
     environment:
@@ -16,13 +18,17 @@ services:
       ADMIN_PASS: admin
       CART_ENC_KEY: 12345678901234567890123456789012
   db:
-    image: postgres:14-alpine
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: user
       POSTGRES_DB: db
     volumes:
-      - db_data:/var/lib/postgresql/data
-
-volumes:
-  db_data:
+      - ./docker/db/data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

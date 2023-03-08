@@ -35,7 +35,8 @@ fi
 
 python initial_setup.py
 
-# initialise the database. TODO: make sure this doesn't overwrite existing data
+# initialise the database.
+# TODO: make sure this doesn't overwrite existing data
 python -m app.utils.db.actions.full_build 
 
 # run the app (DEVELOPMENT MODE)

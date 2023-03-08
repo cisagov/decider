@@ -1,3 +1,5 @@
+# TODO: need to split into minimal Docker-focused variant, and old-style manual setup variant
+
 from string import ascii_lowercase
 import functools
 import dotenv
@@ -36,18 +38,18 @@ ALTER TEXT SEARCH CONFIGURATION english_nostop ALTER MAPPING REPLACE english_ste
 
 horiz_sep = "-" * 80
 introduction_text = """
-This script creates:
+This script creates 3 files - by pulling from
+- docker-compose.yaml > services.web.environment
+
+File Locations
 - init.sql  (in decider root)
 - .env      (in decider root)
 - user.json (in app/utils/jsons/source)
 
-init.sql : Creates DB 'decider', DB user, and sets-up needed functionality.
-
-.env : Holds DB user name/pass and a cart encryption key used by Decider.
-
-user.json : An entry for a Decider Admin is created, so it is usable after build.
-
-You will be creating 2 logins and an encryption key.
+File Details
+- init.sql  : Creates DB 'decider', DB user, and sets-up needed functionality
+- .env      : Holds DB user name/pass and a cart encryption key used by Decider
+- user.json : An entry for a Decider Admin is created, so it is usable after build
 """
 
 

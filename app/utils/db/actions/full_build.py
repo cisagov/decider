@@ -1,3 +1,6 @@
+# TODO: add DEPLOY_MODE env var that when set to 'docker' will only build if tables don't
+#       exist on the target database. Otherwise, tear-down and rebuild like normal manual use.
+
 from flask import Flask
 
 from app.models import db

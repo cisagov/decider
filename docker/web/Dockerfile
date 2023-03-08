@@ -7,4 +7,4 @@ COPY . /app
 WORKDIR /app
 RUN rm -rf .env user.json init.sql 
 
-ENTRYPOINT ["/bin/sh","/app/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
