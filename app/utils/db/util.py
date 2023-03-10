@@ -1,4 +1,4 @@
-from app.conf import DefaultConfig
+from app.conf import conf_configs
 import time
 
 
@@ -81,5 +81,14 @@ def option_selector(
     return option_map[pick]
 
 
+# TODO: create option to where this can just fail out
 def app_config_selector(cmdline_config):
-    return DefaultConfig
+    # return option_selector(
+    #     get_config_option_map(),
+    #     default="DefaultConfig",
+    #     initial_msg="Available app/database configs",
+    #     prompt_msg="Which config to use",
+    #     invalid_msg="is NOT a valid config from",
+    #     cmdline_pick=cmdline_config,
+    # )
+    return conf_configs[0]

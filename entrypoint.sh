@@ -1,5 +1,5 @@
 #!/bin/sh
-# ensure environment variables are set 
+# ensure environment variables are set
 if [ -z "$DB_HOSTNAME" ]; then
     echo "DB_HOSTNAME is not set"
     exit 1
@@ -33,11 +33,10 @@ if [ -z "$ADMIN_PASS" ]; then
     exit 1
 fi
 
-python initial_setup.py
+python create_user_json.py
 
-# initialise the database.
-# TODO: make sure this doesn't overwrite existing data
-python -m app.utils.db.actions.full_build 
+# initialise the database
+python -m app.utils.db.actions.full_build
 
 # run the app (DEVELOPMENT MODE)
 # python decider.py
