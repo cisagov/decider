@@ -47,6 +47,10 @@ It is ready when **Starting uWSGI** appears
 
 Then visit http://localhost:5000/
 
+Default Login:
+- Email: admin@admin.com
+- Password: admin
+
 And note: Postgres stores its data in `./docker/db/data`. That's why you'll need `sudo` to enter/remove that folder
 
 ### Manual Install
