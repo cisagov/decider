@@ -25,8 +25,3 @@ class DefaultConfig(Config):
         port=DB_PORT,
         database=DB_DATABASE,
     )
-
-
-conf_configs = [
-    DefaultConfig,
-]
