@@ -17,6 +17,11 @@ class Config:
 
 
 class DefaultConfig(Config):
+    """Default Profile / Database Config
+    - This class must always exist
+    - Do not modify this class - as Docker sets it via env_vars
+    - (not always, but) This class is commonly used as a default if not specified
+    """
     SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
         drivername="postgresql",
         username=DB_USERNAME,

@@ -36,10 +36,10 @@ fi
 python create_user_json.py
 
 # initialise the database
-python -m app.utils.db.actions.full_build
+python -m app.utils.db.actions.full_build --config DefaultConfig
 
 # run the app (DEVELOPMENT MODE)
-# python decider.py
+# python decider.py --config DefaultConfig
 
 # run the app (PRODUCTION MODE)
 uwsgi --socket 0.0.0.0:5000 --protocol=http -w decider:app
