@@ -1,5 +1,6 @@
 services:
   web:
+    env_file: .env
     depends_on:
       db:
         condition: service_healthy
@@ -10,27 +11,28 @@ services:
       - '5000:5000'
     environment:
       FULL_BUILD_MODE: preserve
-      DB_HOSTNAME: db
-      DB_USERNAME: user
-      DB_PASSWORD: password
-      DB_DATABASE: decider
-      DB_PORT: 5432
-      ADMIN_EMAIL: admin@admin.com
-      ADMIN_PASS: admin
-      CART_ENC_KEY: 12345678901234567890123456789012
+      DB_HOSTNAME: ${DB_HOSTNAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_PORT: ${DB_PORT}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASS: ${ADMIN_PASS}
+      CART_ENC_KEY: ${CART_ENC_KEY}
   db:
+    env_file: .env
     build:
       context: .
       dockerfile: ./docker/db/Dockerfile
     environment:
-      POSTGRES_USER: user
-      PGUSER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: decider
+      POSTGRES_USER: ${DB_USERNAME}
+      PGUSER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - ./docker/db/data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d decider"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
       interval: 10s
       timeout: 5s
       retries: 5
