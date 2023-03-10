@@ -1,6 +1,6 @@
 # Database connection
 
-from app.env_vars import DB_USER_NAME, DB_USER_PASS
+from app.env_vars import DB_USERNAME, DB_PASSWORD, DB_HOSTNAME, DB_PORT, DB_DATABASE
 
 import sqlalchemy as sqlalch
 
@@ -17,24 +17,29 @@ class Config:
 
 
 class DefaultConfig(Config):
+    """Default Profile / Database Config
+    - This class must always exist
+    - Do not modify this class - as Docker sets it via env_vars
+    - (not always, but) This class is commonly used as a default if not specified
+    """
     SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
         drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="localhost",
-        port=5432,
-        database="decider",
+        username=DB_USERNAME,
+        password=DB_PASSWORD,
+        host=DB_HOSTNAME,
+        port=DB_PORT,
+        database=DB_DATABASE,
     )
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
         drivername="postgresql",
-        username=DB_USER_NAME,
-        password=DB_USER_PASS,
-        host="localhost",
-        port=5432,
-        database="decider",
+        username=DB_USERNAME,
+        password=DB_PASSWORD,
+        host=DB_HOSTNAME,
+        port=DB_PORT,
+        database=DB_DATABASE,
     )
 
 

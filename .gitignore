@@ -29,8 +29,5 @@ UNKNOWN.egg-info/
 user.json
 /init.sql
 
-# ATT&CK STIX Clone
-/attack-stix-data/
-
-# Scratch / testing notebook
-SCRATCH.ipynb
+# Docker > db Postgres Data
+docker/db/data

@@ -1,10 +1,12 @@
 from flask import Flask
 
 from app.models import db
+from sqlalchemy import inspect
 
 from app.utils.db.source_loader import SourceManager
 import app.utils.db.create as db_create
 import app.utils.db.destroy as db_destroy
+import app.utils.db.read as db_read
 from app.utils.db.util import app_config_selector
 
 import argparse
@@ -19,7 +21,7 @@ import sys
 def main():
 
     # optional avenue of command-line instead of text-ui
-    parser = argparse.ArgumentParser("Dumps Mismappings from the DB to a JSON file.")
+    parser = argparse.ArgumentParser("Builds the DB with all content from the local disk JSONs.")
     parser.add_argument("--config", help="The database configuration to use (from app/conf.py).")
     args = parser.parse_args()
 
@@ -36,6 +38,41 @@ def main():
     app.config.from_object(app_config)
     db.init_app(app)
     with app.app_context():
+
+        # BUILD MODE --------------------------------------------------------------------------------------------------
+        full_build_mode = os.getenv("FULL_BUILD_MODE", "overwrite")
+
+        # "preserve" : don't touch DB if it has at least 1 version already
+        if full_build_mode == "preserve":
+
+            print(f"FULL_BUILD_MODE = {full_build_mode} -> Checking DB Content")
+            try:
+                inspector = inspect(db.engine)
+                attack_ver_exists = inspector.has_table("attack_version")
+                if attack_ver_exists:
+                    versions_installed = db_read.attack.versions()
+                else:
+                    versions_installed = []
+            except Exception as ex:
+                print(f"Failed to read what ATT&CK content is currently installed in the DB - due to:\n{ex}")
+                sys.exit(1)
+            print(f"  - Versions Present: {', '.join(versions_installed) or '<none>'}")
+
+            # leave content alone
+            if len(versions_installed) != 0:
+                print("  - Preserving DB content")
+                print("\n------------------------------------------------\n")
+                sys.exit(0)
+
+            # will install
+            else:
+                print("  - Will populate DB")
+
+        # *missing* : Overwrite DB
+        else:
+            print(f"FULL_BUILD_MODE = {full_build_mode} -> Overwriting DB")
+
+        print("\n------------------------------------------------\n")
 
         # RESOURCE LOADING --------------------------------------------------------------------------------------------
 
