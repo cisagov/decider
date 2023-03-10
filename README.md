@@ -57,26 +57,22 @@ cp .env.example .env
 
 #### macOS (M1) tested on:
 
-- ***In-Progress***
-- mac's ControlCenter binds to 5000 and 7000... thus preventing the app from binding
-  - Should make that a .env var - so an alternative is easier
-- You may need to chown some Docker directories to your name
-  - sudo is not the way and won't work
-- Need to mess with Postgres connection auth preferences
-  - M1 build tries using SCRAM authentication, which needs libpg >= 10
-    - But not present, thus breaking build
-  - May just use md5
+- macOS Ventura 13.2.1 (22D68)
+- Mac M1 Processor
+- On Docker Desktop installed via .dmg
 
 It is ready when **Starting uWSGI** appears
 ![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)
 
-Then visit http://localhost:5000/
+Then visit http://localhost:8001/
+
+(Port is set by .env WEB_PORT)
 
 Default Login:
 - Email: admin@admin.com
 - Password: admin
 
-And note: Postgres stores its data in `./docker/db/data`. That's why you'll need `sudo` to enter/remove that folder
+And note: Postgres stores its data in a Docker volume to persist the database.
 
 ### Manual Install
 
