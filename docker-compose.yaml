@@ -12,7 +12,7 @@ services:
       DB_HOSTNAME: db
       DB_USERNAME: user
       DB_PASSWORD: password
-      DB_DATABASE: db
+      DB_DATABASE: decider
       DB_PORT: 5432
       ADMIN_EMAIL: admin@admin.com
       ADMIN_PASS: admin
@@ -22,13 +22,14 @@ services:
       context: .
       dockerfile: ./docker/db/Dockerfile
     environment:
-      POSTGRES_PASSWORD: password
       POSTGRES_USER: user
-      POSTGRES_DB: db
+      PGUSER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: decider
     volumes:
       - ./docker/db/data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready -U user -d decider"]
       interval: 10s
       timeout: 5s
       retries: 5
