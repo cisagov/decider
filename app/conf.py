@@ -30,3 +30,20 @@ class DefaultConfig(Config):
         port=DB_PORT,
         database=DB_DATABASE,
     )
+
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = sqlalch.engine.URL.create(
+        drivername="postgresql",
+        username=DB_USERNAME,
+        password=DB_PASSWORD,
+        host=DB_HOSTNAME,
+        port=DB_PORT,
+        database=DB_DATABASE,
+    )
+
+
+conf_configs = [
+    DefaultConfig,
+    ProductionConfig,
+]
