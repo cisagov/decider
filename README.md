@@ -39,8 +39,33 @@ This project makes use of MITRE ATT&CK - [ATT&CK Terms of Use](https://attack.mi
 git clone https://github.com/cisagov/decider.git
 cd decider
 cp .env.example .env
-sudo docker compose up
+[sudo] docker compose up
 ```
+*sudo for Linux only*
+
+#### Linux tested on:
+
+- Ubuntu Jammy 22.04.2 LTS
+- Docker Engine
+  - Not Docker Desktop (couldn't get nested-virt in my VM)
+
+#### Windows tested on:
+
+- Windows 11 Home, version 22H2, build 22621.1344
+- Home doesn't support HyperV
+  - Thus tested on Docker Desktop [via WSL backend](https://docs.docker.com/desktop/windows/wsl/)
+
+#### macOS (M1) tested on:
+
+- ***In-Progress***
+- mac's ControlCenter binds to 5000 and 7000... thus preventing the app from binding
+  - Should make that a .env var - so an alternative is easier
+- You may need to chown some Docker directories to your name
+  - sudo is not the way and won't work
+- Need to mess with Postgres connection auth preferences
+  - M1 build tries using SCRAM authentication, which needs libpg >= 10
+    - But not present, thus breaking build
+  - May just use md5
 
 It is ready when **Starting uWSGI** appears
 ![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)
