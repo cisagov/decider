@@ -43,6 +43,19 @@ cp .env.example .env
 ```
 *sudo for Linux only*
 
+It is ready when **Starting uWSGI** appears
+![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)
+
+Then visit http://localhost:8001/
+
+(Endpoint set via .env vars: http://`WEB_IP`:`WEB_PORT`/)
+
+Default Login:
+- Email: admin@admin.com
+- Password: admin
+
+And note: Postgres stores its data in a Docker volume to persist the database.
+
 #### Linux tested on:
 
 - Ubuntu Jammy 22.04.2 LTS
@@ -60,19 +73,6 @@ cp .env.example .env
 - macOS Ventura 13.2.1 (22D68)
 - Mac M1 Processor
 - On Docker Desktop installed via .dmg
-
-It is ready when **Starting uWSGI** appears
-![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)
-
-Then visit http://localhost:8001/
-
-(Port is set by .env WEB_PORT)
-
-Default Login:
-- Email: admin@admin.com
-- Password: admin
-
-And note: Postgres stores its data in a Docker volume to persist the database.
 
 ### Manual Install
 
