@@ -35,13 +35,21 @@ This project makes use of MITRE ATT&CK - [ATT&CK Terms of Use](https://attack.mi
 
 **Best option for 99% of people**
 
-```
+```bash
 git clone https://github.com/cisagov/decider.git
 cd decider
 cp .env.example .env
+
+# if you want HTTPS instead of HTTP
+# - edit .env
+#   + WEB_HTTPS_ON='yes'
+# - populate cert / key files
+#   + /app/utils/certs/decider.key
+#   + /app/utils/certs/decider.crt
+
 [sudo] docker compose up
+# sudo for Linux only
 ```
-*sudo for Linux only*
 
 It is ready when **Starting uWSGI** appears
 ![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)

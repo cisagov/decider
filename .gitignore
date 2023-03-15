@@ -23,6 +23,7 @@ UNKNOWN.egg-info/
 *.key
 *.pem
 *.csr
+/app/utils/certs/
 
 # Secrets
 /.env
