@@ -41,5 +41,41 @@ python -m app.utils.db.actions.full_build --config DefaultConfig
 # run the app (DEVELOPMENT MODE)
 # python decider.py --config DefaultConfig
 
-# run the app (PRODUCTION MODE)
-uwsgi --socket 0.0.0.0:5000 --protocol=http -w decider:app
+# HTTP:
+if [ -z "$WEB_HTTPS_ON" ]; then
+
+    echo "Running in HTTP mode"
+    uwsgi --master --socket 0.0.0.0:5000 --protocol=http --module decider:app
+
+# HTTPS:
+else
+
+    echo "Running in HTTPS mode"
+
+    # Cert Found:
+    if [ -f /app/utils/certs/decider.crt ] && [ -f /app/utils/certs/decider.key ]; then
+
+        echo "SSL Cert Found"
+
+    # Cert Missing:
+    else
+
+        echo "SSL Cert Missing - Generating new one"
+
+        # clear (1 could still exist, and .csr to be sure)
+        rm -f /app/utils/certs/decider.crt /app/utils/certs/decider.key /app/utils/certs/decider.csr
+
+        # generate
+        openssl req \
+            -x509 \
+            -newkey rsa:4096 \
+            -keyout /app/utils/certs/decider.key \
+            -out /app/utils/certs/decider.crt \
+            -nodes \
+            -sha256 \
+            -days 365 \
+            -subj "/C=US/ST=Virginia/L=McLean/O=Company Name/OU=Org/CN=www.example.com"
+    fi
+
+    uwsgi --master --https 0.0.0.0:5000,/app/utils/certs/decider.crt,/app/utils/certs/decider.key --module decider:app
+fi

@@ -35,13 +35,42 @@ This project makes use of MITRE ATT&CK - [ATT&CK Terms of Use](https://attack.mi
 
 **Best option for 99% of people**
 
-```
+```bash
 git clone https://github.com/cisagov/decider.git
 cd decider
 cp .env.example .env
+
+# if you want HTTPS instead of HTTP
+# - edit .env
+#   + WEB_HTTPS_ON='yes'
+# - populate cert / key files
+#   + /app/utils/certs/decider.key
+#   + /app/utils/certs/decider.crt
+
 [sudo] docker compose up
+# sudo for Linux only
 ```
-*sudo for Linux only*
+
+It is ready when **Starting uWSGI** appears
+![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)
+
+**Default Endpoint**: http://localhost:8001/
+
+**Default Login**:
+- Email: admin@admin.com
+- Password: admin
+
+**Endpoint Determination** (.env vars):
+- `WEB_HTTPS_ON=''` -> http://`WEB_IP`:`WEB_PORT`/
+- `WEB_HTTPS_ON='anything'` -> https://`WEB_IP`:`WEB_PORT`/
+
+**HTTPS Cert Location**:
+- Write these 2 files before `docker compose up` to set your SSL cert up
+  - /app/utils/certs/decider.key
+  - /app/utils/certs/decider.crt
+- If either file is missing, a self-signed cert is generated and used instead
+
+**DB Persistence Note**: Postgres stores its data in a Docker volume to persist the database.
 
 #### Linux tested on:
 
@@ -60,19 +89,6 @@ cp .env.example .env
 - macOS Ventura 13.2.1 (22D68)
 - Mac M1 Processor
 - On Docker Desktop installed via .dmg
-
-It is ready when **Starting uWSGI** appears
-![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)
-
-Then visit http://localhost:8001/
-
-(Port is set by .env WEB_PORT)
-
-Default Login:
-- Email: admin@admin.com
-- Password: admin
-
-And note: Postgres stores its data in a Docker volume to persist the database.
 
 ### Manual Install
 
