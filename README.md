@@ -46,15 +46,23 @@ cp .env.example .env
 It is ready when **Starting uWSGI** appears
 ![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)
 
-Then visit http://localhost:8001/
+**Default Endpoint**: http://localhost:8001/
 
-(Endpoint set via .env vars: http://`WEB_IP`:`WEB_PORT`/)
-
-Default Login:
+**Default Login**:
 - Email: admin@admin.com
 - Password: admin
 
-And note: Postgres stores its data in a Docker volume to persist the database.
+**Endpoint Determination** (.env vars):
+- `WEB_HTTPS_ON=''` -> http://`WEB_IP`:`WEB_PORT`/
+- `WEB_HTTPS_ON='anything'` -> https://`WEB_IP`:`WEB_PORT`/
+
+**HTTPS Cert Location**:
+- Write these 2 files before `docker compose up` to set your SSL cert up
+  - /app/utils/certs/decider.key
+  - /app/utils/certs/decider.crt
+- If either file is missing, a self-signed cert is generated and used instead
+
+**DB Persistence Note**: Postgres stores its data in a Docker volume to persist the database.
 
 #### Linux tested on:
 
