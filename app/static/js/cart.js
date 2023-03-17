@@ -604,6 +604,7 @@ function navigatorExport() {
             comment: notes,
             enabled: "true",
             metadata: [],
+            links: [],
             showSubtechniques: true,
         };
         tech_list.push(base_layer_json);
@@ -613,8 +614,8 @@ function navigatorExport() {
         name: "layer",
         versions: {
             attack: cartData.version.substring(1), // vx.y... -> x.y...
-            navigator: "4.3",
-            layer: "4.3",
+            navigator: "4.8.0",
+            layer: "4.4",
         },
         domain: "enterprise-attack",
         description: "",
@@ -645,12 +646,17 @@ function navigatorExport() {
         hideDisabled: false,
         techniques: tech_list,
         gradient: {
-            colors: ["#ff6666", "#ffe766", "#8ec843"],
+            colors: [
+                "#ff6666ff",
+                "#ffe766ff",
+                "#8ec843ff"
+            ],
             minValue: 0,
             maxValue: 100,
         },
         legendItems: [],
         metadata: [],
+        links: [],
         showTacticRowBackground: false,
         tacticRowBackground: "#dddddd",
         selectTechniquesAcrossTactics: true,
