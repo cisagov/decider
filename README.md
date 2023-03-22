@@ -92,6 +92,9 @@ It is ready when **Starting uWSGI** appears
 
 ### Manual Install
 
+#### Ubuntu
+**in-progress**
+
 **Read the [Admin Guide](./docs/Decider_Admin_Guide_v1.0.0.pdf)**
 
 There are some issues in the instructions... ***Working on it, simplifying them***
