@@ -91,7 +91,6 @@ wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tar.xz ;\
 tar -xf Python-3.8.10.tar.xz ;\
 cd Python-3.8.10 ;\
 ./configure --prefix=/opt/decider/python3.8.10 --exec_prefix=/opt/decider/python3.8.10 --enable-optimizations ;\
-make -j $(( $(nproc) + 1 )) ;\
 sudo mkdir /opt/decider/python3.8.10 ;\
 sudo make altinstall ;\
 sudo chown -R decider:decider /opt/decider/python3.8.10 ;\
