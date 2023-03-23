@@ -2,6 +2,8 @@
 
 
 ## Install Note
+- Assumes terminal bracketed paste mode is off, hence the `;\` everywhere
+  - Without these, a sudo prompt eats later lines of a pasted block
 - Some files are created during the installation (in current dir)
   - Best to give yourself a temp dir
   - Make sure to delete this temp folder post-intall
@@ -82,6 +84,7 @@ sudo chown -R decider:decider /opt/decider
 - Useful as a means of isolation as well (never depends on system versions)
 - [Build Dependencies Reference](https://devguide.python.org/getting-started/setup-building/index.html#install-dependencies)
 ```bash
+sudo yum groupinstall -y 'Development Tools' ;\
 sudo yum install -y yum-utils openssl-devel ;\
 sudo yum-builddep -y python3 ;\
 wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tar.xz ;\
@@ -94,7 +97,7 @@ sudo make altinstall ;\
 sudo chown -R decider:decider /opt/decider/python3.8.10 ;\
 cd ..
 ```
-################################################# WE ARE HERE
+
 
 ### Create &amp; Populate virtualenv
 - Useful instead of installing directly into Decider's own Py3.8.10 - as future versions could change packages in use

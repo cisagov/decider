@@ -2,6 +2,8 @@
 
 
 ## Install Script
+- Assumes terminal bracketed paste mode is on (gnome default)
+  - If it is off, a sudo prompt eats later lines of a pasted block
 - See **ubuntu_22_04_2.sh** for the adventurous.. **otherwise just follow this file**
   - Not idempotent
   - No error handling
