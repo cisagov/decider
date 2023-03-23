@@ -111,6 +111,7 @@ sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
 
 
 ### Create user.json file &amp; Initialize DB
+- **'Optional:'** Change default passwords in .env after copy command
 ```bash
 sudo -u decider -g decider cp /opt/decider/1.0.0/.env.manual /opt/decider/1.0.0/.env ;\
 sudo -u decider -g decider chmod 660 /opt/decider/1.0.0/.env ;\
