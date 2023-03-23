@@ -72,18 +72,13 @@ sudo apt install -y build-essential gdb lcov pkg-config \
     libbz2-dev libffi-dev libgdbm-dev libgdbm-compat-dev liblzma-dev \
     libncurses5-dev libreadline6-dev libsqlite3-dev libssl-dev \
     lzma lzma-dev tk-dev uuid-dev zlib1g-dev
-
 wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tar.xz
 tar -xf Python-3.8.10.tar.xz
 cd Python-3.8.10
-
 ./configure --prefix=/opt/decider/python3.8.10 --exec_prefix=/opt/decider/python3.8.10 --enable-optimizations
-make -j $(( $(nproc) + 1 ))
-
 sudo mkdir /opt/decider/python3.8.10
 sudo make altinstall
 sudo chown -R decider:decider /opt/decider/python3.8.10
-
 cd ..
 ```
 
@@ -147,12 +142,12 @@ sudo -u decider -g decider rm /opt/decider/1.0.0/app/utils/jsons/source/user.jso
   - /opt/decider/1.0.0/app/utils/certs/decider.key
   - /opt/decider/1.0.0/app/utils/certs/decider.crt
 ```bash
-sudo -u decider -g decider openssl genrsa \
+sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl genrsa \
     -out /opt/decider/1.0.0/app/utils/certs/decider.key 2048
-sudo -u decider -g decider openssl req -new \
+sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl req -new \
     -key /opt/decider/1.0.0/app/utils/certs/decider.key \
     -out /opt/decider/1.0.0/app/utils/certs/decider.csr
-sudo -u decider -g decider openssl x509 -req -days 365 \
+sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl x509 -req -days 365 \
     -in /opt/decider/1.0.0/app/utils/certs/decider.csr \
     -signkey /opt/decider/1.0.0/app/utils/certs/decider.key \
     -out /opt/decider/1.0.0/app/utils/certs/decider.crt

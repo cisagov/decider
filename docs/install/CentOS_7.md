@@ -173,7 +173,7 @@ sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
 sudo -u decider -g decider rm /opt/decider/1.0.0/app/utils/jsons/source/user.json
 ```
 
-### Add UFW Exception
+### Add Firewall Exception
 ```bash
 sudo firewall-cmd --zone=public --add-port=443/tcp --permanent ;\
 sudo firewall-cmd --reload

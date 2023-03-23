@@ -40,7 +40,6 @@ wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tar.xz
 tar -xf Python-3.8.10.tar.xz
 cd Python-3.8.10
 ./configure --prefix=/opt/decider/python3.8.10 --exec_prefix=/opt/decider/python3.8.10 --enable-optimizations
-make -j $(( $(nproc) + 1 ))
 sudo mkdir /opt/decider/python3.8.10
 sudo make altinstall
 sudo chown -R decider:decider /opt/decider/python3.8.10
@@ -68,12 +67,12 @@ sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
 sudo -u decider -g decider rm /opt/decider/1.0.0/app/utils/jsons/source/user.json
 
 # generate self-signed ssl cert
-sudo -u decider -g decider openssl genrsa \
+sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl genrsa \
     -out /opt/decider/1.0.0/app/utils/certs/decider.key 2048
-sudo -u decider -g decider openssl req -new \
+sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl req -new \
     -key /opt/decider/1.0.0/app/utils/certs/decider.key \
     -out /opt/decider/1.0.0/app/utils/certs/decider.csr
-sudo -u decider -g decider openssl x509 -req -days 365 \
+sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl x509 -req -days 365 \
     -in /opt/decider/1.0.0/app/utils/certs/decider.csr \
     -signkey /opt/decider/1.0.0/app/utils/certs/decider.key \
     -out /opt/decider/1.0.0/app/utils/certs/decider.crt
