@@ -38,7 +38,7 @@ This project makes use of MITRE ATT&CK - [ATT&CK Terms of Use](https://attack.mi
 ```bash
 git clone https://github.com/cisagov/decider.git
 cd decider
-cp .env.example .env
+cp .env.docker .env
 
 # if you want HTTPS instead of HTTP
 # - edit .env
