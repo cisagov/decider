@@ -19,6 +19,6 @@ try:
 except KeyError:
     print(
         "Failed to find all of the required environment variables mentioned in: app/env_vars.py.\n"
-        "Either modify .env using .env.example as a template, or edit the environment variables before launch."
+        "Either modify .env using .env.docker / .env.manual as a template, or edit the environment variables before launch."
     )
     sys.exit(1)

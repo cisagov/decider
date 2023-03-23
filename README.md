@@ -1,5 +1,10 @@
 # Decider
 
+## Notifications
+- Manual installation for Ubuntu &amp; CentOS is much nicer.
+  - Scroll down to **Manual Install** for details!
+- Will be adding information about hardware requirements soon
+
 ## What is it?
 
 ### The Short
@@ -38,7 +43,7 @@ This project makes use of MITRE ATT&CK - [ATT&CK Terms of Use](https://attack.mi
 ```bash
 git clone https://github.com/cisagov/decider.git
 cd decider
-cp .env.example .env
+cp .env.docker .env
 
 # if you want HTTPS instead of HTTP
 # - edit .env
@@ -92,18 +97,23 @@ It is ready when **Starting uWSGI** appears
 
 ### Manual Install
 
-**Read the [Admin Guide](./docs/Decider_Admin_Guide_v1.0.0.pdf)**
+#### Ubuntu 22.04
+[Ubuntu Install Guide](docs/install/Ubuntu_22.04.2.md)
 
-There are some issues in the instructions... ***Working on it, simplifying them***
+#### CentOS 7
+[CentOS Install Guide](docs/install/CentOS_7.md)
 
-Help Tips:
-- Use Python 3.8.10 / 3.8.x on Linux / mac
-- Follow the order of instructions
-- Watch out using `sudo` with `python` - it won't keep the venv you're in by default
-- If just running for yourself locally:
-  - Don't create a system account for decider
-  - Don't use uWSGI
-  - Use the built-in debug Flask server
-- Mac M1 users should install Postgres before installing the pip requirements
-  - `brew install postgresql`
-  - **Explained:** *psycopg2-binary* isn't using a pre-built binary and tries to compile from scratch, and it can't find *pg_config*.
+#### Other OSes
+Read the Ubuntu &amp; CentOS guides and recreate actions according to your platform.
+
+##### Windows
+`open()` in Python uses the system's default text encoding
+- This is `utf-8` on macOS and Linux
+- This is `windows-1252` on Windows
+  - This causes issues in reading the jsons for the database build process
+  - Adding `encoding='utf-8'` as an arg in each `open()` ***may*** allow Windows deployment
+
+##### macOS
+(M1 users at least) Make sure to (1) install Postgres before (2) installing the pip requirements
+1. `brew install postgresql`
+2. `pip install -r requirements.txt`
