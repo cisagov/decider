@@ -4,8 +4,6 @@
 # This is intended for a fresh OS install
 # This has no error handling
 
-# Ubuntu Desktop (Jammy) 22.04.2 LTS
-
 # temp dir for git clone & python building
 cd
 mkdir decider_temp
