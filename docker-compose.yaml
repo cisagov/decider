@@ -9,6 +9,8 @@ services:
       dockerfile: ./docker/web/Dockerfile
     ports:
       - '${WEB_IP}:${WEB_PORT}:5000'
+    restart: always
+    container_name: decider-web
     environment:
       FULL_BUILD_MODE: preserve
       DB_HOSTNAME: ${DB_HOSTNAME}
@@ -24,6 +26,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/db/Dockerfile
+    restart: always
+    container_name: decider-db
     environment:
       POSTGRES_INITDB_ARGS: '--auth=md5'
       POSTGRES_HOST_AUTH_METHOD: md5
