@@ -1,6 +1,6 @@
 # NOTE
 # --------
-# - requirements_dev.txt should be installed after requirements.txt
+# - requirements-dev.txt should be installed after requirements.txt
 # - requirements.txt should be installed after wheel==0.37.1
 #   - wheel is needed as uWSGI calls bdist_wheel from it
 
