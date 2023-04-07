@@ -41,19 +41,19 @@ from datetime import timedelta
 import re
 import sys
 import importlib
-import yaml
+import json
 import traceback
 
 from app.version import DECIDER_APP_VERSION
 
 
-# logging config - get from `app/logging_conf.yaml` and convert to dict
-with open("app/logging_conf.yaml", "r") as f:
+# logging config - get from `app/logging_conf.json` and convert to dict
+with open("app/logging_conf.json", "r") as fh:
     try:
-        log_conf_dict = yaml.safe_load(f.read())
+        log_conf_dict = json.load(fh)
         logging.config.dictConfig(log_conf_dict)  # apply logging config
     except Exception:
-        print(f"** ERROR loading or applying app/logging_conf.yaml\n{traceback.format_exc()}")
+        print(f"** ERROR loading or applying app/logging_conf.json\n{traceback.format_exc()}")
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Flask Request ID & current_user.email log field

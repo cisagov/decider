@@ -154,7 +154,7 @@ sudo -i -u postgres psql -c 'SELECT pg_reload_conf()';
 - [Configuring Logging](https://docs.python.org/3.8/howto/logging.html#configuring-logging)
 ```bash
 # (optional)
-# sudo -u decider -g decider nano --restricted /opt/decider/1.0.0/app/logging_conf.yaml
+# sudo -u decider -g decider nano --restricted /opt/decider/1.0.0/app/logging_conf.json
 ```
 
 

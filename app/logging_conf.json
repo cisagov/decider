@@ -1,0 +1,68 @@
+{
+    "version": 1,
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(request_id_email)s%(message)s"
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "simple",
+            "stream": "ext://sys.stdout"
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "level": "DEBUG",
+            "formatter": "simple",
+            "filename": "decider.log",
+            "mode": "w"
+        }
+    },
+    "loggers": {
+        "__main__": {
+            "propagate": true
+        },
+        "app.routes.admin": {
+            "propagate": true
+        },
+        "app.routes.api": {
+            "propagate": true
+        },
+        "app.routes.auth": {
+            "propagate": true
+        },
+        "app.routes.docs": {
+            "propagate": true
+        },
+        "app.routes.edit": {
+            "propagate": true
+        },
+        "app.routes.misc": {
+            "propagate": true
+        },
+        "app.routes.profile": {
+            "propagate": true
+        },
+        "app.routes.question": {
+            "propagate": true
+        },
+        "app.routes.search": {
+            "propagate": true
+        },
+        "app.routes.utils": {
+            "propagate": true
+        },
+        "app.routes.utils_db": {
+            "propagate": true
+        }
+    },
+    "root": {
+        "level": "DEBUG",
+        "handlers": [
+            "console",
+            "file"
+        ]
+    }
+}
