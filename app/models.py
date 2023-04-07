@@ -160,7 +160,10 @@ class Role(db.Model):
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(320), unique=True)
+
+    # Uses bcrypt.hashpw(password, bcrypt.gensalt()), it is not plaintext
     password = db.Column(db.Text)
+
     session_token = db.Column(db.String(40), index=True, unique=True)
     role_id = db.Column(db.Integer, db.ForeignKey("role.role_id"), nullable=False)
     role = db.relationship("Role", back_populates="users")

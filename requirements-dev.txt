@@ -1,0 +1,35 @@
+# Note - Post-Install Step
+# ------------------------
+# pre-commit install
+
+black==23.3.0
+certifi==2022.12.7
+cfgv==3.3.1
+charset-normalizer==3.1.0
+distlib==0.3.6
+dparse==0.6.2
+filelock==3.11.0
+flake8==6.0.0
+identify==2.5.22
+idna==3.4
+mccabe==0.7.0
+mypy-extensions==1.0.0
+nodeenv==1.7.0
+packaging==23.0
+pathspec==0.11.1
+pip-licenses==4.1.0
+platformdirs==3.2.0
+pre-commit==3.2.2
+prettytable==3.6.0
+pycodestyle==2.10.0
+pyflakes==3.0.1
+PyYAML==6.0
+requests==2.28.2
+ruamel.yaml==0.17.21
+ruamel.yaml.clib==0.2.7
+safety==2.3.4
+toml==0.10.2
+tomli==2.0.1
+urllib3==1.26.15
+virtualenv==20.21.0
+wcwidth==0.2.6

@@ -83,7 +83,7 @@ def mini_search(version):
 
     # No match - return results by similarity descending of phrase likeness to Technique Name
     else:
-        phrase = String("").literal_processor(dialect=db.session.bind.dialect)(value=phrase.lower())
+        phrase = String("").literal_processor(dialect=db.session.get_bind().dialect)(value=phrase.lower())
 
         logger.debug(f"querying Techniques by name under ATT&CK {version}")
         subq = (
@@ -339,7 +339,7 @@ def tsqry_rep(bexpr, sym_terms):
         else:
             term = f'{term}{":*" if prefix else ""}'
 
-        escaped_term = String("").literal_processor(dialect=db.session.bind.dialect)(value=term)
+        escaped_term = String("").literal_processor(dialect=db.session.get_bind().dialect)(value=term)
         return f"to_tsquery('english_nostop', {escaped_term})"
 
     # and together

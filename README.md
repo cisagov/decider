@@ -1,9 +1,11 @@
 # Decider
 
 ## Notifications
-- Manual installation for Ubuntu &amp; CentOS is much nicer.
-  - Scroll down to **Manual Install** for details!
+- **Manual Install** for Ubuntu &amp; CentOS is much nicer.
 - Will be adding information about hardware requirements soon
+- Dependencies updated!
+  - Python 3.8.16 preferred over 3.8.10
+  - Eyeballing apline over bullseye for a safer and smaller python
 
 ## What is it?
 

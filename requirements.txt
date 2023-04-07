@@ -1,59 +1,41 @@
-# NOTE
-# --------
-# - requirements_dev.txt should be installed after requirements.txt
-# - requirements.txt should be installed after wheel==0.37.1
-#   - wheel is needed as uWSGI calls bdist_wheel from it
+# Note - Install Order
+# --------------------
+# pip install pip==23.0.1
+# pip install setuptools==67.6.1
+# pip install wheel==0.40.0
+# pip install -r requirements.txt
+# pip install -r requirements-dev.txt
 
-
-# Main App
-# --------
-
-uWSGI==2.0.20
-six==1.16.0
-Flask==2.0.2
-Jinja2==3.0.3
-MarkupSafe==2.0.1
-Werkzeug==2.0.2
-click==8.0.3
-itsdangerous==2.0.1
-Flask-Login==0.5.0
-WTForms==3.0.0
-Flask-WTF==1.0.0
+bcrypt==4.0.1
+beautifulsoup4==4.12.1
+bleach==6.0.0
+blinker==1.6
+boolean.py==4.0
+cffi==1.15.1
+click==8.1.3
+cryptography==40.0.1
+Flask==2.2.3
+Flask-Login==0.6.2
 Flask-Principal==0.4.0
-blinker==1.4
-greenlet==1.1.2
-SQLAlchemy==1.4.26
-SQLAlchemy-Utils==0.37.9
-Flask-SQLAlchemy==2.5.1
-python-dotenv==0.19.2
-cffi==1.15.0
+Flask-SQLAlchemy==3.0.3
+Flask-WTF==1.1.1
+greenlet==2.0.2
+importlib-metadata==6.1.0
+itsdangerous==2.1.2
+Jinja2==3.1.2
+lxml==4.9.2
+Markdown==3.4.3
+MarkupSafe==2.1.2
+psycopg2-binary==2.9.6
 pycparser==2.21
-cryptography==35.0.0
-bcrypt==3.2.0
-Markdown==3.3.4
-packaging==21.2
+python-dotenv==1.0.0
+six==1.16.0
+soupsieve==2.4
+SQLAlchemy==1.4.47
+SQLAlchemy-Utils==0.40.0
+typing_extensions==4.5.0
+uWSGI==2.0.21
 webencodings==0.5.1
-pyparsing==2.4.7
-bleach==4.1.0
-soupsieve==2.3
-beautifulsoup4==4.10.0
-boolean.py==3.8
-regex==2021.11.10
-lxml==4.6.5
-PyYAML==6.0
-psycopg2-binary==2.9.1
-
-
-# DB Tools
-# --------
-
-requests==2.26.0
-idna==3.3
-charset-normalizer==2.0.7
-urllib3==1.26.7
-certifi==2021.10.8
-antlr4-python3-runtime==4.8
-pytz==2021.3
-simplejson==3.17.5
-stix2-patterns==1.3.2
-stix2==3.0.1
+Werkzeug==2.2.3
+WTForms==3.0.1
+zipp==3.15.0

@@ -89,7 +89,11 @@ cd ..
 sudo -u decider -g decider /opt/decider/python3.8.10/bin/python3.8 -m \
     venv /opt/decider/1.0.0/venv/
 sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
-    pip --no-cache-dir install wheel==0.37.1
+    pip --no-cache-dir install pip==23.0.1
+sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
+    pip --no-cache-dir install setuptools==67.6.1
+sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
+    pip --no-cache-dir install wheel==0.40.0
 sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
     pip --no-cache-dir install -r /opt/decider/1.0.0/requirements.txt
 ```
@@ -111,7 +115,7 @@ sudo -u decider -g decider rm /opt/decider/1.0.0/init.sql
 - [Configuring Logging](https://docs.python.org/3.8/howto/logging.html#configuring-logging)
 ```bash
 # (optional)
-# sudo -u decider -g decider nano --restricted /opt/decider/1.0.0/app/logging_conf.yaml
+# sudo -u decider -g decider nano --restricted /opt/decider/1.0.0/app/logging_conf.json
 ```
 
 

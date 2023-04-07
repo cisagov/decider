@@ -4,79 +4,38 @@ Tool available at: https://pypi.org/project/pip-licenses/
 Only a summary is given for PyPi/Pip packages as they are not being included or modified in the distribution of Decider.
 "requirements.txt" merely tells the user to download and use these packages in order to use Decider.
 
- Name                     Version     License
- simplejson               3.17.5      Academic Free License (AFL); MIT License
- bcrypt                   3.2.0       Apache Software License
- bleach                   4.1.0       Apache Software License
- importlib-metadata       4.11.3      Apache Software License
- regex                    2021.11.10  Apache Software License
- requests                 2.26.0      Apache Software License
- cryptography             35.0.0      Apache Software License; BSD License
- packaging                21.2        Apache Software License; BSD License
- antlr4-python3-runtime   4.8         BSD
- Flask                    2.0.2       BSD License
- Flask-SQLAlchemy         2.5.1       BSD License
- Flask-WTF                1.0.0       BSD License
- Jinja2                   3.0.3       BSD License
- Markdown                 3.3.4       BSD License
- MarkupSafe               2.0.1       BSD License
- SQLAlchemy-Utils         0.37.9      BSD License
- WTForms                  3.0.0       BSD License
- Werkzeug                 2.0.2       BSD License
- click                    8.0.3       BSD License
- idna                     3.3         BSD License
- itsdangerous             2.0.1       BSD License
- lxml                     4.6.5       BSD License
- nodeenv                  1.6.0       BSD License
- pycparser                2.21        BSD License
- python-dotenv            0.19.2      BSD License
- stix2                    3.0.1       BSD License
- stix2-patterns           1.3.2       BSD License
- webencodings             0.5.1       BSD License
- boolean.py               3.8         BSD-2-Clause
- uWSGI                    2.0.20      GNU General Public License v2 or later (GPLv2+)
- psycopg2-binary          2.9.1       GNU Library or Lesser General Public License (LGPL)
- Flask-Login              0.5.0       MIT License
- Flask-Principal          0.4.0       MIT License
- PyYAML                   6.0         MIT License
- SQLAlchemy               1.4.26      MIT License
- attrs                    21.2.0      MIT License
- beautifulsoup4           4.10.0      MIT License
- black                    22.3.0      MIT License
- blinker                  1.4         MIT License
- cffi                     1.15.0      MIT License
- cfgv                     3.3.1       MIT License
- charset-normalizer       2.0.7       MIT License
- dparse                   0.5.1       MIT License
- flake8                   4.0.1       MIT License
- fuzzingbook              0.9.5       MIT License
- greenlet                 1.1.2       MIT License
- identify                 2.4.0       MIT License
- iniconfig                1.1.1       MIT License
- mccabe                   0.6.1       MIT License
- mypy-extensions          0.4.3       MIT License
- platformdirs             2.4.0       MIT License
- pluggy                   1.0.0       MIT License
- pre-commit               2.16.0      MIT License
- py                       1.11.0      MIT License
- pycodestyle              2.8.0       MIT License
- pyflakes                 2.4.0       MIT License
- pyparsing                2.4.7       MIT License
- pytest                   6.2.5       MIT License
- pytest-flask             1.2.0       MIT License
- pytest-flask-sqlalchemy  1.0.2       MIT License
- pytest-mock              3.6.1       MIT License
- pytz                     2021.3      MIT License
- safety                   1.10.3      MIT License
- six                      1.16.0      MIT License
- soupsieve                2.3         MIT License
- toml                     0.10.2      MIT License
- tomli                    2.0.1       MIT License
- urllib3                  1.26.7      MIT License
- virtualenv               20.14.0     MIT License
- zipp                     3.8.0       MIT License
- certifi                  2021.10.8   Mozilla Public License 2.0 (MPL 2.0)
- pathspec                 0.9.0       Mozilla Public License 2.0 (MPL 2.0)
- filelock                 3.4.0       Public Domain
- distlib                  0.3.4       Python Software Foundation License
- typing-extensions        4.1.1       Python Software Foundation License
+Name                Version  License
+bcrypt              4.0.1    Apache Software License
+bleach              6.0.0    Apache Software License
+importlib-metadata  6.1.0    Apache Software License
+cryptography        40.0.1   Apache Software License; BSD License
+Flask               2.2.3    BSD License
+Flask-SQLAlchemy    3.0.3    BSD License
+Flask-WTF           1.1.1    BSD License
+Jinja2              3.1.2    BSD License
+Markdown            3.4.3    BSD License
+MarkupSafe          2.1.2    BSD License
+SQLAlchemy-Utils    0.40.0   BSD License
+WTForms             3.0.1    BSD License
+Werkzeug            2.2.3    BSD License
+click               8.1.3    BSD License
+itsdangerous        2.1.2    BSD License
+lxml                4.9.2    BSD License
+pycparser           2.21     BSD License
+python-dotenv       1.0.0    BSD License
+webencodings        0.5.1    BSD License
+boolean.py          4.0      BSD-2-Clause
+uWSGI               2.0.21   GNU General Public License v2 or later (GPLv2+)
+psycopg2-binary     2.9.6    GNU Library or Lesser General Public License (LGPL)
+Flask-Login         0.6.2    MIT License
+Flask-Principal     0.4.0    MIT License
+SQLAlchemy          1.4.47   MIT License
+beautifulsoup4      4.12.1   MIT License
+blinker             1.6      MIT License
+cffi                1.15.1   MIT License
+greenlet            2.0.2    MIT License
+pipdeptree          2.7.0    MIT License
+six                 1.16.0   MIT License
+soupsieve           2.4      MIT License
+zipp                3.15.0   MIT License
+typing_extensions   4.5.0    Python Software Foundation License

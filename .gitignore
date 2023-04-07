@@ -32,3 +32,6 @@ user.json
 
 # Docker > db Postgres Data
 docker/db/data
+
+# Local working notes / tools
+/scratch/
