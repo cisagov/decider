@@ -1,11 +1,3 @@
-# Note - Install Order
-# --------------------
-# pip install pip==23.0.1
-# pip install setuptools==67.6.1
-# pip install wheel==0.40.0
-# pip install -r requirements.txt
-# pip install -r requirements-dev.txt
-
 bcrypt==4.0.1
 beautifulsoup4==4.12.1
 bleach==6.0.0

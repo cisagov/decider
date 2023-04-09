@@ -1,11 +1,9 @@
 FROM python:3.8-bullseye
 
-COPY ./requirements.txt /requirements.txt
+COPY ./requirements-pre.txt ./requirements.txt /
 
-RUN pip install --no-cache-dir pip==23.0.1 && \
-    pip install --no-cache-dir setuptools==67.6.1 && \
-    pip install --no-cache-dir wheel==0.40.0 && \
-    pip install --no-cache-dir --requirement /requirements.txt
+RUN pip install --no-cache-dir -r /requirements-pre.txt && \
+    pip install --no-cache-dir -r /requirements.txt
 
 RUN apt-get update && \
     apt-get install dos2unix
