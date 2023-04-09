@@ -1,4 +1,5 @@
 #!/bin/sh
+
 # ensure environment variables are set
 if [ -z "$DB_HOSTNAME" ]; then
     echo "DB_HOSTNAME is not set"
@@ -33,13 +34,13 @@ if [ -z "$ADMIN_PASS" ]; then
     exit 1
 fi
 
+cd /opt/decider
+
 python create_user_json.py
 
-# initialise the database
+# build database
+# (if FULL_BUILD_MODE=preserve: only rebuild if no AttackVersion table or no versions in the table)
 python -m app.utils.db.actions.full_build --config DefaultConfig
-
-# run the app (DEVELOPMENT MODE)
-# python decider.py --config DefaultConfig
 
 # HTTP:
 if [ -z "$WEB_HTTPS_ON" ]; then
@@ -53,7 +54,7 @@ else
     echo "Running in HTTPS mode"
 
     # Cert Found:
-    if [ -f /app/utils/certs/decider.crt ] && [ -f /app/utils/certs/decider.key ]; then
+    if [ -f app/utils/certs/decider.crt ] && [ -f app/utils/certs/decider.key ]; then
 
         echo "SSL Cert Found"
 
@@ -63,19 +64,19 @@ else
         echo "SSL Cert Missing - Generating new one"
 
         # clear (1 could still exist, and .csr to be sure)
-        rm -f /app/utils/certs/decider.crt /app/utils/certs/decider.key /app/utils/certs/decider.csr
+        rm -f app/utils/certs/decider.crt app/utils/certs/decider.key app/utils/certs/decider.csr
 
         # generate
         openssl req \
             -x509 \
             -newkey rsa:4096 \
-            -keyout /app/utils/certs/decider.key \
-            -out /app/utils/certs/decider.crt \
+            -keyout app/utils/certs/decider.key \
+            -out app/utils/certs/decider.crt \
             -nodes \
             -sha256 \
             -days 365 \
             -subj "/C=US/ST=Virginia/L=McLean/O=Company Name/OU=Org/CN=www.example.com"
     fi
 
-    uwsgi --master --https 0.0.0.0:5000,/app/utils/certs/decider.crt,/app/utils/certs/decider.key --module decider:app
+    uwsgi --master --https 0.0.0.0:5000,app/utils/certs/decider.crt,app/utils/certs/decider.key --module decider:app
 fi

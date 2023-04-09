@@ -1,12 +1,14 @@
 FROM python:3.8-bullseye
 
-COPY ./requirements-pre.txt ./requirements.txt /
+RUN mkdir -p /opt/decider
 
-RUN pip install --no-cache-dir -r /requirements-pre.txt && \
-    pip install --no-cache-dir -r /requirements.txt
+COPY ./requirements-pre.txt ./requirements.txt /opt/decider
 
-COPY ./app /app
-COPY ./docker/web/root_files/* /
-COPY ./decider.py /decider.py
+RUN pip install --no-cache-dir -r /opt/decider/requirements-pre.txt && \
+    pip install --no-cache-dir -r /opt/decider/requirements.txt
 
-ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
+COPY ./app /opt/decider/app
+COPY ./docker/web/root_files/* /opt/decider
+COPY ./decider.py /opt/decider/decider.py
+
+ENTRYPOINT ["/bin/sh", "/opt/decider/entrypoint.sh"]
