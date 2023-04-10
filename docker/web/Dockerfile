@@ -1,19 +1,14 @@
 FROM python:3.8-bullseye
 
-COPY ./requirements.txt /requirements.txt
+RUN mkdir -p /opt/decider
 
-RUN pip install --no-cache-dir pip==23.0.1 && \
-    pip install --no-cache-dir setuptools==67.6.1 && \
-    pip install --no-cache-dir wheel==0.40.0 && \
-    pip install --no-cache-dir --requirement /requirements.txt
+COPY ./requirements-pre.txt ./requirements.txt /opt/decider
 
-RUN apt-get update && \
-    apt-get install dos2unix
+RUN pip install --no-cache-dir -r /opt/decider/requirements-pre.txt && \
+    pip install --no-cache-dir -r /opt/decider/requirements.txt
 
-COPY ./app /app
-COPY ./docker/web/root_files/* /
-COPY ./decider.py /decider.py
+COPY ./app /opt/decider/app
+COPY ./docker/web/root_files/* /opt/decider
+COPY ./decider.py /opt/decider/decider.py
 
-RUN dos2unix /entrypoint.sh
-
-ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/opt/decider/entrypoint.sh"]

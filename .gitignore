@@ -29,6 +29,7 @@ UNKNOWN.egg-info/
 /.env
 user.json
 /init.sql
+/app/utils/db/dumps
 
 # Docker > db Postgres Data
 docker/db/data

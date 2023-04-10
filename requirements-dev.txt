@@ -1,7 +1,3 @@
-# Note - Post-Install Step
-# ------------------------
-# pre-commit install
-
 black==23.3.0
 certifi==2022.12.7
 cfgv==3.3.1

@@ -1,6 +1,7 @@
 # Decider
 
 ## Notifications
+
 - **Manual Install** for Ubuntu &amp; CentOS is much nicer.
 - Will be adding information about hardware requirements soon
 - Dependencies updated!
@@ -34,6 +35,7 @@ Boolean expressions, prefix-matching, and stemming included.
 This project makes use of MITRE ATT&CK - [ATT&CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/)
 
 ## Usage
+
 **Read the [User Guide](./docs/Decider_User_Guide_v1.0.0.pdf)**
 
 ## Installation
@@ -54,7 +56,7 @@ cp .env.docker .env
 #   + /app/utils/certs/decider.key
 #   + /app/utils/certs/decider.crt
 
-[sudo] docker compose up
+sudo docker compose up
 # sudo for Linux only
 ```
 
@@ -79,36 +81,36 @@ It is ready when **Starting uWSGI** appears
 
 **DB Persistence Note**: Postgres stores its data in a Docker volume to persist the database.
 
-#### Linux tested on:
-
-- Ubuntu Jammy 22.04.2 LTS
-- Docker Engine
-  - Not Docker Desktop (couldn't get nested-virt in my VM)
-
-#### Windows tested on:
-
-- Windows 11 Home, version 22H2, build 22621.1344
-- Home doesn't support HyperV
-  - Thus tested on Docker Desktop [via WSL backend](https://docs.docker.com/desktop/windows/wsl/)
-
-#### macOS (M1) tested on:
-
-- macOS Ventura 13.2.1 (22D68)
-- Mac M1 Processor
-- On Docker Desktop installed via .dmg
-
 ### Manual Install
 
 #### Ubuntu 22.04
+
 [Ubuntu Install Guide](docs/install/Ubuntu_22.04.2.md)
 
 #### CentOS 7
+
 [CentOS Install Guide](docs/install/CentOS_7.md)
 
+#### Pip Requirements Note
+
+##### For Everyone
+```bash
+pip install -r requirements-pre.txt
+pip install -r requirements.txt
+```
+
+##### For Developers
+```bash
+pip install -r requirements-dev.txt
+pre-commit install
+```
+
 #### Other OSes
+
 Read the Ubuntu &amp; CentOS guides and recreate actions according to your platform.
 
 ##### Windows
+
 `open()` in Python uses the system's default text encoding
 - This is `utf-8` on macOS and Linux
 - This is `windows-1252` on Windows
@@ -116,6 +118,8 @@ Read the Ubuntu &amp; CentOS guides and recreate actions according to your platf
   - Adding `encoding='utf-8'` as an arg in each `open()` ***may*** allow Windows deployment
 
 ##### macOS
-(M1 users at least) Make sure to (1) install Postgres before (2) installing the pip requirements
+
+(M1 users at least) Make sure to (1) install Postgres before (2, 3) installing the pip requirements
 1. `brew install postgresql`
-2. `pip install -r requirements.txt`
+2. `pip install -r requirements-pre.txt`
+3. `pip install -r requirements.txt`
