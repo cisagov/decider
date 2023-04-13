@@ -215,7 +215,7 @@ function saveCartDatabase(verbose) {
 
 // called when manually entered cart name changes
 function cartNameChange() {
-    var typedCartName = $("#rename_modal_new_name").val();
+    var typedCartName = _.trim($("#rename_modal_new_name").val());
     var currentCart = getCart();
     var attackVersion = currentCart.version;
 
