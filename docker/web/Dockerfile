@@ -1,14 +1,22 @@
 FROM python:3.8-bullseye
 
-RUN mkdir -p /opt/decider
+# install dir
+WORKDIR /opt/decider
 
-COPY ./requirements-pre.txt ./requirements.txt /opt/decider
+# for CRLF -> LF
+RUN apt-get update && \
+    apt-get install dos2unix
 
-RUN pip install --no-cache-dir -r /opt/decider/requirements-pre.txt && \
-    pip install --no-cache-dir -r /opt/decider/requirements.txt
+# pip reqs
+COPY ["./requirements-pre.txt", "./requirements.txt", "./"]
+RUN pip install --no-cache-dir -r requirements-pre.txt && \
+    pip install --no-cache-dir -r requirements.txt
 
-COPY ./app /opt/decider/app
-COPY ./docker/web/root_files/* /opt/decider
-COPY ./decider.py /opt/decider/decider.py
+# app files
+COPY ["./app", "./app"]
+COPY ["./decider.py", "./docker/web/root_files/*", "./"]
 
-ENTRYPOINT ["/bin/sh", "/opt/decider/entrypoint.sh"]
+# perform CRLF -> LF
+RUN dos2unix entrypoint.sh
+
+ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
