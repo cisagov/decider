@@ -36,11 +36,15 @@ fi
 
 cd /opt/decider
 
+# generate user.json (for potential build usage)
 python create_user_json.py
 
 # build database
 # (if FULL_BUILD_MODE=preserve: only rebuild if no AttackVersion table or no versions in the table)
 python -m app.utils.db.actions.full_build --config DefaultConfig
+
+# clear user.json
+rm app/utils/jsons/source/user.json
 
 # HTTP:
 if [ -z "$WEB_HTTPS_ON" ]; then
