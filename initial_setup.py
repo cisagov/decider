@@ -1,6 +1,7 @@
 import bcrypt
 import json
 import os
+import hashlib
 from app.env_vars import ADMIN_EMAIL, ADMIN_PASS, DB_USERNAME, DB_PASSWORD, DB_DATABASE
 
 init_sql_template = """\
@@ -52,6 +53,12 @@ Manually delete the files if you need and start over :)
 """
 
 
+def postgres_md5_pass(username: str, password: str) -> str:
+    bytes = f"{password}{username}".encode(encoding="utf-8")
+    digest = hashlib.md5(bytes).hexdigest()
+    return f"md5{digest}"
+
+
 def decider_rel_to_abs_path(rel_path):
     decider_root = os.path.dirname(os.path.realpath(__file__))
     abs_path = os.path.abspath(os.path.join(decider_root, rel_path))
@@ -75,9 +82,9 @@ def main():
     with open(init_sql_p, "xt") as sql_file:
         sql_file.write(
             init_sql_template.format(
-                db_username=DB_USERNAME.replace("'", "''"),
-                db_password=DB_PASSWORD.replace("'", "''"),
-                db_database=DB_DATABASE.replace("'", "''"),
+                db_username=DB_USERNAME,
+                db_password=postgres_md5_pass(DB_USERNAME, DB_PASSWORD),
+                db_database=DB_DATABASE,
             )
         )
 
