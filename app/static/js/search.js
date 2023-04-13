@@ -112,7 +112,7 @@ function fullSearchTechniqueTemplate(t, wasLastClicked) {
 
             <div class="columns">
                 <div class="column">
-                    <a target="_blank" class="ans-url last-result-clicked-content" href="${t.attack_url}">
+                    <a target="_blank" rel="noreferrer noopener" class="ans-url last-result-clicked-content" href="${t.attack_url}">
                         <span class="ans-label">${cardLabel}</span>
                         <span class="icon is-small">
                             <i class="mdi mdi-link"></i>
@@ -150,7 +150,7 @@ function fullSearchTechniqueTemplate(t, wasLastClicked) {
         return $(`
         <div id="${cardId}" class="card answer box">
 
-            <a target="_blank" class="ans-url" href="${t.attack_url}">
+            <a target="_blank" rel="noreferrer noopener" class="ans-url" href="${t.attack_url}">
                 <span class="ans-label">${cardLabel}</span>
                 <span class="icon is-small">
                     <i class="mdi mdi-link"></i>

@@ -21,7 +21,7 @@
                 {% for row in audit_rows %}
                 <tr>
                     <td>{{ row['id'] }}</td>
-                    <td><a href="{{ row['url'] }}">{{ row['name'] }}</a></td>
+                    <td><a target="_blank" rel="noreferrer noopener" href="{{ row['url'] }}">{{ row['name'] }}</a></td>
                     <td>{{ row['issue'] }}</td>
                 </tr>
                 {% endfor %}
