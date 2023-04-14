@@ -379,7 +379,7 @@ function urlCartMismatchGoHome() {
             }
 
             // navigate
-            let correctVersion = encodeURIComponent(new_version);
+            let correctVersion = new_version;
             window.location.href = `/question/${correctVersion}`;
         },
     });
