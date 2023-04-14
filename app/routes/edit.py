@@ -785,6 +785,7 @@ def get_tree(index, version):
     - TA[0-9]{4}\\.T[0-9]{4}: grabs a technique (under a tactic) question and its subtechnique children answer cards
 
     version: str of ATT&CK version to pull content from
+    - must be validated before calling get_tree()
 
     returned tuple format is (content, error_msg, http_code)
     - content is either None (err), or a dict containing "question" and answers ("data")
@@ -795,20 +796,25 @@ def get_tree(index, version):
     node = None
     tree = []
 
-    # if user is on a tactic, retrieve the list of techniques
+    # Tactic -> get Techniques
     if is_tact_id(index):
 
-        # tactic root
+        # query tactic
         logger.debug(f"querying Tactic {index} under ATT&CK {version}")
         node = db.session.query(Tactic).filter(and_(Tactic.attack_version == version, Tactic.tact_id == index)).first()
         logger.debug("query done")
+
+        # not found -> 404
+        if node is None:
+            logger.error(f"can't fulfill request - can't find Tactic {index} within ATT&CK {version}")
+            return None, json.dumps({"message": f"{index} could not be found"}), 404
 
         node_id = node.tact_id
         node_name = node.tact_name
         question = node.tact_question
         technique_alias = aliased(Technique)
 
-        # technique children
+        # query Techs
         logger.debug(f"querying Techniques under Tactic {index} under ATT&CK {version}")
         query = (
             db.session.query(Technique, func.count(technique_alias.uid))
@@ -825,8 +831,8 @@ def get_tree(index, version):
         for technique, count in query:
             tree.append((technique.tech_id, technique.tech_answer, technique.tech_name, count))
 
-    # if the user wants to look at content found on the very first page
-    elif index == "start":  # if the user is on the very first page, retrieve the tactics
+    # Start -> get Tactics
+    elif index == "start":
 
         # start root
         node = ""
@@ -844,30 +850,36 @@ def get_tree(index, version):
         ]
         logger.debug(f"got {len(tree)} Tactics")
 
-    # the user is on a technique, so query for subtechniques
+    # Technique (w/ Tactic context) -> get SubTechniques
     elif re.match(r"^TA[0-9]{4}\.T[0-9]{4}$", index):
+        tech_id = index.split(".")[1]
 
-        # base technique root
-        logger.debug(f"querying Technique {index} under ATT&CK {version}")
+        # query Technique
+        logger.debug(f"querying Technique {tech_id} under ATT&CK {version}")
         node = (
             db.session.query(Technique)
             .filter(
                 and_(
                     Technique.attack_version == version,
-                    Technique.tech_id == index.split(".")[1],
+                    Technique.tech_id == tech_id,
                 )
             )
             .first()
         )
         logger.debug("query done")
 
+        # not found -> 404
+        if node is None:
+            logger.error(f"can't fulfill request - can't find Technique {tech_id} within ATT&CK {version}")
+            return None, json.dumps({"message": f"{tech_id} could not be found"}), 404
+
         node_id = node.tech_id
         node_name = node.tech_name
         question = node.tech_question
         technique_alias = aliased(Technique)
 
-        # sub-technique children
-        logger.debug(f"querying SubTechniques under Technique {index} under ATT&CK {version}")
+        # query SubTechs
+        logger.debug(f"querying SubTechniques under Technique {tech_id} under ATT&CK {version}")
         query = (
             # techniques in current version
             db.session.query(Technique)
@@ -883,7 +895,7 @@ def get_tree(index, version):
         for technique in query:
             tree.append((technique.tech_id, technique.tech_answer, technique.tech_name, 0))
 
-    # invalid index format
+    # bad format -> 400
     else:
         logger.debug("the format of the index is not valid")
         return (
@@ -891,11 +903,6 @@ def get_tree(index, version):
             json.dumps({"message": "The format of the index is not valid."}),
             400,
         )
-
-    # couldn't find Tactic / Technique / SubTechnique specified
-    if node is None:
-        logger.error(f"can't fulfill request - couldn't locate index {index} within ATT&CK {version}")
-        return None, json.dumps({"message": f"{index} could not be found"}), 404
 
     # form editing / preview variants of MD
     results = [
