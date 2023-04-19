@@ -19,6 +19,7 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL}
       ADMIN_PASS: ${ADMIN_PASS}
       CART_ENC_KEY: ${CART_ENC_KEY}
+      WEB_HTTPS_ON: ${WEB_HTTPS_ON}
   db:
     env_file: .env
     build:
