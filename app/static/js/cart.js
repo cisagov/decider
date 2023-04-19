@@ -215,7 +215,7 @@ function saveCartDatabase(verbose) {
 
 // called when manually entered cart name changes
 function cartNameChange() {
-    var typedCartName = $("#rename_modal_new_name").val();
+    var typedCartName = _.trim($("#rename_modal_new_name").val());
     var currentCart = getCart();
     var attackVersion = currentCart.version;
 
@@ -708,9 +708,7 @@ function updateImport(inputCartData) {
                 cartData.version = inputCartData.version;
                 if (!versions.includes(cartData.version))
                     throw new Error(
-                        `File Unsupported: the file uses ATT&CK (${_.escape(
-                            cartData.version
-                        )}), and Decider has (${versions}) loaded.`
+                        `File Unsupported: the file uses ATT&CK (${cartData.version}), and Decider has (${versions}) loaded.`
                     );
 
                 // add only desired fields for each entry
@@ -720,15 +718,11 @@ function updateImport(inputCartData) {
                     // basic regex check on ATT&CK ids
                     if (!/^T[0-9]{4}(\.[0-9]{3})?$/.test(inputEntry["index"]))
                         throw new Error(
-                            `File Malformed: entry present with invalid ATT&CK Technique ID: ${_.escape(
-                                inputEntry["index"]
-                            )}`
+                            `File Malformed: entry present with invalid ATT&CK Technique ID: ${inputEntry["index"]}`
                         );
                     if (!/^TA[0-9]{4}$/.test(inputEntry["tactic"]))
                         throw new Error(
-                            `File Malformed: entry present with invalid ATT&CK Tactic ID: ${_.escape(
-                                inputEntry["tactic"]
-                            )}`
+                            `File Malformed: entry present with invalid ATT&CK Tactic ID: ${inputEntry["tactic"]}`
                         );
 
                     _.forEach(["name", "index", "notes", "tactic", "tacticName"], function (prop) {

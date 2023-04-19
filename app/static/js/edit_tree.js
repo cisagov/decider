@@ -233,9 +233,13 @@ function createEditBox(label, edit_text, view_text, type, mismap) {
         let index = label.split(" ")[0];
         let version = $("#versionSelect").val();
         let tactic = $("#tabs1 ul > li.is-active").attr("name");
-        mismap_element = $(
-            `<a href="/edit/mismapping?index=${index}&version=${version}&tactic=${tactic}">Edit Mismappings</a>`
-        );
+
+        let mismapLinkParams = new URLSearchParams([
+            ["version", version],
+            ["tactic", tactic],
+            ["index", index]
+        ]).toString();
+        mismap_element = $(`<a href="/edit/mismapping?${mismapLinkParams}">Edit Mismappings</a>`);
     }
 
     // ATT&CK identifier, can also be "start"

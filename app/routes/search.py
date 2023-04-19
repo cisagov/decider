@@ -246,19 +246,20 @@ def search_page():
 # ---------------------------------------------------------------------------------------------------------------------
 
 
-def parse_search_str(sstr, joiner="&"):
+def parse_search_str(sstr: str, joiner: str = "&"):
     """Converts a boolean search string into a boolean expression
 
     sstr: a user-entered search string that can include boolean operators, prefix-matching, and quoted phrases
-    joiner: boolean operator to combine adjacent terms with
+    joiner: (str) boolean operator to combine adjacent terms with
     - '&' AND is default
     - '|' OR is also an option
 
-    returns a tuple of (bool_expr, sym_to_term)
+    returns a tuple of (err, bool_expr, sym_to_term)
+    - err is str on failure, None on pass (other terms become None on failure)
     - bool_expr is a BooleanAlgebra expression of symbols 's0', 's1',.. 'sN' (easy to process recursively)
     - sym_to_term is a dict mapping symbols to search terms and if they're prefix-matched 's0' -> ('bios', False)
 
-    can raise exceptions if the boolean expression is invalid or if there isn't at least one a-zA-Z0-9 term
+    errors if the boolean expression is invalid or if there isn't at least one a-zA-Z0-9 term
     """
 
     term_pattern = r'("[^"]+"\*?|[^\(\)\|\&\~"\* ]+\*?)'
@@ -280,7 +281,7 @@ def parse_search_str(sstr, joiner="&"):
         # remove and collapse any non-alphanumerics, Error on term with no alphanum content
         t = re.sub("[^A-Za-z0-9]+", " ", t).strip()
         if not t:
-            raise Exception("Term must have at-least one A-Za-z0-9 character")
+            return ("Term must have at-least one A-Za-z0-9 character", None, None)
 
         # store term and if prefix-match is enabled
         sym_to_term[f"s{num}"] = (t, prefix)
@@ -313,9 +314,9 @@ def parse_search_str(sstr, joiner="&"):
     try:
         bool_expr = boolean.BooleanAlgebra().parse(expr)
     except Exception:
-        raise Exception("Search query is formatted improperly")
+        return ("Search query is formatted improperly", None, None)
 
-    return bool_expr, sym_to_term
+    return (None, bool_expr, sym_to_term)
 
 
 def tsqry_rep(bexpr, sym_terms):
@@ -521,12 +522,11 @@ def full_search():
         return jsonify(status="Please type a shorter search query"), 200
 
     # try and get expression and terms from search string - respond back with error if fails
-    # 2 potential error cases have been identified and the proper string will go to the fron't end
-    try:
-        bool_expr, sym_to_terms = parse_search_str(search_str)
-    except Exception as ex:
+    # 2 potential error cases have been identified and the proper string will go to the front end
+    err, bool_expr, sym_to_terms = parse_search_str(search_str)
+    if err is not None:
         logger.info("request skipped - they typed an invalid search query")
-        return jsonify(status=str(ex)), 200
+        return jsonify(status=err), 200
     search_tsqry = tsqry_rep(bool_expr, sym_to_terms)
 
     tsvec = PSQLTxt.multiline_cleanup(
@@ -809,11 +809,10 @@ def answer_card_search():
         return jsonify(status="Search query too long"), 200
 
     # search (validate by attempting tokenization)
-    try:
-        bool_expr, sym_to_terms = parse_search_str(search, "|")
-    except Exception as ex:
+    err, bool_expr, sym_to_terms = parse_search_str(search, "|")
+    if err is not None:
         logger.info("request skipped - they typed an invalid search query")
-        return jsonify(status=str(ex)), 200
+        return jsonify(status=err), 200
     search_tsqry = tsqry_rep(bool_expr, sym_to_terms)
 
     # -------- perform search --------

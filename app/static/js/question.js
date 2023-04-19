@@ -373,7 +373,7 @@ function answerTemplate(answer) {
     return `<div class="card answer box is-flex-grow-1" data-tech-id="${answer.id}">
         <div class="columns">
             <div class="column">
-                <a target="_blank" class="ans-url" href="${answer.url}">
+                <a target="_blank" rel="noreferrer noopener" class="ans-url" href="${answer.url}">
                     <span class="ans-label">${answer.name} (${answer.id})</span>
                     <span class="icon is-small">
                         <i class="mdi mdi-link"></i>

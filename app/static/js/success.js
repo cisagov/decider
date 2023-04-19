@@ -5,10 +5,12 @@ $(document).ready(function () {
     let url_regex = /^\/question\/([^\/]*)\/(TA[0-9]{4})\/(T[0-9]{4}(\/[0-9]{3})?)$/;
     let match = window.location.pathname.match(url_regex);
     if (match !== null && match.length > 3) {
-        $("#mismappingLink").attr(
-            "href",
-            `/edit/mismapping?version=${match[1]}&tactic=${match[2]}&index=${match[3].split("/").join(".")}`
-        );
+        let mismapLinkParams = new URLSearchParams([
+            ["version", match[1]],
+            ["tactic", match[2]],
+            ["index", match[3].split("/").join(".")]
+        ]).toString();
+        $("#mismappingLink").attr("href", `/edit/mismapping?${mismapLinkParams}`);
     }
 
     $("#noTacticDropdownSelect").on("change", function () {
@@ -18,15 +20,14 @@ $(document).ready(function () {
         $("#add_button").removeAttr("data-tooltip");
         $("#mismappingsButton").attr("data-tooltip", "Add/Edit/Delete Mismappings");
         $("#mismappingIcon").attr("class", "mdi mdi-24px mdi-table-edit");
-        $("#mismappingLink").attr(
-            "href",
-            "/edit/mismapping?version=" +
-                $("#versionSelect").val() +
-                "&tactic=" +
-                selected_tactic +
-                "&index=" +
-                technique
-        );
+
+        let mismapLinkParams = new URLSearchParams([
+            ["version", $("#versionSelect").val()],
+            ["tactic", selected_tactic],
+            ["index", technique]
+        ]).toString();
+        $("#mismappingLink").attr("href", `/edit/mismapping?${mismapLinkParams}`);
+
         $("#noTacticDropdownSelect option[value='no_tactic']").remove();
     });
 });
