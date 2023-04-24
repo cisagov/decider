@@ -4,8 +4,6 @@
 
 This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/).
 
----
-
 ## :thinking: What is it?
 
 ### :fast_forward: In-Short
@@ -31,8 +29,6 @@ It offers:
 
 Decider does not intend to replace the ATT&amp;CK site - but rather, it acts as a complementary tool that leads you there in the end. Only information assisting mapping is included.
 
----
-
 ## :computer: In-App Screenshots
 
 ### :deciduous_tree: Question Tree
@@ -44,8 +40,6 @@ Decider does not intend to replace the ATT&amp;CK site - but rather, it acts as 
 
 Boolean expressions, prefix-matching, and stemming included.
 ![Decider's Full Technique Search Page](./docs/imgs/full-search-1.0.0.png)
-
----
 
 ## Installation
 
@@ -132,8 +126,6 @@ Read the Ubuntu &amp; CentOS guides and recreate actions according to your platf
 1. `brew install postgresql`
 2. `pip install -r requirements-pre.txt`
 3. `pip install -r requirements.txt`
-
----
 
 ## :gear: Requirements
 
@@ -223,8 +215,6 @@ Python Virtual Environment + Packages: 132 MB
 **Note:**
 - uWSGI is running 5 processes in manual deployment by default
 - Memory usage increases with connected users and uWSGI processes
-
----
 
 ## :judge: ATT&amp;CK&reg; Data Disclaimer
 
