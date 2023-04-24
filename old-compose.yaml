@@ -1,9 +1,5 @@
-# See 'old-compose.yaml' if you cloned before April 24th
-name: decider
 services:
   web:
-    container_name: decider-web
-    restart: unless-stopped
     env_file: .env
     depends_on:
       db:
@@ -25,8 +21,6 @@ services:
       CART_ENC_KEY: ${CART_ENC_KEY}
       WEB_HTTPS_ON: ${WEB_HTTPS_ON}
   db:
-    container_name: decider-db
-    restart: unless-stopped
     env_file: .env
     build:
       context: .
