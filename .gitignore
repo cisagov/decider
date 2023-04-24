@@ -27,12 +27,10 @@ UNKNOWN.egg-info/
 
 # Secrets
 /.env
-user.json
+/app/utils/jsons/source/user.json
+/app/utils/jsons/source/cart.json
 /init.sql
 /app/utils/db/dumps
-
-# Docker > db Postgres Data
-docker/db/data
 
 # Local working notes / tools
 /scratch/
