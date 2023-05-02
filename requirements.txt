@@ -6,7 +6,7 @@ boolean.py==4.0
 cffi==1.15.1
 click==8.1.3
 cryptography==40.0.1
-Flask==2.2.3
+Flask==2.3.2
 Flask-Login==0.6.2
 Flask-Principal==0.4.0
 Flask-SQLAlchemy==3.0.3
