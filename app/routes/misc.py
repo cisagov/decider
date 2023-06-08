@@ -163,7 +163,7 @@ def export_cart_to_word():
       - tactsAndTechs's root level is in matrix tactic order
         - techniques within a tactic are in name alphabetical order
     {
-        appVersion: "1.0.0",
+        appVersion: "x.y.z",
 
         usages: {
             "tactId--techId": [
