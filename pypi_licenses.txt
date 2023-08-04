@@ -9,7 +9,7 @@ Only a summary is given for PyPi/Pip packages as they are not being included or 
  bleach              6.0.0      Apache Software License
  importlib-metadata  6.1.0      Apache Software License
  requests            2.31.0     Apache Software License
- cryptography        41.0.1     Apache Software License; BSD License
+ cryptography        41.0.3     Apache Software License; BSD License
  packaging           23.0       Apache Software License; BSD License
  Flask               2.3.2      BSD License
  Flask-SQLAlchemy    3.0.3      BSD License
@@ -61,7 +61,7 @@ Only a summary is given for PyPi/Pip packages as they are not being included or 
  urllib3             1.26.15    MIT License
  virtualenv          20.21.0    MIT License
  zipp                3.15.0     MIT License
- certifi             2022.12.7  Mozilla Public License 2.0 (MPL 2.0)
+ certifi             2023.7.22  Mozilla Public License 2.0 (MPL 2.0)
  pathspec            0.11.1     Mozilla Public License 2.0 (MPL 2.0)
  distlib             0.3.6      Python Software Foundation License
  typing_extensions   4.5.0      Python Software Foundation License
