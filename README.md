@@ -4,6 +4,14 @@
 
 This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/).
 
+## :heavy_exclamation_mark: Updates
+
+### Aug 4, 2023 - Enterprise v13 Content Added
+
+v13 was back-burnered a bit due to other developments underway. However, we intend to align with the every-6-month cadence of ATT&amp;CK releases.
+
+Update instructions are included in **Appendix A** - please reach out if you have any difficulties with them. Regardless of environment, the goal is to copy/pull in the new co-occurrence/tree/attack jsons and then run the `app.utils.db.actions.add_version` module script.
+
 ## :thinking: What is it?
 
 ### :fast_forward: In-Short
@@ -219,3 +227,33 @@ Python Virtual Environment + Packages: 132 MB
 ## :judge: ATT&amp;CK&reg; Data Disclaimer
 
 JSONs under app/utils/jsons/source/enterprise-attack are pulled from https://github.com/mitre-attack/attack-stix-data/tree/master/enterprise-attack
+
+## Appendix A: Updating ATT&amp;CK Content
+
+### :whale: Docker Update Instructions
+
+```bash
+# (in repo root)
+
+# pull v13 content
+git pull
+
+# remove containers (DB data is safe)
+sudo docker compose down
+
+# rebuild images (v13 files copy-over)
+sudo docker compose up --build
+
+# add version
+sudo docker exec decider-web python -m app.utils.db.actions.add_version --config DefaultConfig --version v13.0
+```
+
+### :technologist: Manual Update Instructions
+
+```bash
+# (install root, same as repo root, contains app/ folder)
+cd /opt/decider/1.0.0
+
+# use decider app-user, with app venv, for add_version script
+sudo -u decider -g decider /opt/decider/python3.8.10/bin/python3.8 -m app.utils.db.actions.add_version --config DefaultConfig --version v13.0
+```
