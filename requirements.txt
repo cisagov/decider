@@ -26,7 +26,7 @@ soupsieve==2.4
 SQLAlchemy==1.4.47
 SQLAlchemy-Utils==0.40.0
 typing_extensions==4.5.0
-uWSGI==2.0.21
+uWSGI==2.0.22
 webencodings==0.5.1
 Werkzeug==2.3.3
 WTForms==3.0.1
