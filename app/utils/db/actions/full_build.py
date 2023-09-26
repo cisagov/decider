@@ -9,6 +9,8 @@ import app.utils.db.destroy as db_destroy
 import app.utils.db.read as db_read
 from app.utils.db.util import app_config_selector
 
+from app.constants import BUILD_SOURCES_DIR
+
 import argparse
 import os
 import time
@@ -19,7 +21,6 @@ import sys
 
 
 def main():
-
     # optional avenue of command-line instead of text-ui
     parser = argparse.ArgumentParser("Builds the DB with all content from the local disk JSONs.")
     parser.add_argument("--config", help="The database configuration to use (from app/conf.py).")
@@ -38,13 +39,11 @@ def main():
     app.config.from_object(app_config)
     db.init_app(app)
     with app.app_context():
-
         # BUILD MODE --------------------------------------------------------------------------------------------------
         full_build_mode = os.getenv("FULL_BUILD_MODE", "overwrite")
 
         # "preserve" : don't touch DB if it has at least 1 version already
         if full_build_mode == "preserve":
-
             print(f"FULL_BUILD_MODE = {full_build_mode} -> Checking DB Content")
             try:
                 inspector = inspect(db.engine)
@@ -75,10 +74,7 @@ def main():
         print("\n------------------------------------------------\n")
 
         # RESOURCE LOADING --------------------------------------------------------------------------------------------
-
-        utils_dir = os.path.dirname(os.path.realpath(__file__))
-        sources_dir = os.path.join(utils_dir, "../../jsons/source/")
-        src_mgr = SourceManager(sources_dir)
+        src_mgr = SourceManager(BUILD_SOURCES_DIR)
 
         print("Loading sources..")
 
@@ -214,6 +210,7 @@ def main():
         # remake tables
         try:
             db_destroy.all_tables()
+            db_create.extensions_dictionary()
             db_create.all_tables()
         except Exception as ex:
             tfail = time.time() - t0
@@ -285,6 +282,16 @@ def main():
                 tfail = time.time() - t0
                 print(f"Failed to add Carts at {tfail:.1f}s into build - due to:\n{ex}")
                 sys.exit(13)
+
+        # db kiosk user
+        print("\nCreate Kiosk user\n")
+
+        try:
+            db_create.kiosk_user()
+        except Exception as ex:
+            tfail = time.time() - t0
+            print(f"Failed to create Kiosk user at {tfail:.1f}s into build - due to:\n{ex}")
+            sys.exit(14)
 
         print("\n------------------------------------------------\n")
         tdone = time.time() - t0

@@ -1,85 +1,355 @@
-{% from 'navbar.html' import NavBar %}
-{% from 'cart.html' import Cart %}
+{% from 'cart.html' import cart %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
-    <head>
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <link rel="stylesheet" type="text/css" href="/static/css/materialdesignicons/css/materialdesignicons.min.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/bulma.min.css">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" type="text/css" href="/static/css/buefy.min.css">
+    {% if frontend_conf.base_url_href != "" %}
+    <base href="{{ frontend_conf.base_url_href }}" />
+    {% endif %}
 
-        <link rel="stylesheet" type="text/css" href="/static/css/animate.min.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/bulma-tooltip-min.css">
-        <link rel="stylesheet" type="text/css" href="/static/css/decider.css">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <title>Decider: {% block title %}{% endblock %}</title>
 
-        <script defer src="/static/js/lib/alpinejs-persist.min.js"></script>
-        <script defer src="/static/js/lib/alpinejs-collapse.min.js"></script>
-        <script defer src="/static/js/lib/alpinejs.min.js"></script>
+    {% if frontend_conf.use_minified_srcs %}
+        <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="/static/css/decider.css">
+    {% else %}
+        <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.css">
+        <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.css">
+        <link rel="stylesheet" href="/static/css/decider.css">
+    {% endif %}
+</head>
 
-        <script src="/static/js/lib/jquery-3.6.0.min.js"></script>
-        <script src="/static/js/lib/lodash.min.js"></script>
-        <script src="/static/js/lib/minisearch.min.js"></script>
-        <script src="/static/js/lib/jquery.mark.es6.min.js"></script>
-        <script src="/static/js/lib/bulma-toast.min.js"></script>
+{% if frontend_conf.classification_level|length and frontend_conf.classification_message|length %}
+<body class="classification-banner" data-classification="{{ frontend_conf.classification_level }}" data-banner-content="{{ frontend_conf.classification_message }}"></body>
+{% else %}
+<body>
+{% endif %}
 
-        <script src="/static/js/shared.js"></script>
+    {# Skip Link #}
+    <a x-data="{ urlNoHash: getURLNoHash() }" class="visually-hidden-focusable" :href="urlNoHash + '#main'">Skip to main content</a>
 
-        <title>DECIDER</title>
-    </head>
+    {# Navbar #}
+    <nav id="navbar" class="navbar navbar-expand-lg" data-bs-theme="dark">
+        <div class="container-fluid">
 
-    <script type="text/javascript">
-        var csrf_token = "{{ csrf_token() }}";
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
-                }
-            }
-        });
-    </script>
+            {# CISA Logo + Decider Home #}
+            <span class="navbar-brand">
+                <a id="navCisaLogo"
+                    href="https://www.cisa.gov/"
+                    title="CISA.gov Website"
+                    aria-label="CISA.gov Website"
+                    class="text-decoration-none d-inline-block"
+                >
+                    <img src="/static/cisa-logo.svg" alt="CISA Logo" height="44" width="44" class="d-inline-block">
+                </a>
+                <a id="navDeciderHome"
+                    class="underline-hover icon-link"
+                    title="Decider Tree Home"
+                    aria-label="Decider Tree Home"
+                    href="{{ url_for('question_.question_start_page', version=g.version_picker.cur_version) }}"
+                >
+                    Decider <i class="bi bi-house-fill" aria-hidden="true"></i>
+                </a>
+            </span>
 
-    <body style="min-height: 100vh; display: flex; flex-direction: column;">
-        <section class="navbarSection">
-            {% if current_user.is_authenticated %}
-                {% if g.version_picker is defined %}
-                    {{ NavBar(current_user) }}
-                {% else %}
-                    <p class="has-text-danger-dark is-size-2">NO VERSIONS OF ATT&amp;CK&reg; INSTALLED ON SERVER</p>
+            {# Collapse Button #}
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            {# Collapsible Items #}
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mb-2 mb-lg-0 me-2">
+
+                    {# Version Picker #}
+                    <li class="nav-item dropdown" id="versionPicker">
+                        <a
+                            class="nav-link dropdown-toggle underline-hover"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            ATT&amp;CK Enterprise {{ g.version_picker.cur_version }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for version in g.version_picker.all_versions %}
+                                {% if version != g.version_picker.cur_version %}
+                                    <li>
+                                        <a class="dropdown-item underline-hover" href="{{ url_for('question_.question_start_page', version=version ) }}">
+                                            <em>(change to)</em> ATT&amp;CK Enterprise {{ version }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+
+                </ul>
+
+                {# Mini Technique Search #}
+                <div
+                    class="mb-2 mb-lg-0 flex-grow-1 ms-auto"
+                    x-data="navMiniSearch"
+                    id="navMiniSearch"
+                    data-bs-theme="light"
+                    @keydown.escape="onEscape"
+                >
+
+                    {# Input Bar #}
+                    <input
+                        aria-label="Search Tech Names / IDs"
+                        type="search"
+                        id="navMiniSearchInput"
+                        autocomplete="off"
+                        placeholder="Search Tech Names / IDs"
+                        x-model.debounce="search"
+                        @focus="onFocus"
+                        @blur="onBlur"
+                        @input="onInput"
+                        @keydown.down.prevent="onDownInput"
+                        @keydown.enter="onEnterInput"
+                        class="w-100 form-control"
+                    >
+
+                    {# Dropdown #}
+                    <div
+                        x-cloak x-show="focused"
+                        id="navMiniSearchDropdown"
+                        tabindex="-1"
+                    >
+                        <div id="navMiniSearchDropdownListWrapper">
+                            <ol
+                                id="navMiniSearchDropdownList"
+                                tabindex="-1"
+                                @keydown.up.prevent="onUpList"
+                                @keydown.down.prevent="onDownList"
+                            >
+                                {# Jump To Full Search #}
+                                <li style="border-bottom: 2px solid var(--bs-border-color)">
+                                    <a @keydown.tab="onTabList" tabindex="-1" class="link-strong-blue" :href="fullSearchUrl">
+                                        <div class="hstack gap-2 p-2">
+
+                                            {# Icon #}
+                                            <div class="w-25">
+                                                <span class="badge text-bg-primary w-100">
+                                                    <i class="bi bi-search fs-5" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+
+                                            {# Name #}
+                                            <div class="vstack w-75">
+                                                <span>Run as <strong>Full Technique Search</strong></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                {# Techniques #}
+                                <template x-for="(tech, index) in techniques" :key="tech.techId">
+                                    <li :class="(index % 2 === 0) ? 'bg-body-tertiary' : 'bg-body-primary'">
+                                        <a @keydown.tab="onTabList" tabindex="-1" class="link-strong-blue" :href="resolveURL(tech.url)">
+                                            <div class="hstack gap-2 p-2">
+
+                                                {# ID #}
+                                                <div class="w-25">
+                                                    <span x-text="tech.techId" class="badge text-bg-primary w-100 fs-6"></span>
+                                                </div>
+
+                                                {# Name #}
+                                                <template x-if="tech.isSub">
+                                                    <div class="vstack w-75 text-break">
+                                                        <span x-text="tech.baseName"></span>
+                                                        <span><strong x-text="tech.subName"></strong></span>
+                                                    </div>
+                                                </template>
+                                                <template x-if="!tech.isSub">
+                                                    <div class="vstack w-75">
+                                                        <span><strong x-text="tech.baseName"></strong></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </template>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                {# Buttons #}
+                <div class="btn-group mb-2 mb-lg-0 ms-0 ms-lg-2" role="group">
+
+                    {# Docs PDF Link #}
+                    <a
+                        href="/static/documentation.pdf" target="_blank"
+                        class="btn btn-light btn-border-dark underline-hover"
+                    >Docs <i class="bi bi-info-circle" aria-hidden="true"></i>
+                    </a>
+
+                    {# Full Search Link #}
+                    <a
+                        x-data
+                        :href="resolveURL(`/search/page?version=${encodeURIComponent(Alpine.store('global').versionPicker.cur_version)}&search=`)"
+                        class="btn btn-light btn-border-dark underline-hover"
+                    >Full Search <i class="bi bi-search" aria-hidden="true"></i>
+                    </a>
+
+                    {# Toggle Cart Offcanvas #}
+                    <button
+                        class="btn btn-light btn-border-dark"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#shoppingCart"
+                        aria-controls="shoppingCart"
+                    >Cart <i class="bi bi-cart" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    {# Main #}
+    <div id="main" class="container flex-grow-1">
+        <main>
+
+            {# Misconfiguration Alerts #}
+            <div>
+                {# JavaScript Required #}
+                <noscript>
+                    <div class="alert alert-danger" role="alert" style="display: inline-block;">
+                        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+                        <strong>Warning:</strong> Decider requires JavaScript to be enabled in order to function.
+                    </div>
+                </noscript>
+
+                {# Only Kiosk-Mode is Implemented #}
+                {% if not g.kiosk_mode %}
+                    <div class="alert alert-danger" role="alert" style="display: inline-block;">
+                        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+                        <strong>Warning:</strong> Only Kiosk-mode is implemented for this instance of Decider.<br>
+                        Please restart Decider with <code>--config KioskConfig</code>.
+                    </div>
                 {% endif %}
-            {% else %}
-                {{ NavBar(current_user) }}
-            {% endif %}
-        </section>
+            </div>
 
-        <section class="main-content">
-            <div class="columns is-mobile">
-                <div class="column">
+            {# Main Content + Scroll-to-Top #}
+            <div>
+                <div class="my-3">
                     {% block content %}{% endblock %}
                 </div>
 
-                {% if current_user.is_authenticated %}
-                    {% if g.cart_enabled %}
-                        {{ Cart(current_user) }}
+                {# Scroll-to-Top #}
+                <button
+                    {% if frontend_conf.classification_level|length and frontend_conf.classification_message|length %}
+                    class="btn btn-outline-danger mb-4"
+                    {% else %}
+                    class="btn btn-outline-danger mb-0"
                     {% endif %}
-                {% endif %}
+                    id="btnScrollToTop"
+                    x-data="scrollToTop"
+                    x-cloak
+                    x-show="visible"
+                    @scroll.window="onScroll"
+                    @click="onClick"
+                    type="button"
+                    title="Scroll to Top"
+                    aria-label="Scroll to Top"
+                >
+                    <i class="bi bi-arrow-up bi-font-bold" aria-hidden="true"></i>
+                </button>
             </div>
-        </section>
 
-        <div style="flex-grow: 1;"></div>
+            {# Cart #}
+            {{ cart() }}
+        </main>
+    </div>
 
-        <footer id="deciderFooter" class="footer p-4 mx-0 mt-6 mb-0 has-background-decider-purple-0">
-            <div class="content has-text-centered">
-                Decider App Version: {{ g.decider_app_version }}<br>
+    {# Footer #}
+    <footer id="deciderFooter" class="text-center w-100 py-3">
+        Version: {{ g.decider_app_version }} &bull;
+        <a href="https://github.com/cisagov/decider" class="link-light icon-link">
+            GitHub Repo <i class="bi bi-github" aria-hidden="true"></i>
+        </a><br>
+        This project makes use of MITRE ATT&amp;CK&reg;<br>
+        <a href="https://attack.mitre.org/resources/terms-of-use/" class="link-light">
+            ATT&amp;CK Terms of Use
+        </a>
+    </footer>
 
-                This project makes use of MITRE ATT&amp;CK&reg;<br>
-                <a target="_blank" rel="noopener noreferrer" href="https://attack.mitre.org/resources/terms-of-use/">
-                    ATT&amp;CK Terms of Use
-                </a>
+    {# Toaster #}
+    <div class="toast-container position-fixed bottom-0 start-0">
+        <div id="successToasts" aria-live="polite" aria-atomic="false"></div>
+        <div id="failureToasts" aria-live="assertive" aria-atomic="false"></div>
+    </div>
+
+    {# Templates #}
+    <template id="templateToast" x-ignore>
+        <div
+            x-data="toast(...see doToast...)"
+            @hidden-bs-toast.dot="$root.remove()"
+            :role="success ? 'status' : 'alert'"
+            class="toast"
+            :class="success ? 'text-bg-success' : 'text-bg-danger'"
+        >
+            <div class="toast-header">
+                <i class="bi me-2" aria-hidden="true" :class="success ? 'bi-check' : 'bi-exclamation-triangle-fill'"></i>
+                <strong class="me-auto" x-text="titleText"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-        </footer>
-    </body>
+            <div class="toast-body" x-text="bodyText"></div>
+        </div>
+    </template>
+
+    {# Scripts #}
+    <script>
+        const csrfToken = {{ csrf_token() | tojson }};
+
+        document.addEventListener('alpine:init', function() {
+            Alpine.store('global', {
+                appVersion       : {{ g.decider_app_version | tojson }},
+                versionPicker    : {{ g.version_picker | default({}) | tojson }},
+                userAuthenticated: {{ current_user.is_authenticated | tojson }},
+                kioskModeOn      : {{ g.kiosk_mode | tojson }},
+            });
+        });
+    </script>
+    {% if frontend_conf.use_minified_srcs %}
+        <script src="/static/js/lib/jquery-3.7.0.slim/jquery-3.7.0.slim.min.js"></script>
+        <script src="/static/js/lib/mark.js-9.0.0/jquery.mark.es6.min.js"></script>
+        <script src="/static/js/lib/bootstrap-bundle-5.3.0/bootstrap.bundle.min.js"></script>
+        <script src="/static/js/lib/docx-8.0.4/docx-8.0.4.js"></script>
+        <script src="/static/js/lib/FileSaver/FileSaver.min.js"></script>
+        <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.min.js"></script>
+        <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.min.js"></script>
+        <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.min.js"></script>
+        <script src="/static/js/decider.js"></script>
+    {% else %}
+        <script src="/static/js/lib/jquery-3.7.0.slim/jquery-3.7.0.slim.js"></script>
+        <script src="/static/js/lib/mark.js-9.0.0/jquery.mark.es6.js"></script>
+        <script src="/static/js/lib/bootstrap-bundle-5.3.0/bootstrap.bundle.js"></script>
+        <script src="/static/js/lib/docx-8.0.4/docx-8.0.4.js"></script>
+        <script src="/static/js/lib/FileSaver/FileSaver.js"></script>
+        <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.js"></script>
+        <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.js"></script>
+        <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.js"></script>
+        <script src="/static/js/decider.js"></script>
+    {% endif %}
+</body>
 
 </html>

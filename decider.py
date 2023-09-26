@@ -27,7 +27,7 @@ from app.routes.utils_db import VersionPicker
 from app.routes.edit import edit_
 from app.routes.docs import docs_
 from app.routes.admin import admin_
-from app.routes.api import api_, version_has_co_ocs_data
+from app.routes.api import api_
 from app.routes.misc import misc_
 
 from app.utils.db.util import get_config_option_map
@@ -38,7 +38,6 @@ import argparse
 import logging.config
 import os
 from datetime import timedelta
-import re
 import sys
 import importlib
 import json
@@ -46,14 +45,31 @@ import traceback
 
 from app.version import DECIDER_APP_VERSION
 
+# frontend template config - from `config/frontend.json`
+FRONTEND_CONF = dict(
+    base_url_href="/",
+    use_minified_srcs=True,
+    classification_level="",
+    classification_message="",
+)
+with open("config/frontend.json", "rt") as fh:
+    try:
+        frontend_conf_file = json.load(fh)
+        for key in FRONTEND_CONF.keys():
+            if key in frontend_conf_file:
+                FRONTEND_CONF[key] = frontend_conf_file[key]
+    except Exception:
+        print(f"** ERROR loading or applying config/frontend.json\n{traceback.format_exc()}")
+        sys.exit(1)
 
-# logging config - get from `app/logging_conf.json` and convert to dict
-with open("app/logging_conf.json", "r") as fh:
+# logging config - get from `config/logging.json` and convert to dict
+with open("config/logging.json", "rt") as fh:
     try:
         log_conf_dict = json.load(fh)
         logging.config.dictConfig(log_conf_dict)  # apply logging config
     except Exception:
-        print(f"** ERROR loading or applying app/logging_conf.json\n{traceback.format_exc()}")
+        print(f"** ERROR loading or applying config/logging.json\n{traceback.format_exc()}")
+        sys.exit(1)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Flask Request ID & current_user.email log field
@@ -136,34 +152,44 @@ def register_blueprints(app):
     app.register_blueprint(api_)
 
 
-def dev_mode(app):
-    """Configures the environment for development mode
-    - reload Flask on file modification
-    - grant Admin and Editing roles to every user (including anonymous)
+def kiosk_mode(app):
+    """Configures the app for Kiosk Mode
+    - Auth/login/logout are disabled
+    - Routes related to user state/editing/admin are disabled
+    - Templates hide anything related to logged-in users
+    - Limited read-only database user is used
     """
+
+    logging.basicConfig(
+        filename=current_app.config["DECIDER_LOG"],
+        level=getattr(logging, current_app.config["LOG_LEVEL"].upper()),
+    )
 
     @app.before_request
     def before_request():
         g.request_id = make_request_id()
+        g.kiosk_mode = True
 
-    @app.after_request
-    def after_request(response):
-        response.cache_control.max_age = 1
-        return response
+        # unknown URL requested -> 404
+        if request.endpoint is None:
+            logger.warning("Invalid URL requested - sending 404 page")
+            return render_template("status_codes/404.html"), 404
+
+        # Kiosk-disabled URL requested -> 404 w/ note
+        elif getattr(app.view_functions[request.endpoint], "disabled_in_kiosk", False):
+            logger.warning("Kiosk-disabled URL requested - sending 404 page")
+            return render_template("status_codes/404.html", reason_for_404="This URL is disabled in Kiosk-Mode"), 404
+
+        # accessible route
+        return
 
     @identity_loaded.connect_via(app)
     def on_identity_loaded(sender, identity):
         # Set the identity user object
         identity.user = current_user
 
-        # Add the UserNeed to the identity
-        if hasattr(current_user, "id"):
-            identity.provides.add(UserNeed(current_user.id))
-
-        # give all users including Anonymous user admin and editor
+        # everybody is a member now
         identity.provides.add(RoleNeed("member"))
-        identity.provides.add(RoleNeed("editor"))
-        identity.provides.add(RoleNeed("admin"))
 
 
 def prod_mode(app):
@@ -177,6 +203,7 @@ def prod_mode(app):
     @app.before_request
     def before_request():
         g.request_id = make_request_id()
+        g.kiosk_mode = False
 
         session.permanent = True
         app.permanent_session_lifetime = timedelta(minutes=2880)
@@ -216,54 +243,33 @@ def prod_mode(app):
 # helper function for prod/dev mode
 def set_mode(app):
     with app.app_context():
-        if current_app.config["TESTING"]:
-            dev_mode(app)
+        if current_app.config.get("KIOSK_MODE"):
+            kiosk_mode(app)
         else:
-            prod_mode(app)
+            logger.error("Only the Kiosk (KioskConfig) is supported in this build! Exiting!")
+            sys.exit(1)
+            # prod_mode(app)
 
 
-# sets up a context processor that feeds variables needed across all pages if they aren't already defined prior
 def context_setup(app):
+    """
+    Setup context_processor to feed variables needed across all pages
+    Some variables may already be set, others are exclusivly provided here
+    """
+
     @app.context_processor
     def manage_context_vars():
-
         g.decider_app_version = DECIDER_APP_VERSION
 
-        # no context needs to be formed for the barebones /login page
-        if not current_user.is_authenticated:
-            return {}
-
-        # if version vars not set; set them
         if g.get("version_picker") is None:
             version_found = VersionPicker().set_vars()
 
             # no versions on server
             if not version_found:
-                return {}
+                logger.error("There are no ATT&CK versions installed! Need at least 1 to run! Exiting!")
+                sys.exit(1)
 
-        # enable cart for only these routes
-        g.cart_enabled = any(
-            request.path.startswith(r)
-            for r in [
-                "/question",
-                "/edit/mismapping",
-                "/search",
-                "/no_tactic",
-                "/profile",
-                "/suggestions",
-            ]
-        )
-
-        # if cart enabled - determine if co-ocs (suggestion) button is available
-        g.co_ocs_enabled = g.cart_enabled and version_has_co_ocs_data(g.version_picker["cur_version"])
-
-        # enable filtering for only these routes
-        if request.path.startswith("/search"):
-            g.filters_enabled = True
-        elif request.path.startswith("/question"):
-            g.filters_enabled = not re.search(r"T[0-9]{4}(\/([0-9]{3}(\/)?)?)?$", request.path)  # non-success variants
-
-        return {}
+        return dict(frontend_conf=FRONTEND_CONF)
 
 
 def error_handlers(app):
@@ -367,7 +373,6 @@ def error_handlers(app):
 
 
 def create_app(config):
-
     logger.debug("Creating the App.")
     app = app_setup(config)
 
@@ -387,7 +392,7 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument(
     "--config",
-    default="DefaultConfig",
+    default="KioskConfig",
     help=(
         "Configuration class to start Decider with. "
         f'Current configurations: {", ".join(list(get_config_option_map().keys()))}'
@@ -406,7 +411,6 @@ except Exception:
 app = create_app(config)
 
 if __name__ == "__main__":
-
     # at least 1 AttackVersion is required to function at all
     with app.app_context():
         if os.environ.get("WERKZEUG_RUN_MAIN") == "true":

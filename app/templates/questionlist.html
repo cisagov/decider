@@ -1,168 +1,327 @@
 {% extends 'base.html' %}
-{% from 'generic_filters.html' import CheckboxFilters %}
-{% from 'crumbbar.html' import CrumbBar %}
+
+{% block title %}
+    {% if question.id == "start" %}
+        Tree | Home
+    {% elif question.id.startswith("TA") %}
+        Tree | {{ question.id }} -&gt; Techniques
+    {% else %}
+        Tree | {{ question.id }} -&gt; SubTechs
+    {% endif %}
+{% endblock %}
 
 {% block content %}
-<div class="columns is-centered is-mobile">
-    <script src="/static/js/question.js"></script>
 
-    <!-- Filters -->
-    <div class="column is-narrow" id="filterColumn">
-        <div id="filterSpacing"></div>
-        <div id="platformSelect">
-        {{ CheckboxFilters(platform_filters) }}
-        </div>
-        <div id="dataSourceSelect">
-            {{ CheckboxFilters(data_source_filters) }}
+<div x-data="questionTree" class="container-fluid">
+
+    {# Header #}
+    <div class="row">
+        <div class="col-12 col-md-9 offset-md-3 col-xl-10 offset-xl-2">
+
+            {# Crumbs (all pages but Home) #}
+            <template x-if="$store.question.crumbs.length > 1">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-2">
+                        <template x-for="(crumb, index) in $store.question.crumbs" :key="crumb.url">
+                            <li
+                                class="breadcrumb-item"
+                                :class="(index === $store.question.crumbs.length-1) ? 'active' : ''"
+                            >
+                                {# not last #}
+                                <template x-if="index !== $store.question.crumbs.length-1">
+                                    <a
+                                        :href="resolveURL(crumb.url)"
+                                        x-text="crumb.name"
+                                    ></a>
+                                </template>
+
+                                {# last #}
+                                <template x-if="index === $store.question.crumbs.length-1">
+                                    <a
+                                        x-text="crumb.name"
+                                        aria-current="page"
+                                    ></a>
+                                </template>
+                            </li>
+                        </template>
+                    </ol>
+                </nav>
+            </template>
+
+            {# Question (Page Title) #}
+            <h1 class="fs-3 mb-3" x-html="filterQuestionHTML($store.question.text)"></h1>
         </div>
     </div>
 
-    <!-- Question Cards -->
-    <div class="column floatingColumn">
-        <div id="answerListHeader">
-            {{ CrumbBar(breadcrumbs) }}
-            <div class="title md-content">{{ question.question|safe }}</div>
-            <div class="control has-icons-right">
+    {# Body #}
+    <div class="row">
 
-                <!-- start -> Tactics -->
-                {% if question.id == "start" %}
-                    <input id="questionSearch" oninput="questionUpdateSearchString(this.value)"
-                        class="input is-rounded" type="text" placeholder="Search Tactic Answer Cards..."/>
+        {# Filters #}
+        <div class="col-12 col-md-3 col-xl-2">
 
-                {% else %}
-                    <!-- Tactic -> Techniques -->
-                    {% if question.id.startswith("TA") %}
-                        <input id="questionSearch" oninput="questionUpdateSearchString(this.value)"
-                            class="input is-rounded" type="text"
-                            placeholder="Search Technique Answer Cards & Descriptions..."/>
+            {# Platform #}
+            <div x-data="collapseTracker(false, 'question-platform')" x-bind="binds" class="row mb-3 filterRow">
 
-                    <!-- Technique -> Sub-Techniques -->
-                    {% else %}
-                        <input id="questionSearch" oninput="questionUpdateSearchString(this.value)"
-                            class="input is-rounded" type="text"
-                            placeholder="Search Sub-Technique Answer Cards & Descriptions..."/>
+                <div class="col-4 col-md-12 text-center">
+                    <p class="fs-5 my-1">Filter Platforms</p>
+                    <div class="btn-group-vertical w-100 mb-2">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#platformFilterCheckboxes"
+                            aria-controls="platformFilterCheckboxes"
+                            aria-label="Show / hide Platform filters"
+                            title="Show / hide Platform filters"
+                            x-text="`${show ? 'Hide' : 'Show'} Filters`"
+                            :aria-expanded="show"
+                        >Show Filters</button>
+                        <button
+                            class="btn btn-secondary"
+                            type="button"
+                            @click="platforms = []"
+                            :aria-label="`Clear ${platforms.length} platform filters`"
+                            title="Clear platform filters"
+                        >
+                            Clear Filters&nbsp;
+                            <span class="badge text-bg-light" x-text="platforms.length">0</span>
+                        </button>
+                    </div>
+                </div>
 
-                    {% endif %}
-                {% endif %}
+                <div x-ref="collapse" id="platformFilterCheckboxes" class="col-8 col-md-12 collapse filterCheckboxes">
+                    <div class="row">
 
-                <span class="icon is-medium is-right" style="pointer-events: initial;">
-                    <a>
-                        <!-- Use info modal corresponding to search used -->
-                        {% if question.id == "start" %}
-                            <i class="mdi mdi-24px mdi-information-outline"
-                                onclick="openModal('#answer_search_info_modal_frontend')"></i>
-                        {% else %}
-                            <i class="mdi mdi-24px mdi-information-outline"
-                                onclick="openModal('#answer_search_info_modal_backend')"></i>
-                        {% endif %}
-                    </a>
-                </span>
+                        {# Checkboxes #}
+                        <template x-for="platform in $store.question.platformFilters.items" :key="platform.value">
+                            <div class="col-12">
+                                <div class="form-check" x-id="['platform-check']">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        :id="$id('platform-check')"
+                                        :value="platform.value"
+                                        x-model.debounce="platforms"
+                                        :aria-label="`Platform filter ${platform.name}`"
+                                    >
+                                    <label
+                                        class="form-check-label"
+                                        :for="$id('platform-check')"
+                                        x-text="platform.name"
+                                    ></label>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
             </div>
 
-            <!-- Backend-Based Search: display how a given search was interpreted -->
-            {% if question.id != "start" %}
-                <p id="ans-search-status"></p>
-            {% endif %}
-        </div>
+            {# Data Source #}
+            <div x-data="collapseTracker(false, 'question-data-source')" x-bind="binds" class="row mb-3 filterRow">
 
-        <div id="answer-list" data-index="{{ question.id }}" data-version="{{question.attack_version}}" data-tactic="{{ question.tactic }}">
+                <div class="col-4 col-md-12 text-center">
+                    <p class="fs-5 my-1">Filter Data Sources</p>
+                    <div class="btn-group-vertical w-100 mb-2">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#dataSrcFilterCheckboxes"
+                            aria-controls="dataSrcFilterCheckboxes"
+                            aria-label="Show / hide Data Source filters"
+                            title="Show / hide Data Source filters"
+                            x-text="`${show ? 'Hide' : 'Show'} Filters`"
+                            :aria-expanded="show"
+                        >Show Filters</button>
+                        <button
+                            class="btn btn-secondary"
+                            type="button"
+                            @click="data_sources = []"
+                            :aria-label="`Clear ${data_sources.length} data source filters`"
+                            title="Clear data source filters"
+                        >
+                            Clear Filters&nbsp;
+                            <span class="badge text-bg-light" x-text="data_sources.length">0</span>
+                        </button>
+                    </div>
+                </div>
 
-            <div id="loading-message">
-                <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div x-ref="collapse" id="dataSrcFilterCheckboxes" class="col-8 col-md-12 collapse filterCheckboxes">
+                    <div class="row">
+
+                        {# Checkboxes #}
+                        <template x-for="dataSrc in $store.question.dataSrcFilters.items" :key="dataSrc.value">
+                            <div class="col-12">
+                                <div class="form-check" x-id="['data-source-check']">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        :id="$id('data-source-check')"
+                                        :value="dataSrc.value"
+                                        x-model.debounce="data_sources"
+                                        :aria-label="`Data source filter ${dataSrc.name}`"
+                                    >
+                                    <label
+                                        class="form-check-label"
+                                        :for="$id('data-source-check')"
+                                        x-text="dataSrc.name"
+                                    ></label>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
             </div>
 
-            <!-- Front-End -->
         </div>
 
-        <nav id="answer-nav" class="pagination" role="navigation" aria-label="pagination">
-            <!-- Front-End -->
-        </nav>
+        {# Rest of Body #}
+        <div class="col-12 col-md-9 col-xl-10">
+
+            {# Search #}
+            <div class="row">
+                <div class="col-12">
+
+                    {# Input #}
+                    <div>
+                        <div class="form-floating">
+                            <input placeholder="Search Answers" type="search" id="answerCardSearchBox" class="form-control mb-1" x-model.debounce="search">
+                            <label for="answerCardSearchBox">Search Answers</label>
+                        </div>
+                        <p x-cloak x-show="searchStatus.length > 0" class="mb-0">
+                            <strong>Status:</strong> <span x-text="searchStatus" class="text-break"></span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            {# Answer Cards #}
+            <div class="row">
+
+                <template x-for="card in paginatedCards[_.clamp(page, 1, paginatedCards.length) - 1]" :key="card.id">
+                    <div
+                        class="col-12"
+                        :class="card.id.startsWith('TA') ? 'col-md-6 col-xl-4' : ''"
+                        style="padding: calc(var(--bs-gutter-x) * 0.5);"
+                    >
+
+                        <div class="answer-card card" :class="card.id.startsWith('TA') ? 'h-100' : ''">
+                            <div class="card-header" x-html="card.label">
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="card-text" x-html="card.content"></div>
+                                <div
+                                    class="card-text fs-6"
+                                    x-cloak
+                                    x-show="(card.additional_matches ?? []).length > 0"
+                                >
+                                    <span style="color: #0F0; font-weight: 700;">Desc / SubTech Matches: </span>
+                                    <span x-text="(card.additional_matches ?? []).join(', ')"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer">
+                                <a
+                                    class="link-strong-blue card-link stretched-link"
+                                    :href="resolveURL((card.num > 0) ? `${card.path}#${urlHash}` : card.path)"
+                                    :aria-label="`Select Card ${card.name} ${card.id}`"
+                                >Select Card</a>
+                                <a
+                                    class="link-attack-orange card-link position-relative z-2"
+                                    :href="resolveURL(card.url)"
+                                    :aria-label="`ATT&amp;CK Page ${card.name} ${card.id}`"
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                >ATT&amp;CK Page</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+
+                {# Page Select #}
+                <div class="col-12" x-cloak x-show="paginatedCards.length > 1">
+                    <div class="hstack gap-1 mt-1">
+
+                        {# Back #}
+                        <button
+                            :disabled="page === 1"
+                            :class="(page === 1) ? 'btn-secondary' : 'btn-dark'"
+                            class="btn"
+                            type="button"
+                            @click="page = page - 1"
+                            title="Previous answer card page"
+                            aria-label="Previous answer card page"
+                        >
+                            <i class="bi bi-caret-left-fill" aria-hidden="true"></i>
+                        </button>
+
+                        <span
+                            class="ms-2 me-2"
+                            x-text="`${page} / ${paginatedCards.length}`"
+                            title="Answer card page progress"
+                            aria-label="Answer card page progress"
+                        ></span>
+
+                        {# Forward #}
+                        <button
+                            :disabled="page === paginatedCards.length"
+                            :class="(page === paginatedCards.length) ? 'btn-secondary' : 'btn-dark'"
+                            class="btn"
+                            type="button"
+                            @click="page = page + 1"
+                            title="Next answer card page"
+                            aria-label="Next answer card page"
+                        >
+                            <i class="bi bi-caret-right-fill" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
+
 </div>
 
-<!-- start->Tactics modal about the Front-End search -->
-<div class="modal" id="answer_search_info_modal_frontend">
-    <div class="modal-background" onclick="closeModal('#answer_search_info_modal_frontend')"></div>
-    <!-- Click outside modal to close -->
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Answer Card Search (<i>Front-End<b><span style="color: red;">*</span></b></i>)</p>
-            <button class="delete" aria-label="close" onclick="closeModal('#answer_search_info_modal_frontend')">
-            </button>
-        </header>
-        <section class="modal-card-body default-list">
-            <p><b>Search Overview</b></p>
-            <ul>
-                <li>This is a basic search that is potentially more convenient than <kbd>Ctrl-F</kbd>.</li>
-                <li>Tactic cards are ordered by relevance and matched terms are highlighted.</li>
-                <li><span style="color: red;">This <b>start➜Tactics</b> search may be removed in the future.</span></li>
-            </ul>
-            <br>
-            <p><b>Note<span style="color: red;">*</span></b></p>
-            <ul>
-                <li>The <b>start➜Tactics</b> question page uses a lightweight front-end search as there are not many
-                    Tactics.</li>
-                <li>The <b>Tactic➜Techniques</b> and <b>Technique➜SubTechniques</b> pages use a heavier back-end
-                    search that provides more content to match against.</li>
-                <li>The back-end search is much more capable - which is useful to know for complex searches.</li>
-            </ul>
-        </section>
-        <footer class="modal-card-foot"></footer>
-    </div>
-</div>
+<script>
+    document.addEventListener('alpine:init', function() {
+        const crumbs = {{ breadcrumbs | tojson }};
+        crumbs[0]['name'] = 'Home';
 
-<!-- (Tactic->Techniques, Technique->SubTechniques) modal about the Back-End search -->
-<div class="modal" id="answer_search_info_modal_backend">
-    <div class="modal-background" onclick="closeModal('#answer_search_info_modal_backend')"></div>
-    <!-- Click outside modal to close -->
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Answer Card Search (<i>Back-End<b><span style="color: red;">*</span></b></i>)</p>
-            <button class="delete" aria-label="close" onclick="closeModal('#answer_search_info_modal_backend')">
-            </button>
-        </header>
-        <section class="modal-card-body default-list">
-            <p><b>Capabilities</b></p>
-            <ul>
-                <li>Searches a Technique's card content, its description, and the card content + descriptions of any
-                    SubTechniques it has.</li>
-                <li>Word stemming.</li>
-                <li>Boolean search <i>(terms are <b>or</b>'d together by default)</i>.<br>
-                    - <b>()</b> are used for operation order.<br>
-                    - <b>|</b> will <b>or</b> terms/()s/&quot;&quot;s together.<br>
-                    - <b>&amp;</b> will <b>and</b> terms/()s/&quot;&quot;s together.<br>
-                    - <b>~</b> will <b>negate</b> the term/()/&quot;&quot; directly to the right of it (no spaces).<br>
-                    - <b>*</b> will <b>prefix-search</b> for words completing the term/&quot;&quot; directly to the left of it (no spaces).
-                        For &quot;&quot;s, it will prefix-search each word in the phrase.<br>
-                    - <b>&quot;&quot;</b> are used to search for a chain of terms together as a phrase in the text.<br>
-                    - <b>NOTE:</b> no special characters can be searched for. Words are considered to be continuous blocks of letters/numbers.<br>
-                    - <b>Example: <code>(silver | gold*) & ticket</code></b>
-                </li>
-            </ul>
-            <br>
-            <p><b>Limitations</b></p>
-            <ul>
-                <li>No support for fuzziness.</li>
-                <li>No support suffix search.</li>
-                <li>Either T1055 or 1055 will match a Tech ID, but currently only T1055 will highlight it.</li>
-            </ul>
-            <br>
-            <p><b>Intended Use</b></p>
-            <ul>
-                <li>The boolean support allows for more complex searches of answer cards.</li>
-                <li>This serves as an alternative to manually reading each answer card.</li>
-            </ul>
-            <br>
-            <p><b>Note<span style="color: red;">*</span></b></p>
-            <ul>
-                <li>The <b>start➜Tactics</b> question page uses a lightweight front-end search as there are not many
-                    Tactics.</li>
-                <li>The <b>Tactic➜Techniques</b> and <b>Technique➜SubTechniques</b> pages use a heavier back-end
-                    search that provides more content to match against.</li>
-                <li>The back-end search is much more capable - which is useful to know for complex searches.</li>
-            </ul>
-        </section>
-        <footer class="modal-card-foot"></footer>
-    </div>
-</div>
+        const question = {{ question | tojson }};
+
+        const platformFilters = {{ platform_filters | tojson }};
+        cleanupFilterObject(platformFilters, true);
+
+        const dataSrcFilters = {{ data_source_filters | tojson }};
+        cleanupFilterObject(dataSrcFilters, true);
+
+        Alpine.store('question', {
+            crumbs: bracketizeCrumbIDs(crumbs),
+            text  : question.question,
+            id    : question.id,
+            tactic: question.tactic,
+            platformFilters: platformFilters,
+            dataSrcFilters: dataSrcFilters,
+            markjs_opts: {
+                accuracy: {
+                    value: "exactly",
+                    limiters: [
+                        ",", ".", "(", ")", "-", "_", "/", "\\", "?", "!",
+                        "'",'"', "|", "+", "@", "[", "]", "{", "}", "<", ">",
+                        "#", "$", "%", "^", "`", "&", "*", ":", ";", "~"
+                    ],
+                },
+            },
+        });
+    });
+</script>
+
 {% endblock %}

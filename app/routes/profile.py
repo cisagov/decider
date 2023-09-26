@@ -1,6 +1,5 @@
 import logging.config
 
-from flask_principal import Permission, RoleNeed
 from flask import Blueprint, request, redirect, flash, url_for, jsonify, g
 from flask_login import current_user
 from flask import render_template
@@ -13,16 +12,14 @@ from app.models import AttackVersion, db, Cart
 from app.routes.utils import DictValidator, is_tact_id, is_tech_id, password_validator
 from app.routes.utils import ErrorDuringHTMLRoute, ErrorDuringAJAXRoute, wrap_exceptions_as
 
+from app.routes.auth import disabled_in_kiosk, edit_permission, admin_permission
+
 logger = logging.getLogger(__name__)
 profile_ = Blueprint("profile_", __name__, template_folder="templates")
 
-# a role mentioned in permission means it has access there
-admin_permission = Permission(RoleNeed("admin"))
-edit_permission = Permission(RoleNeed("admin"), RoleNeed("editor"))
-member_permission = Permission(RoleNeed("admin"), RoleNeed("editor"), RoleNeed("member"))
-
 
 @profile_.route("/profile", methods=["GET"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def profile():
     """Returns the user's profile page (HTML response)
@@ -52,6 +49,7 @@ def profile():
 
 
 @profile_.route("/profile/save_cart", methods=["POST"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def save_cart():
     """Saves a cart to the DB
@@ -158,6 +156,7 @@ def save_cart():
 
 
 @profile_.route("/profile/load_cart", methods=["POST"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def load_cart():
     """Loads a cart given its cart_id (JSON request, JSON response)"""
@@ -200,6 +199,7 @@ def load_cart():
 
 
 @profile_.route("/profile/delete_cart", methods=["POST"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def delete_cart():
     """Deletes a cart given its cart_id (JSON request, JSON response)"""
@@ -244,6 +244,7 @@ def delete_cart():
 
 
 @profile_.route("/profile/carts", methods=["GET"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def get_carts():
     """Returns listing of saved carts for logged-in user (JSON response)
@@ -267,6 +268,7 @@ def get_carts():
 
 
 @profile_.route("/profile/change_password", methods=["GET"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def change_password_get():
     """Returns password change page (HTML response)"""
@@ -277,6 +279,7 @@ def change_password_get():
 
 
 @profile_.route("/profile/change_password", methods=["POST"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def change_password_post():
     """Processes password change request and redirects user after attempt

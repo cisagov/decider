@@ -1,71 +1,303 @@
 {% extends 'base.html' %}
 
-{% from 'success/description.html' import Description %}
-{% from 'success/subtechniques.html' import SubTechniques %}
-{% from 'success/akas.html' import Akas %}
-{% from 'success/mismappings.html' import Mismappings %}
-{% from 'success/examples.html' import Examples %}
-{% from 'success/cooccurrences.html' import CoOccurrences %}
-{% from 'crumbbar.html' import CrumbBar %}
+{% block title %}
+{{ success.id }} | {{ success.name }}
+{% endblock %}
 
 {% block content %}
-<div class="columns is-centered is-mobile">
-    <div class="column floatingColumn">
 
-        {{ CrumbBar(breadcrumbs) }}
-        <div id="success-card" class="card">
-            <script src="/static/js/success.js"></script>
+<div x-data id="successPage" class="container-fluid">
 
-            <header class="card-header success-card-title">
-                {% if success.url %}
-                    <p class="card-header-title success-header">
-                        {{ success.name }}&nbsp;
-                        <span>
-                            [<a id="technique" target="_blank" rel="noreferrer noopener" data-value="{{ success.id }}" href="{{ success.url }}">{{ success.id }}</a>]
-                        </span>
-                    </p>
-                    <div class="control card-header-icon">
-                        {% if success.tactics|length > 1 %}
-                        <div class="select">
-                        {% else %}
-                        <div class="select" style="display: none">
-                        {% endif %}
-                            <select id="tacticDropdownSelect" autocomplete="off">
-                            {% for tact in success.tactics %}
-                                {% if tact.tact_id == success.tactic_context %}
-                                    <option value="{{ tact.tact_id }}" data-tlink="{{ tact.tech_url_for_tact }}" data-tname="{{ tact.tact_name }}" selected>{{ tact.tact_name }} ({{ tact.tact_id }})</option>
-                                {% else %}
-                                    <option value="{{ tact.tact_id }}" data-tlink="{{ tact.tech_url_for_tact }}" data-tname="{{ tact.tact_name }}">{{ tact.tact_name }} ({{ tact.tact_id }})</option>
-                                {% endif %}
-                            {% endfor %}
-                            </select>
-                        </div>
-                        <a class="success-card-header-icon card-header-icon">
-                            <span class="icon is-medium">
-                                <i class="mdi mdi-36px mdi-plus" onclick="addToCart('{{ success.name }}', '{{ success.id }}')"></i>
-                            </span>
-                        </a>
-                    </div>
-                {% else %}
-                    <p class="card-header-title success-header">
-                        {{ success.name }}&nbsp;
-                        <span>
-                            [{{ success.id }}]
-                        </span>
-                    </p>
-                {% endif %}
-            </header>
+    {# Header #}
+    <header>
 
-            <div class="card-content">
-                {{ Description(success) }}
-                {{ SubTechniques(success) }}
-                {{ Akas(success) }}
-                {{ Mismappings(success) }}
-                {{ CoOccurrences(success) }}
-                {{ Examples(success) }}
+        {# Crumbs #}
+        <nav x-cloak x-show="$store.success.crumbs.length > 0" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <template x-for="(crumb, index) in $store.success.crumbs" :key="crumb.url">
+                    <li
+                        class="breadcrumb-item"
+                        :class="(index === $store.success.crumbs.length-1) ? 'active' : ''"
+                    >
+                        {# not last #}
+                        <template x-if="index !== $store.success.crumbs.length-1">
+                            <a
+                                :href="resolveURL(crumb.url)"
+                                x-text="crumb.name"
+                            ></a>
+                        </template>
+
+                        {# last #}
+                        <template x-if="index === $store.success.crumbs.length-1">
+                            <a aria-current="page">
+                                <i class="bi bi-arrow-down" aria-hidden="true"></i>
+                                <span class="visually-hidden" x-text="crumb.name"></span>
+                            </a>
+                        </template>
+                    </li>
+                </template>
+            </ol>
+        </nav>
+
+        {# Base Tech name only included on no-tactic pages (crumb-less) #}
+        <p
+            x-cloak
+            x-show="($store.success.base_tech.id !== $store.success.id) && ($store.success.crumbs.length === 0)"
+            x-text="$store.success.base_tech.name"
+            class="mb-2"
+        ></p>
+
+        {# Tech Name [ID] + ATT&CK Link #}
+        <h1 class="fs-2" id="successTechNameHeader" class="mb-2">
+            <span>{{ success.name }} [</span><a
+                :href="resolveURL($store.success.url)"
+                class="link-attack-orange"
+                aria-label="`ATT&amp;CK Page {{ success.name }} {{ success.id }}`"
+            >{{ success.id }}</a><span>]</span>
+        </h1>
+
+        <div>{{ success.description | safe }}</div>
+
+        {# Add to Cart #}
+        <div x-data="successAddToCart" class="d-flex justify-content-end">
+            <div>
+                <div class="input-group">
+                    <select
+                        aria-label="Tactic Used"
+                        class="form-select"
+                        id="successTacticSelect"
+                        x-model="tacticId"
+                        style="max-width: max-content;"
+                    >
+                        <template x-if="$store.success.tactic_context === 'TA0000'">
+                            <option selected disabled value="TA0000">Confirm Tactic...</option>
+                        </template>
+
+                        <template x-for="tact in $store.success.tactics" :key="tact.tact_id">
+                            <option
+                                x-text="`${tact.tact_name} [${tact.tact_id}]`"
+                                :value="tact.tact_id"
+                                :selected="$store.success.tactic_context === tact.tact_id"
+                            ></option>
+                        </template>
+                    </select>
+
+                    <button
+                        class="btn btn-success btn-sm"
+                        type="button"
+                        @click="addToCart"
+                        :disabled="tacticId === 'TA0000'"
+                    >Add to Cart</button>
+                </div>
             </div>
         </div>
 
-    </div>
+    </header>
+
+    {# Tactics #}
+    <section>
+        <h2 class="fs-3">Tactics</h2>
+
+        <div class="badge-group">
+            <template x-for="tactic in $store.success.tactics" :key="tactic.tact_id">
+                <span class="badge text-bg-secondary" x-text="`${tactic.tact_name} [${tactic.tact_id}]`"></span>
+            </template>
+        </div>
+    </section>
+
+    {# Platforms #}
+    <section>
+        <h2 class="fs-3">Platforms</h2>
+
+        <div class="badge-group">
+            <template x-for="platform in $store.success.platforms" :key="platform">
+                <span class="badge text-bg-secondary" x-text="platform"></span>
+            </template>
+        </div>
+    </section>
+
+    {# Tech and Subs #}
+    <section>
+        <h2 class="fs-3">Tech and Subs</h2>
+
+        <ul id="successTechAndSubsList">
+            <template x-for="(tech, index) in $store.success.tech_and_subs.rows" :key="tech.id">
+                <li>
+                    <i
+                        aria-hidden="true"
+                        class="bi"
+                        :class="($store.success.tech_and_subs.selected === index) ? 'bi-caret-right-fill' : 'bi-dot'"
+                    ></i>
+                    <template x-if="$store.success.tech_and_subs.selected === index">
+                        <a
+                            aria-current="true"
+                            x-text="`${tech.id} ${tech.name}`"
+                        ></a>
+                    </template>
+                    <template x-if="$store.success.tech_and_subs.selected !== index">
+                        <a
+                            class="link-primary"
+                            :href="resolveURL(tech.url)"
+                            x-text="`${tech.id} ${tech.name}`"
+                        ></a>
+                    </template>
+                </li>
+            </template>
+        </ul>
+    </section>
+
+    {# Mismappings #}
+    {% if success.mismappings |length > 0 %}
+    <section>
+        <h2 class="fs-3">Mismappings</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Other Potential Technique</th>
+                    <th>Context</th>
+                    <th>Rationale</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in success.mismappings %}
+                    <tr class="{{ loop.cycle('table-light', '') }}">
+                        {% if m.corrected_techname %}
+                            <td>
+                                <a href="{{ m.url }}" class="link-strong-blue">{{ m.corrected_techname }} [{{ m.corrected }}]</a>
+                            </td>
+                        {% else %}
+                            <td>N/A</td>
+                        {% endif %}
+                        <td class="text-break">{{ m.context }}</td>
+                        <td class="text-break">{{ m.rationale }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    {% endif %}
+
+    {# Co-Occurrences #}
+    <section x-cloak x-data="successCoocs" x-show="loaded && (coocs.length > 0)">
+        <h2 class="fs-3">Frequently Appears With</h2>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="showAllCoocsCheckbox" x-model="showAllCoocs">
+            <label class="form-check-label" for="showAllCoocsCheckbox">
+                Show All
+            </label>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Technique</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="(tech, index) in coocsDisplayed" :key="tech.tech_id">
+                    <tr x-data="collapseTracker(false)" x-bind="binds" x-id="['cooc-collapse']" :class="(index % 2 == 0) ? 'table-light' : ''">
+                        <td class="align-middle">
+                            <div class="vstack">
+                                <a
+                                    :href="resolveURL(tech.url)"
+                                    x-text="`${tech.tech_name} [${tech.tech_id}]`"
+                                    class="link-strong-blue"
+                                ></a>
+                                <button
+                                    class="btn btn-secondary btn-sm mt-1 w-100"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    :data-bs-target="'#' + $id('cooc-collapse')"
+                                    :aria-controls="$id('cooc-collapse')"
+                                    :aria-expanded="show"
+                                >Toggle Desc</button>
+                            </div>
+                        </td>
+                        <td class="align-middle text-break">
+                            <div
+                                x-ref="collapse"
+                                :id="$id('cooc-collapse')"
+                                x-html="show ? tech.tech_desc : tech.short_desc"
+                                class="collapse coocCollapseDiv"
+                            ></div>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </section>
+
+    {# Usage Examples #}
+    <section x-cloak x-show="$store.success.usage_examples.length > 0">
+        <h2 class="fs-3">Usage Examples</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Report(s)</th>
+                </tr>
+            </thead>
+            <template x-for="(example, index) in $store.success.usage_examples" :key="example.appId">
+                <tbody>
+                    <tr :class="(index % 2 == 0) ? 'table-light' : ''">
+                        <td class="align-middle text-break" x-html="strongBluifyLinks(example.sentence)" :rowspan="example.links.length"></td>
+                        <td class="align-middle text-break">
+                            <a :href="resolveURL(example.links[0].url)" x-text="example.links[0].name" class="link-strong-blue"></a>
+                        </td>
+                    </tr>
+                    <template x-for="link in example.links.slice(1)" :key="link.appId">
+                        <tr :class="(index % 2 == 0) ? 'table-light' : ''">
+                            <td class="align-middle text-break">
+                                <a :href="resolveURL(link.url)" x-text="link.name" class="link-strong-blue"></a>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </template>
+        </table>
+    </section>
+
 </div>
+
+<script>
+    document.addEventListener('alpine:init', function() {
+        const crumbs = {{ breadcrumbs | default([]) | tojson }};
+        if (crumbs.length > 0) {
+            crumbs[0]['name'] = 'Home';
+        }
+
+        const success = {{ success | tojson }};
+
+        // prevent sentence / URL collisions as :key (just use uuids)
+        success.blurbs.forEach((example) => {
+            example.appId = uuidv4();
+            example.links.forEach((link) => {
+                link.appId = uuidv4();
+            });
+        });
+
+        Alpine.store('success', {
+            crumbs: bracketizeCrumbIDs(crumbs),
+
+            id: success.id,
+            tactic_context: success.tactic_context,
+            name: success.name,
+            description: success.description,
+            url: success.url,
+
+            platforms: success.platforms,
+            tactics: success.tactics,
+            tech_and_subs: success.tech_and_subs,
+
+            base_tech: success.tech_and_subs.rows[0],
+
+            mismappings: success.mismappings,
+            usage_examples: success.blurbs,
+        });
+    });
+</script>
+
 {% endblock %}

@@ -23,14 +23,11 @@ UNKNOWN.egg-info/
 *.key
 *.pem
 *.csr
-/app/utils/certs/
+*.crt
 
 # Secrets
 /.env
-/app/utils/jsons/source/user.json
-/app/utils/jsons/source/cart.json
 /init.sql
-/app/utils/db/dumps
 
 # Local working notes / tools
 /scratch/

@@ -12,7 +12,7 @@ from flask import (
     g,
 )
 from flask_login import login_user, logout_user, current_user
-from flask_principal import identity_changed, Identity, AnonymousIdentity
+from flask_principal import identity_changed, Identity, AnonymousIdentity, Permission, RoleNeed
 
 from app.models import db, User
 
@@ -26,13 +26,26 @@ logger = logging.getLogger(__name__)
 auth_ = Blueprint("auth_", __name__, template_folder="templates")
 
 
+# a role mentioned in permission means it has access there
+admin_permission = Permission(RoleNeed("admin"))
+edit_permission = Permission(RoleNeed("admin"), RoleNeed("editor"))
+member_permission = Permission(RoleNeed("admin"), RoleNeed("editor"), RoleNeed("member"))
+
+
 def public_route(func):
     """Decorator to mark a route as accessible by non-logged-in users"""
     func.is_public = True
     return func
 
 
+def disabled_in_kiosk(func):
+    """Decorator to make a route wholly inaccessible in kiosk-mode"""
+    func.disabled_in_kiosk = True
+    return func
+
+
 @auth_.route("/login", methods=["GET"])
+@disabled_in_kiosk
 @public_route
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def login():
@@ -49,6 +62,7 @@ def login():
 
 
 @auth_.route("/login", methods=["POST"])
+@disabled_in_kiosk
 @public_route
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def login_post():
@@ -109,6 +123,7 @@ def login_post():
 
 
 @auth_.route("/logout", methods=["GET"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def logout():
     """Logs-out the requesting user and redirects them to the login page"""

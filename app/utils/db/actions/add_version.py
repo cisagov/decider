@@ -7,8 +7,9 @@ from app.utils.db.util import option_selector, app_config_selector
 import app.utils.db.read as db_read
 import app.utils.db.create as db_create
 
+from app.constants import BUILD_SOURCES_DIR
+
 import argparse
-import os
 import time
 
 import sys
@@ -17,7 +18,6 @@ import sys
 
 
 def main():
-
     # optional avenue of command-line instead of text-ui
     parser = argparse.ArgumentParser("Adds a new ATT&CK version to the DB from the local disk.")
     parser.add_argument("--config", help="The database configuration to use (from app/conf.py).")
@@ -42,12 +42,8 @@ def main():
     app.config.from_object(app_config)
     db.init_app(app)
     with app.app_context():
-
         # RESOURCE LOADING --------------------------------------------------------------------------------------------
-
-        utils_dir = os.path.dirname(os.path.realpath(__file__))
-        sources_dir = os.path.join(utils_dir, "../../jsons/source/")
-        src_mgr = SourceManager(sources_dir)
+        src_mgr = SourceManager(BUILD_SOURCES_DIR)
 
         # Determine existing content
         try:

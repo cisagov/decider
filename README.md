@@ -1,16 +1,19 @@
 # Decider
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.  
 This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/).
 
-## :heavy_exclamation_mark: Updates
+## :newspaper: 3.0.0 - Kiosk is Here
 
-### Aug 4, 2023 - Enterprise v13 Content Added
+:construction: Tackling a uWSGI memory leak at the moment. It's eating 7GB of RAM. It was fine on ~100MB before. :construction:
 
-v13 was back-burnered a bit due to other developments underway. However, we intend to align with the every-6-month cadence of ATT&amp;CK releases.
+- Decider is now login-less and responsive.
+- Content updates have been simplified to copying files and restarting Docker.
+- The Docker setup has changed enough that there isn't exactly a 2 &rarr; 3 update process, just a fresh install of 3.
+- The database structure is the same though - so Decider 2.x.y can be leveraged for editing content.
 
-Update instructions are included in **Appendix A** - please reach out if you have any difficulties with them. Regardless of environment, the goal is to copy/pull in the new co-occurrence/tree/attack jsons and then run the `app.utils.db.actions.add_version` module script.
+***This is Firefox - but it works on mobile too!***  
+![Screenshot of Decider on a Tiny Browser Window](./docs/imgs/tiny-screens-welcome-3.0.0.png)
 
 ## :thinking: What is it?
 
@@ -24,7 +27,7 @@ Decider is a tool to help analysts map adversary behavior to the MITRE ATT&CK Fr
 
 ### :book: User Guide
 
-[Over Here](./docs/Decider_User_Guide_v1.0.0.pdf)
+[Over Here](./docs/user_guide_3_0_0/user-guide-3-0-0.pdf)
 
 ### :triangular_ruler: Intended Purpose
 
@@ -42,12 +45,12 @@ Decider does not intend to replace the ATT&amp;CK site - but rather, it acts as 
 ### :deciduous_tree: Question Tree
 
 \(*you are here*\)**\[Matrix > Tactic\]** > Technique > SubTechnique
-![Decider's Question Tree Page](./docs/imgs/question-tree-1.0.0.png)
+![Decider's Question Tree Page](./docs/imgs/question-tree-3.0.0.png)
 
 ### :mag: Full Technique Search
 
 Boolean expressions, prefix-matching, and stemming included.
-![Decider's Full Technique Search Page](./docs/imgs/full-search-1.0.0.png)
+![Decider's Full Technique Search Page](./docs/imgs/full-search-3.0.0.png)
 
 ## Installation
 
@@ -59,38 +62,45 @@ Boolean expressions, prefix-matching, and stemming included.
 git clone https://github.com/cisagov/decider.git
 cd decider
 cp .env.docker .env
-
-# if you want HTTPS instead of HTTP
-# - edit .env
-#   + WEB_HTTPS_ON='yes'
-# - populate cert / key files
-#   + /app/utils/certs/decider.key
-#   + /app/utils/certs/decider.crt
-
+cp -r default_config/. config/
 sudo docker compose up
-# sudo for Linux only
 ```
 
+Then visit http://localhost:8001/
+
 It is ready when **Starting uWSGI** appears
-![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-1.0.0.png)
+![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-3.0.0.png)
 
-**Default Endpoint**: http://localhost:8001/
+#### Config Made Easy
 
-**Default Login**:
-- Email: admin@admin.com
-- Password: admin
+Changing `config/`? Just:
 
-**Endpoint Determination** (.env vars):
+```bash
+sudo docker compose stop
+sudo docker compose start
+```
+
+However, changing variables in .env requires
+
+```bash
+sudo docker compose up
+```
+
+which will recreate containers with modified environments
+
+#### HTTPS / URL
+
+##### Endpoint Determination (.env vars):
+
 - `WEB_HTTPS_ON=''` -> http://`WEB_IP`:`WEB_PORT`/
 - `WEB_HTTPS_ON='anything'` -> https://`WEB_IP`:`WEB_PORT`/
 
-**HTTPS Cert Location**:
-- Write these 2 files before `docker compose up` to set your SSL cert up
-  - /app/utils/certs/decider.key
-  - /app/utils/certs/decider.crt
-- If either file is missing, a self-signed cert is generated and used instead
+##### HTTPS Cert Location
 
-**DB Persistence Note**: Postgres stores its data in a Docker volume to persist the database.
+- Write these 2 files to set SSL up:
+  - config/certs/decider.key
+  - config/certs/decider.crt
+- If either file is missing, a self-signed cert is generated and used instead
 
 ### :technologist: Manual Install
 
@@ -160,75 +170,19 @@ Exact required version(s) unspecified.
 
 #### Suggested Specs
 
-Decider has not yet been tested against many concurrent users.
-This is a rough suggestion.
-
-- 2-4 Cores
-- 4-8 GB Memory
+- 1-2 Cores
+- 1-2 GB Memory
 - 20 GB Disk Space
 
-Requirements for a single user are quite minimal. Scale according to need. Adjust up or down as desired.
-
-#### Docker
-
-##### Resource Usage
-
-###### Disk Space
-
-Determined using `sudo docker system df -v`
-
-**Note:** This does not account for space used in installing Docker itself
-
-| Service     | Image Space | Container Space | Volume Space |
-| ----------- | ----------- | --------------- | ------------ |
-| decider-web | 1.17 GB     | 167 kB          | x            |
-| decider-db  | 241.7 MB    | 63 B            | 109.4 MB *\(db_data\)* |
-
-Build Cache Space: 77.62 MB
-
-###### Memory
-
-Determined using `sudo docker stats`
-
-**Note:**
-- uWSGI is only running 1 process in Docker by default
-- Memory usage increases with connected users and uWSGI processes
-
-| Service     | Freshly Launched | After Some Browsing |
-| ----------- | ---------------- | ------------------- |
-| decider-web | 51.8 MiB         | 97.12 MiB           |
-| decider-db  | 17.09 MiB        | 40.92 MiB           |
-
-#### Manual
-
-##### Resource Usage
-
-###### Disk Space
-
-**Note:**
-- This does not account for space used in installing Postgres itself
-- This does not include the space used in installing / building Python
-
-Fresh repo clone: 92 MB
-  - `du -h .`
-
-Postgres Database Usage: 30 MB
-  - `SELECT pg_size_pretty( pg_database_size('decider') );`
-
-Python Virtual Environment + Packages: 132 MB
-  - `du -h ./venv/`
-
-###### Memory
-
-**Note:**
-- uWSGI is running 5 processes in manual deployment by default
-- Memory usage increases with connected users and uWSGI processes
+Decider has not yet been tested against many concurrent users (this is soon to change).  
+But it is extremely lightweight - it sits at roughly 250MB of RAM total for both containers (`docker stats`).  
+It does peak during the build process where sources are loaded into RAM, hitting 375MB or so.
 
 ## :judge: ATT&amp;CK&reg; Data Disclaimer
 
-JSONs under app/utils/jsons/source/enterprise-attack are pulled from https://github.com/mitre-attack/attack-stix-data/tree/master/enterprise-attack
+JSONs under default_config/build_sources/enterprise-attack are pulled from https://github.com/mitre-attack/attack-stix-data/tree/master/enterprise-attack
 
-## Appendix A: Updating ATT&amp;CK Content
+## Appendix A: Updating ATT&amp;CK Content on Decider 1/2
 
 ### :whale: Docker Update Instructions
 

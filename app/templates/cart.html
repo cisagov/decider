@@ -1,228 +1,280 @@
-{% macro Cart(current_user) %}
+{% macro cart() %}
+<div
+    id="shoppingCart"
+    x-data="offcanvasCart"
+    x-bind="binds"
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    aria-labelledby="shoppingCartLabel"
+>
+    {# Header #}
+    <div class="offcanvas-header py-2 px-4">
+        <h2 id="shoppingCartLabel" class="offcanvas-title fs-4">CTI Shopping Cart</h2>
+        <button x-ref="closeCart" type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
 
-<div class="is-2 column" id="cartColumn">
-    <script src="/static/js/lib/filesaver.min.js"></script>
-    <script src="/static/js/lib/docx-7.8.2.min.js"></script>
-    <script src="/static/js/cart.js"></script>
+    {# Body #}
+    <div class="offcanvas-body p-2">
 
-    <nav class="panel cart-panel">
-        <p id="cart-title" class="panel-heading has-text-centered">Cart</p>
+        {# Name + Version #}
+        <div class="vstack gap-1 mb-1">
 
-        <div class="panel-block" style="text-align: center;">
-            <label id="auto-save-text" class="checkbox" style="position:absolute;">
-                <input id="auto-save" type="checkbox" onclick="updateAutoSave()">Auto-Save
-            </label>
-        </div>
+            {# Version #}
+            <span class="d-block w-100">
+                <strong>Version</strong>: Enterprise <span x-text="version"></span>
+            </span>
 
-        <div class="panel-block">
-            <div class="columns is-centered" style="width: 100%">
-                <div class="column has-text-centered">
-                    <a>
-                        <span class="icon is-medium">
-                            <button id="rename-button" class="has-tooltip-bottom tooltip-bottom-leftshift is-hover has-tooltip-multiline" data-tooltip="Rename the cart" onclick="showRenameModal()"><i class="mdi mdi-rename-box mdi-24px"></i></button>
-                        </span>
-                    </a>
-                    <a>
-                        <span class="icon is-medium">
-                            <button class="has-tooltip-bottom tooltip-bottom-leftshift is-hover" data-tooltip="Save your cart to the database" onclick="preSaveCartModal()"><i class="mdi mdi-database-arrow-up mdi-24px"></i></button>
-                        </span>
-                    </a>
-                    <a>
-                        <span class="icon is-medium">
-                            <button class="has-tooltip-bottom tooltip-bottom-leftshift is-hover" data-tooltip="Save a copy of the cart" onclick="downloadCart()"><i class="mdi mdi-download mdi-24px"></i></button>
-                        </span>
-                    </a>
-                    <a>
-                        <input type="file" id="cartFile" style="display: none;"/>
-                        <span class="icon is-medium">
-                            <button class="is-hover has-tooltip-bottom tooltip-bottom-leftshift is-hover" data-tooltip="Import data into the cart" onclick="importCart()"><i class="mdi mdi-upload mdi-24px"></i></button>
-                        </span>
-                    </a>
-                    <a>
-                        <span class="icon is-medium">
-                            <button class="has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-multiline is-hover" data-tooltip="Export a Microsoft Word Document containing cart contents in table format to your local machine.
-                            Useful for typed reports." onclick="wordExport()"><i class="mdi mdi-file-word mdi-24px"></i></button>
-                        </span>
-                    </a>
-                    <a>
-                        <span class="icon is-medium">
-                            <button class="has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-multiline is-hover" data-tooltip="Export an ATT&CK Navigator layer JSON containing all selected techniques from the cart. Your notes carry over as annotations.
-                            Useful for export function when presenting data."><i class="mdi mdi-map mdi-24px" onclick="navigatorExport()"></i></button>
-                        </span>
-                    </a>
+            {# Show Name #}
+            <template x-if="!inTitleEditor">
+                <div class="vstack gap-1">
 
-                    {% if g.co_ocs_enabled %}
-                        <a href="#" onclick="gotoSuggestions();">
-                            <span class="icon is-medium">
-                                <button class="has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-multiline is-hover" data-tooltip="Allows you to see all suggested Techniques from 'Frequently Appears With' in one place. (suggestions based on cart contents)">
-                                    <i class="mdi mdi-lightbulb-on mdi-24px"></i>
-                                </button>
-                            </span>
-                        </a>
-                    {% else %}
-                        <a>
-                            <span class="icon is-medium">
-                                <button class="has-tooltip-bottom tooltip-bottom-leftshift has-tooltip-multiline is-hover" data-tooltip="There is no co-occurrence data for this version of ATT&CK." style="color: gray;">
-                                    <i class="mdi mdi-lightbulb-on mdi-24px"></i>
-                                </button>
-                            </span>
-                        </a>
-                    {% endif %}
+                    {# Name #}
+                    <span class="d-block w-100">
+                        <strong>Name</strong>: <span x-text="title"></span>
+                    </span>
 
-                    <a>
-                        <span class="icon is-medium">
-                            <button class="has-tooltip-bottom tooltip-bottom-leftshift is-hover" data-tooltip="Close the cart" onclick="preCloseCartModal()"><i class="mdi mdi-close-box mdi-24px"></i></button>
-                        </span>
-                    </a>
+                    {# Begin Editing #}
+                    <div>
+                        <button
+                            id="cartEditNameButton"
+                            type="button"
+                            class="btn btn-light btn-border-dark btn-sm"
+                            @click="editTitleBegin"
+                        >
+                            <i class="bi bi-pencil-fill" aria-hidden="true"></i>
+                            Edit Name
+                        </button>
+                    </div>
+
                 </div>
-            </div>
+            </template>
+
+            {# Edit Name #}
+            <template x-if="inTitleEditor">
+                <div class="vstack gap-1">
+
+                    {# New Name Input #}
+                    <span class="d-block w-100">
+                        <label for="cartNameChangeInput"><strong>Name</strong></label>:
+                        <input
+                            id="cartEditNameInput"
+                            type="text"
+                            class="form-control"
+                            :class="newTitleValid ? 'is-valid' : 'is-invalid'"
+                            id="cartNameChangeInput"
+                            placeholder="My CTI Report"
+                            x-model="newTitle"
+                        >
+                        <div
+                            :class="newTitleValid ? 'valid-feedback' : 'invalid-feedback'"
+                            x-text="newTitleValid ? 'Looks good!' : 'Name must be different and not just whitespace.'"
+                        ></div>
+                    </span>
+
+                    <div class="hstack gap-1">
+
+                        {# Save Changes #}
+                        <button
+                            type="button"
+                            class="btn btn-success btn-sm"
+                            @click="editTitleSave"
+                            :disabled="!newTitleValid"
+                        >
+                            <i class="bi bi-check" aria-hidden="true"></i>
+                            Save Edit
+                        </button>
+
+                        {# Cancel Changes #}
+                        <button
+                            type="button"
+                            class="btn btn-dark btn-sm"
+                            @click="editTitleCancel"
+                        >
+                            <i class="bi bi-x" aria-hidden="true"></i>
+                            Cancel Edit
+                        </button>
+
+                    </div>
+                </div>
+            </template>
+
         </div>
-        <div id="cartItemsPanel" class="panel-block">
-            <ol id="cart" class="cartList" type="1" style="width: 100%">
-            </ol>
+
+        {# Control Buttons #}
+        <div class="vstack gap-1 mb-2">
+            <div class="hstack gap-1 w-100 align-items-stretch">
+
+                {# Save Cart #}
+                <button
+                    type="button"
+                    class="btn btn-light btn-border-dark btn-sm w-50"
+                    @click="saveToJson"
+                >
+                    <i class="bi bi-file-earmark-arrow-down-fill" aria-hidden="true"></i>
+                    Save to .json File
+                </button>
+
+                {# Load Cart - Button #}
+                <button
+                    type="button"
+                    class="btn btn-light btn-border-dark btn-sm w-50"
+                    @click="loadFromJson"
+                >
+                    <i class="bi bi-file-earmark-arrow-up-fill" aria-hidden="true"></i>
+                    Load from .json File
+                </button>
+
+                {# Load Cart - Hidden File Input #}
+                <input
+                    aria-label="Load from .json File"
+                    type="file"
+                    id="cartFile"
+                    accept="application/JSON"
+                    @change="loadFromJsonFileChanged($el)"
+                    class="d-none"
+                >
+
+            </div>
+            <div class="hstack gap-1 w-100 align-items-stretch">
+
+                {# Export Word Doc #}
+                <button
+                    type="button"
+                    class="btn btn-light btn-border-dark btn-sm w-50"
+                    @click="exportToWordDoc"
+                >
+                    <i class="bi bi-file-earmark-word-fill" aria-hidden="true"></i>
+                    Export to Docx Table
+                </button>
+
+                {# Export Navigator Layer #}
+                <button
+                    type="button"
+                    class="btn btn-light btn-border-dark btn-sm w-50"
+                    @click="exportToNavLayer"
+                >
+                    <i class="bi bi-map-fill" aria-hidden="true"></i>
+                    Export to ATT&amp;CK Navigator Layer
+                </button>
+
+            </div>
+            <div class="hstack gap-1 w-100 align-items-stretch">
+
+                {# Cart-Wide Suggestions #}
+                <a
+                    class="btn btn-light btn-border-dark btn-sm w-50 underline-hover"
+                    :href="resolveURL(`/suggestions/${version}`)"
+                >
+                    <i class="bi bi-lightbulb-fill" aria-hidden="true"></i>
+                    View Suggested Techniques
+                </a>
+
+                {# Close Cart #}
+                <button
+                    id="closeCartBeginButton"
+                    type="button"
+                    class="btn btn-danger btn-border-dark btn-sm w-50"
+                    @click="closeCartBegin"
+                    :disabled="inCloseConfirm"
+                >
+                    <i class="bi bi-trash-fill" aria-hidden="true"></i>
+                    Close Cart
+                </button>
+
+            </div>
+
+            {# Confirm / Cancel Close Cart #}
+            <template x-if="inCloseConfirm">
+                <div class="hstack gap-1 w-100 align-items-stretch">
+
+                    <div class="w-50"></div>
+
+                    {# Confirm Close Cart #}
+                    <button
+                        type="button"
+                        class="btn btn-danger btn-border-dark btn-sm w-25"
+                        @click="closeCartConfirm"
+                    >
+                        <i class="bi bi-trash-fill" aria-hidden="true"></i>
+                        Close
+                    </button>
+
+                    {# Cancel Close Cart #}
+                    <button
+                        id="closeCartCancelButton"
+                        type="button"
+                        class="btn btn-dark btn-border-dark btn-sm w-25"
+                        @click="closeCartCancel"
+                        aria-label="Cancel. Shift tab to access Confirm."
+                    >
+                        <i class="bi bi-x" aria-hidden="true"></i>
+                        Cancel
+                    </button>
+
+                </div>
+            </template>
         </div>
-    </nav>
-</div>
 
-<div class="modal" id="close_cart_modal">
-    <div class="modal-background" onclick="closeModal('#close_cart_modal')"></div> <!-- Click outside modal to close -->
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Close Cart</p>
-            <button class="delete" aria-label="close" onclick="closeModal('#close_cart_modal')"></button>
-        </header>
-        <section class="modal-card-body">
-            <p>Are you sure you would like to close the cart?</p>
-            <br>
-            <p><b>Warning:</b> if you have not saved the cart to the database or exported it to a JSON file, then this
-            will permanently delete the cart / progress made.</p>
-        </section>
-        <footer class="modal-card-foot">
-            <button class="button is-danger" onclick="clearCart()">Close Cart</button>
-            <button class="button" onclick="closeModal('#close_cart_modal')">Cancel</button>
-        </footer>
+        {# Cart Entries #}
+        <div class="h-100">
+            <h3 class="text-center fs-4">
+                Cart Entries
+                <span class="badge bg-secondary" x-text="entries.length"></span>
+            </h3>
+
+            <template x-for="entry in entries" :key="entry.appId">
+
+                {# Entry #}
+                <div x-id="['cart-entry']" class="cart-entry mb-2">
+
+                    {# Header #}
+                    <h4 :id="$id('cart-entry')" class="fs-6 text-break">
+                        <span class="d-block" x-text="`${entry.tacticName} [${entry.tactic}]`"></span>
+                        <span class="d-block">
+                            <strong x-text="`${entry.name} [${entry.index}]`"></strong>
+                        </span>
+                    </h4>
+
+                    <div class="vstack">
+
+                        {# Success Page + Delete #}
+                        <div class="hstack w-100 mb-2 justify-content-between">
+                            <div>
+                                <a
+                                    :href="resolveURL(`/question/${version}/${entry.tactic}/${entry.index.replaceAll('.', '/')}`)"
+                                    :aria-labelledby="$id('cart-entry')"
+                                    class="link-strong-blue"
+                                >App Success Page</a>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="btn btn-danger btn-border-dark btn-sm"
+                                aria-label="Delete cart entry"
+                                @click="entries = entries.filter((e) => (e.appId !== entry.appId))"
+                            >
+                                <i class="bi bi-trash-fill" aria-hidden="true"></i>
+                                Delete
+                            </button>
+                        </div>
+
+                        {# Mapping Rationale #}
+                        <div x-id="['cart-entry-notes']" class="form-floating">
+                            <textarea
+                                class="w-100 form-control"
+                                :id="$id('cart-entry-notes')"
+                                x-model.debounce="entry.notes"
+                                placeholder="Mapping Rationale"
+                            ></textarea>
+                            <label class="d-block w-100" :for="$id('cart-entry-notes')">Mapping Rationale</label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </template>
+        </div>
+
     </div>
 </div>
-
-<div class="modal" id="save_modal">
-    <div class="modal-background" onclick="closeModal('#save_modal')"></div> <!-- Click outside modal to close -->
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Save Cart Contents</p>
-            <button class="delete" aria-label="close" onclick="closeModal('#save_modal')"></button>
-        </header>
-        <section class="modal-card-body">
-            <p>Please verify the name of your cart before saving. Note that if this cart was loaded from the database and the name has not changed, your previous cart will be <b>overwritten</b>.</p>
-        </section>
-        <footer class="modal-card-foot">
-            <button class="button is-success" onclick="saveCartDatabase(true)">Save</button>
-            <button class="button" onclick="closeModal('#save_modal')">Cancel</button>
-        </footer>
-    </div>
-</div>
-
-<div class="modal" id="success_modal">
-    <div class="modal-background" onclick="closeModal('#success_modal')"></div> <!-- Click outside modal to close -->
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Sucess!</p>
-            <button class="delete" aria-label="close" onclick="closeModal('#success_modal')"></button>
-        </header>
-        <section class="modal-card-body">
-            <p>This cart has successfully been saved to the database and encrypted. It is accessible via the profile tab.</p>
-        </section>
-        <footer class="modal-card-foot"></footer>
-    </div>
-</div>
-
-<div class="modal" id="url_cart_mismatch_modal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Warning: Version Mismatch</p>
-        </header>
-        <section class="modal-card-body default-list">
-            <p>By means of manually editing the URL or clicking a saved Decider link - the URL you are viewing is
-                version (<span id="url_cart_mismatch_urlver"></span>), different from that of your cart (<span id="url_cart_mismatch_cartver"></span>).
-                This content does not apply to the current ATT&CK version you are working in.
-                This content cannot be added to your cart, and thus, you will be navigated away.</p>
-            <br>
-            <p><u>If you wish to add any of the content here to your cart:</u> you will need to save your cart, clear its contents,
-                and revisit this page.</p>
-            <br>
-            <p><span class="tag is-link is-light">Change Version</span>: this will change the version to match that of
-                your cart. <b>NOTE:</b> the content may not exist in the other version and you may hit a 404 page.</p>
-            <br>
-            <p><span class="tag is-info is-light">Go Home</span>: takes you to the question homepage matching the version
-                of your cart.</p>
-            <br>
-            <p><span class="tag is-warning is-light">Browse Anyway</span>: allows you to view the page that contains
-                content of a version different than your cart. Clicking the add to cart button <b>+</b> will cause
-                a warning message.</p>
-        </section>
-        <footer class="modal-card-foot">
-            <button class="button is-link" onclick="closeModal('#url_cart_mismatch_modal'); urlCartMismatchChangeVer();">Change Version</button>
-            <button class="button is-info" onclick="closeModal('#url_cart_mismatch_modal'); urlCartMismatchGoHome();">Go Home</button>
-            <button class="button is-warning" onclick="closeModal('#url_cart_mismatch_modal');">Browse Anyway</button>
-        </footer>
-    </div>
-</div>
-
-<div class="modal" id="add_to_cart_mismatch_modal">
-    <div class="modal-background" onclick="closeModal('#add_to_cart_mismatch_modal')"></div> <!-- Click outside modal to close -->
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Warning: This Technique Cannot be Added</p>
-            <button class="delete" aria-label="close" onclick="closeModal('#add_to_cart_mismatch_modal')"></button>
-        </header>
-        <section class="modal-card-body default-list">
-            <p>The Technique on this page is under ATT&CK version (<span id="add_to_cart_mismatch_urlver"></span>),
-                different from that of your cart (<span id="add_to_cart_mismatch_cartver"></span>). This content
-                does not apply to the current ATT&CK version you are working in.</p>
-            <br>
-            <p><span class="tag is-link is-light">Change Version</span>: this will change the version to match that of
-                your cart. <b>NOTE:</b> the content may not exist in the other version and you may hit a 404 page.</p>
-        </section>
-        <footer class="modal-card-foot">
-            <button class="button is-link" onclick="closeModal('#add_to_cart_mismatch_modal'); urlCartMismatchChangeVer();">Change Version</button>
-        </footer>
-    </div>
-</div>
-
-<div class="modal" id="rename_modal">
-    <div class="modal-background" onclick="closeModal('#rename_modal')"></div> <!-- Click outside modal to close -->
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Rename Cart</p>
-            <button class="delete" aria-label="close" onclick="closeModal('#rename_modal')"></button>
-        </header>
-        <section class="modal-card-body">
-            <p style="margin-bottom: 0.5em;">
-                If you type a new name matching an existing cart - then that cart will be overwritten.
-                The existing cart will be highlighted <span class="rename-modal-to-overwrite">like this</span> and
-                moved to the top of the list as a warning.
-            </p>
-
-            <p>
-                <b style="margin-right: 0.5em;">Current Name:</b>
-                <span id="rename_modal_current_name"><!-- JS-populated --></span>
-            </p>
-
-            <div class="label-input-row">
-                <label for="rename_modal_new_name"><b>New Name:</b></label>
-                <input class="input" type="text" id="rename_modal_new_name" name="rename_modal_new_name" placeholder="Cart Name" value="" oninput="renameModalOnTypeNewName()">
-            </div>
-
-            <p><b>Currently Saved Carts:</b></p>
-            <div id="rename_modal_db_cart_list_div" class="default-list">
-                <ul id="rename_modal_db_cart_list"><!-- JS-populated --></ul>
-            </div>
-        </section>
-        <footer class="modal-card-foot">
-            <button id="rename-modal-confirm-button" class="button is-info" onclick="cartNameChange()" disabled>Confirm</button>
-            <button class="button" onclick="closeModal('#rename_modal')">Cancel</button>
-        </footer>
-    </div>
-</div>
-
-{%- endmacro %}
+{% endmacro %}

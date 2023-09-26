@@ -1,84 +1,274 @@
 {% extends 'base.html' %}
-{% from 'generic_filters.html' import CheckboxFilters %}
+
+{% block title %}Technique Search{% endblock %}
 
 {% block content %}
-<div class="columns is-centered is-mobile">
-    <script src="/static/js/search.js"></script>
 
-    <!-- Filtering -->
-    <div class="column is-narrow" id="filterColumn">
-        <div id="tacticSelect">
-            {{ CheckboxFilters(tactic_fs_filters) }}
-        </div>
-        <div id="platformSelect">
-            {{ CheckboxFilters(platform_fs_filters) }}
-        </div>
-        <div id="dataSourceSelect">
-            {{ CheckboxFilters(data_source_fs_filters) }}
+<div x-data="fullSearchPage" class="container-fluid">
+
+    {# Header #}
+    <div class="row">
+        <div class="col-12 col-md-9 offset-md-3 col-xl-10 offset-xl-2">
+
+            {# Page Title #}
+            <h1 class="fs-3 mb-3">Full Technique Search</h1>
+
         </div>
     </div>
 
-    <!-- Search Results -->
-    <div id="searchColumn" class="column floatingColumn">
-        <div style="margin-bottom: 0.5em;" class="control has-icons-right">
-            <input id="full-search-bar" oninput="searchBarInputChange(this.value)" class="input is-rounded" type="text" placeholder="Search techniques..." autocomplete="off" value=""/>
-            <span class="icon is-medium is-right" style="pointer-events: initial;">
-                <a>
-                    <i class="mdi mdi-24px mdi-information-outline" onclick="openModal('#fulltech_search_info_modal')"></i>
-                </a>
-            </span>
-            <label id="flashing-disable-parent" for="flashing-disable"><input type="checkbox" id="flashing-disable" value="en" onclick="toggleFlashReduction(this)"> Reduce flashing</label><br>
+    {# Body #}
+    <div class="row">
+
+        {# Filters #}
+        <div class="col-12 col-md-3 col-xl-2">
+
+            {# Tactic #}
+            <div x-data="collapseTracker(false, 'search-tactic')" x-bind="binds" class="row mb-3 filterRow">
+
+                <div class="col-4 col-md-12 text-center">
+                    <p class="fs-5 my-1">Filter Tactics</p>
+                    <div class="btn-group-vertical w-100 mb-2">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#tacticFilterCheckboxes"
+                            aria-controls="tacticFilterCheckboxes"
+                            aria-label="Show / hide Tactic filters"
+                            title="Show / hide Tactic filters"
+                            x-text="`${show ? 'Hide' : 'Show'} Filters`"
+                            :aria-expanded="show"
+                        >Show Filters</button>
+                        <button
+                            class="btn btn-secondary"
+                            type="button"
+                            @click="tactics = []"
+                            :aria-label="`Clear ${tactics.length} tactic filters`"
+                            title="Clear tactic filters"
+                        >
+                            Clear Filters&nbsp;
+                            <span class="badge text-bg-light" x-text="tactics.length">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div x-ref="collapse" id="tacticFilterCheckboxes" class="col-8 col-md-12 collapse filterCheckboxes">
+                    <div class="row">
+
+                        {# Checkboxes #}
+                        <template x-for="tactic in $store.search.tacticFilters.items" :key="tactic.value">
+                            <div class="col-12">
+                                <div class="form-check" x-id="['tactic-check']">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        :id="$id('tactic-check')"
+                                        :value="tactic.value"
+                                        x-model.debounce="tactics"
+                                        :aria-label="`Tactic filter ${tactic.name}`"
+                                    >
+                                    <label
+                                        class="form-check-label"
+                                        :for="$id('tactic-check')"
+                                        x-text="tactic.name"
+                                    ></label>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+            </div>
+
+            {# Platform #}
+            <div x-data="collapseTracker(false, 'search-platform')" x-bind="binds" class="row mb-3 filterRow">
+
+                <div class="col-4 col-md-12 text-center">
+                    <p class="fs-5 my-1">Filter Platforms</p>
+                    <div class="btn-group-vertical w-100 mb-2">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#platformFilterCheckboxes"
+                            aria-controls="platformFilterCheckboxes"
+                            aria-label="Show / hide Platform filters"
+                            title="Show / hide Platform filters"
+                            x-text="`${show ? 'Hide' : 'Show'} Filters`"
+                            :aria-expanded="show"
+                        >Show Filters</button>
+                        <button
+                            class="btn btn-secondary"
+                            type="button"
+                            @click="platforms = []"
+                            :aria-label="`Clear ${platforms.length} platform filters`"
+                            title="Clear platform filters"
+                        >
+                            Clear Filters&nbsp;
+                            <span class="badge text-bg-light" x-text="platforms.length">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div x-ref="collapse" id="platformFilterCheckboxes" class="col-8 col-md-12 collapse filterCheckboxes">
+                    <div class="row">
+
+                        {# Checkboxes #}
+                        <template x-for="platform in $store.search.platformFilters.items" :key="platform.value">
+                            <div class="col-12">
+                                <div class="form-check" x-id="['platform-check']">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        :id="$id('platform-check')"
+                                        :value="platform.value"
+                                        x-model.debounce="platforms"
+                                        :aria-label="`Platform filter ${platform.name}`"
+                                    >
+                                    <label
+                                        class="form-check-label"
+                                        :for="$id('platform-check')"
+                                        x-text="platform.name"
+                                    ></label>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+            </div>
+
+            {# Data Source #}
+            <div x-data="collapseTracker(false, 'search-data-source')" x-bind="binds" class="row mb-3 filterRow">
+
+                <div class="col-4 col-md-12 text-center">
+                    <p class="fs-5 my-1">Filter Data Sources</p>
+                    <div class="btn-group-vertical w-100 mb-2">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#dataSrcFilterCheckboxes"
+                            aria-controls="dataSrcFilterCheckboxes"
+                            aria-label="Show / hide Data Source filters"
+                            title="Show / hide Data Source filters"
+                            x-text="`${show ? 'Hide' : 'Show'} Filters`"
+                            :aria-expanded="show"
+                        >Show Filters</button>
+                        <button
+                            class="btn btn-secondary"
+                            type="button"
+                            @click="data_sources = []"
+                            :aria-label="`Clear ${data_sources.length} data source filters`"
+                            title="Clear data source filters"
+                        >
+                            Clear Filters&nbsp;
+                            <span class="badge text-bg-light" x-text="data_sources.length">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div x-ref="collapse" id="dataSrcFilterCheckboxes" class="col-8 col-md-12 collapse filterCheckboxes">
+                    <div class="row">
+
+                        {# Checkboxes #}
+                        <template x-for="dataSrc in $store.search.dataSrcFilters.items" :key="dataSrc.value">
+                            <div class="col-12">
+                                <div class="form-check" x-id="['data-source-check']">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        :id="$id('data-source-check')"
+                                        :value="dataSrc.value"
+                                        x-model.debounce="data_sources"
+                                        :aria-label="`Data source filter ${dataSrc.name}`"
+                                    >
+                                    <label
+                                        class="form-check-label"
+                                        :for="$id('data-source-check')"
+                                        x-text="dataSrc.name"
+                                    ></label>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div id="loading-message" style="display: none;">
-            <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-        </div>
+        {# Rest of Body #}
+        <div class="col-12 col-md-9 col-xl-10">
 
-        <div id="technique-search-list">Please type a search query</div>
+            {# Search #}
+            <div class="row">
+                <div class="col-12">
+
+                    {# Input #}
+                    <div>
+                        <div class="form-floating">
+                            <input placeholder="Search Techniques" type="search" id="fullTechniqueSearchBox" class="form-control mb-1" x-model.debounce="search">
+                            <label for="fullTechniqueSearchBox">Search Techniques</label>
+                        </div>
+                        <p x-cloak x-show="searchStatus.length > 0" class="mb-0">
+                            <strong>Status:</strong> <span x-text="searchStatus" class="text-break"></span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            {# Search Result Cards #}
+            <div class="row">
+
+                <template x-for="card in results" :key="card.tech_id_plain">
+                    <div
+                        class="col-12"
+                        style="padding: calc(var(--bs-gutter-x) * 0.5);"
+                    >
+                        <div class="answer-card card h-100">
+                            <div class="card-header" x-html="`${card.tech_name} [${card.tech_id}]`">
+                            </div>
+
+                            <div class="card-body">
+                                <div class="card-text" x-html="card.description"></div>
+                            </div>
+
+                            <div class="card-footer">
+                                <a class="link-strong-blue card-link stretched-link" :href="resolveURL(card.internal_url)"
+                                    >Select Card</a>
+                                <a class="link-attack-orange card-link position-relative z-2" :href="resolveURL(card.attack_url)"
+                                    >ATT&amp;CK Page</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+
+            </div>
+        </div>
     </div>
 
 </div>
 
-<div class="modal" id="fulltech_search_info_modal">
-    <div class="modal-background" onclick="closeModal('#fulltech_search_info_modal')"></div> <!-- Click outside modal to close -->
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Full Technique Search</p>
-            <button class="delete" aria-label="close" onclick="closeModal('#fulltech_search_info_modal')"></button>
-        </header>
-        <section class="modal-card-body default-list">
-            <p><b>Capabilities</b></p>
-            <ul>
-                <li>Searches Technique IDs, names, and descriptions.</li>
-                <li>Word stemming.</li>
-                <li>Boolean search <i>(terms are <b>and</b>'ed together by default)</i>.<br>
-                    - <b>()</b> are used for operation order.<br>
-                    - <b>|</b> will <b>or</b> terms/()s/&quot;&quot;s together.<br>
-                    - <b>&amp;</b> will <b>and</b> terms/()s/&quot;&quot;s together.<br>
-                    - <b>~</b> will <b>negate</b> the term/()/&quot;&quot; directly to the right of it (no spaces).<br>
-                    - <b>*</b> will <b>prefix-search</b> for words completing the term/&quot;&quot; directly to the left of it (no spaces).
-                        For &quot;&quot;s, it will prefix-search each word in the phrase.<br>
-                    - <b>&quot;&quot;</b> are used to search for a chain of terms together as a phrase in the text.<br>
-                    - <b>NOTE:</b> no special characters can be searched for. Words are considered to be continuous blocks of letters/numbers.<br>
-                    - <b>Example: <code>(silver | gold*) & ticket</code></b>
-                </li>
-            </ul>
-            <br>
-            <p><b>Limitations</b></p>
-            <ul>
-                <li>No support for fuzziness.</li>
-                <li>No support suffix search.</li>
-                <li>Either T1055 or 1055 will match a Tech ID, but currently only T1055 will highlight it.</li>
-            </ul>
-            <br>
-            <p><b>Intended Use</b></p>
-            <ul>
-                <li>The boolean support allows for more complex searches for Techniques by their content.</li>
-                <li>This serves as an alternative to manually navigating the question tree - it also serves as an
-                    alternative to the ATT&CK website search.</li>
-            </ul>
-        </section>
-        <footer class="modal-card-foot"></footer>
-    </div>
-</div>
+<script>
+    document.addEventListener('alpine:init', function() {
+        const tacticFilters = {{ tactic_fs_filters | tojson }};
+        cleanupFilterObject(tacticFilters, false);
+
+        const platformFilters = {{ platform_fs_filters | tojson }};
+        cleanupFilterObject(platformFilters, true);
+
+        const dataSrcFilters  = {{ data_source_fs_filters | tojson }};
+        cleanupFilterObject(dataSrcFilters, true);
+
+        Alpine.store('search', {
+            tacticFilters: tacticFilters,
+            platformFilters: platformFilters,
+            dataSrcFilters: dataSrcFilters,
+        });
+    });
+</script>
+
 {% endblock %}

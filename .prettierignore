@@ -8,7 +8,7 @@
 
 # Don't need libraries formatted
 **/js/lib/*
+**/css/lib/*
 
-# Only format our css file
-*.css
-!decider.css
+# We handle docs ourselves
+*.md

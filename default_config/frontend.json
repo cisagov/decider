@@ -1,0 +1,13 @@
+{
+    "__help": [
+        "These settings apply to variables in app/templates/base.html",
+        "base_url_href         : change this if not hosting directly at the root path of a server",
+        "use_minified_srcs     : setting this false will make the app use unminified JS/CSS libraries (good for debug)",
+        "classification_level  : 'U', 'C', 'S', or 'T' (see app/static/css/decider.css > Classification Banner Styling)",
+        "classification_message: when this and level are set, a banner appears at the top and bottom of the site"
+    ],
+    "base_url_href"         : "/",
+    "use_minified_srcs"     : true,
+    "classification_level"  : "",
+    "classification_message": ""
+}

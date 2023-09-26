@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 
 from functools import wraps as functools_wraps
 
+from flask import url_for
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -73,23 +75,46 @@ def build_url(technique, tactic_context, version_context, end=False):
 
     # Tactic page
     if technique is None:
-        return f"/question/{version_context}/{tactic_context}"
+        return url_for(
+            "question_.question_tactic_page",
+            version=version_context,
+            tactic_id=tactic_context
+        )
     tech_id = technique.tech_id
 
     # Tactic-less Tech/Sub, always a success page (no question page exists without being in-tree)
     if tactic_context == "TA0000":
-        return f"/no_tactic/{version_context}/{tech_id.replace('.', '/')}"
+        return url_for(
+            "question_.notactic_success",
+            version=version_context,
+            subpath=tech_id.replace('.', '/')
+        )
 
     # Subtech, always a success page (no children to navigate to)
     if "." in tech_id:
-        return f"/question/{version_context}/{tactic_context}/{tech_id.replace('.', '/')}"
+        return url_for(
+            "question_.question_further_page",
+            version=version_context,
+            tactic_id=tactic_context,
+            dest=tech_id.replace('.', '/')
+        )
 
     # Tech success page (end reqested OR tech has no question leading to subtechs)
     if end or (not technique.tech_question):
-        return f"/question/{version_context}/{tactic_context}/{tech_id}"
+        return url_for(
+            "question_.question_further_page",
+            version=version_context,
+            tactic_id=tactic_context,
+            dest=tech_id
+        )
 
     # Tech to Subtech question page
-    return f"/question/{version_context}/{tactic_context}/{tech_id}/QnA"
+    return url_for(
+        "question_.question_further_page",
+        version=version_context,
+        tactic_id=tactic_context,
+        dest=f"{tech_id}/QnA"
+    )
 
 
 def incoming_markdown(unsafe_html):
@@ -148,6 +173,18 @@ def outgoing_markdown(database_md):
 def outedit_markdown(database_md):
     """Unescapes MD (as it is to be used in an editing box)"""
     return html.unescape(database_md)
+
+
+def remove_html_tag(html: str, tag_name: str) -> str:
+    """Removes all instances of tag <tag_name> in an HTML block"""
+
+    soup = BeautifulSoup(html, 'lxml')
+
+    for tag in soup.find_all(tag_name):
+        tag.decompose()
+
+    body = soup.find('body')
+    return body.decode_contents() if body else ''
 
 
 def trim_keys(keep_keys, list_of_dict):
@@ -237,9 +274,7 @@ class DictValidator:
     optional  : (default=False), Specifies if the field is allowed to be missing from the dict_
     type_     : (default unchecked), Specifies if the field is required to be a type, or within a list/tuple of types
     validator : (default unchecked), Specifies a function to call with the value of the field to further check it
-        A validator() function can return either of 2 formats
-        - bool : A basic True/False check, an error message saying the field is invalid will be added on fail
-        - dict : True/False check + list of string errors to report: {"success": False, "errors": ["Password..", ..]}
+        - A validator() function returns a single Truthy or Falsey value
 
     Usage: call this with a dict_ and spec - then access .success, .errors for branching logic / logging
     """
@@ -254,6 +289,12 @@ class DictValidator:
         # all fields in spec are checked (dependency: presence -> type -> validity)
         for field in spec.keys():
             if self.check_field_presence(field):
+
+                # fix: skip type/validity check on missing optional fields
+                optional = self.spec[field].get("optional", False)
+                if (field not in self.dict_) and optional:
+                    continue
+
                 if self.check_field_type(field):
                     self.check_field_validity(field)
 
@@ -291,29 +332,27 @@ class DictValidator:
 
         return True
 
-    def check_field_validity(self, field):
+    def check_field_validity(self, field) -> None:
         # fails if the provided validator() function fails (pass if not provided)
 
         validator_func = self.spec[field].get("validator", None)
-        if validator_func is not None:
+
+        if validator_func is None:
+            return
+
+        else:
             value = self.dict_[field]
-            valid_check = validator_func(value)
 
-            # basic True/False test response
-            if isinstance(valid_check, bool):
-                self.success = self.success and valid_check
-                if not valid_check:
-                    self.errors.append(f'Field "{field}" is invalid.')
-                    return False
+            try:
+                valid_check = bool(validator_func(value))
+            except Exception:
+                logger.critical("A validator function raised an Exception or was not bool-castable")
+                valid_check = False
 
-            # test response with T/F 'success' field and list of strings 'errors' field
-            elif isinstance(valid_check, dict):
-                self.success = self.success and valid_check["success"]
-                if not valid_check["success"]:
-                    self.errors.extend(valid_check["errors"])
-                    return False
+            self.success = self.success and valid_check
 
-        return True
+            if not valid_check:
+                self.errors.append(f'Field "{field}" is invalid.')
 
 
 def checkbox_filters_component(kind, options, clear_func, update_func, different_name=None):
@@ -351,7 +390,8 @@ def checkbox_filters_component(kind, options, clear_func, update_func, different
             "kind": kind,
             "title_name": different_name if different_name else kind,
             "items": [{"internal_name": o.replace(" ", "_").lower(), "human_name": o} for o in options],
-            "funcs": {"clear": clear_func, "update": update_func},
+            # "funcs": {"clear": clear_func, "update": update_func},
+            # ^-- no longer used
         }
     }
 
