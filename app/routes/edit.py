@@ -9,7 +9,7 @@ from sqlalchemy import or_, and_, func, distinct
 from sqlalchemy.orm import aliased
 from sqlalchemy.dialects.postgresql import array
 
-from app.routes.profile import edit_permission
+from app.routes.auth import disabled_in_kiosk, edit_permission
 
 from app.routes.utils_db import VersionPicker
 from app.routes.utils import (
@@ -39,6 +39,7 @@ edit_ = Blueprint("edit_", __name__, template_folder="templates")
 
 
 @edit_.route("/edit/mismapping", methods=["GET"])
+@disabled_in_kiosk
 @edit_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def edit_mismapping_get():
@@ -75,6 +76,7 @@ def edit_mismapping_get():
 
 
 @edit_.route("/edit/mismapping", methods=["POST"])
+@disabled_in_kiosk
 @edit_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def edit_mismapping_post():
@@ -269,6 +271,7 @@ def edit_mismapping_post():
 
 
 @edit_.route("/edit/mismapping", methods=["DELETE"])
+@disabled_in_kiosk
 @edit_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def edit_mismapping_delete():
@@ -316,6 +319,7 @@ def edit_mismapping_delete():
 
 
 @edit_.route("/edit/tree", methods=["GET"])
+@disabled_in_kiosk
 @edit_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def edit_tree_get():
@@ -342,6 +346,7 @@ def edit_tree_get():
 
 
 @edit_.route("/edit/tree/api", methods=["GET"])
+@disabled_in_kiosk
 @edit_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def edit_tree_api_get():
@@ -407,6 +412,7 @@ def edit_tree_api_get():
 
 
 @edit_.route("/edit/tree/api", methods=["POST"])
+@disabled_in_kiosk
 @edit_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def edit_tree_api_post():
@@ -480,6 +486,7 @@ def edit_tree_api_post():
 
 
 @edit_.route("/edit/tree/audit/<version>", methods=["GET"])
+@disabled_in_kiosk
 @edit_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def audit_tree_content(version):
@@ -609,7 +616,6 @@ def audit_tree_content(version):
 
     # Tactics [A always][Q always]
     for t in tactics:
-
         if is_blank(t.tact_answer):
             audit.append(issue_entry(t, "Tactic answer is blank"))
 
@@ -618,7 +624,6 @@ def audit_tree_content(version):
 
     # BaseTechnique NO Subs [A always][Q never]
     for t in base_techs_without_subs:
-
         if is_blank(t.tech_answer):
             audit.append(issue_entry(t, "Technique answer is blank"))
 
@@ -627,7 +632,6 @@ def audit_tree_content(version):
 
     # BaseTechnique /w Subs [A always][Q always]
     for t in base_techs_with_subs:
-
         if is_blank(t.tech_answer):
             audit.append(issue_entry(t, "Technique answer is blank"))
 
@@ -636,7 +640,6 @@ def audit_tree_content(version):
 
     # SubTechnique [A always][Q never]
     for t in sub_techs:
-
         if is_blank(t.tech_answer):
             audit.append(issue_entry(t, "SubTechnique answer is blank"))
 
@@ -650,7 +653,6 @@ def audit_tree_content(version):
 
     # Answer / Question cards missing bolding ("**" absent)
     for t in tacts_and_techs:
-
         if (not is_blank(t["answer"])) and ("**" not in t["answer"]):
             audit.append(issue_entry(t, "Answer is missing bolding"))
 
@@ -659,7 +661,6 @@ def audit_tree_content(version):
 
     # Answer cards are a question ("?" present), or, Question cards are not a question ("?" absent)
     for t in tacts_and_techs:
-
         if (not is_blank(t["answer"])) and ("?" in t["answer"]):
             audit.append(issue_entry(t, "Answer contains question mark"))
 
@@ -668,7 +669,6 @@ def audit_tree_content(version):
 
     # Answer and Question for a single item are the same
     for t in tacts_and_techs:
-
         if (
             (not is_blank(t["answer"]))
             and (not is_blank(t["question"]))
@@ -785,7 +785,6 @@ def get_tree(index, version):
     - TA[0-9]{4}\\.T[0-9]{4}: grabs a technique (under a tactic) question and its subtechnique children answer cards
 
     version: str of ATT&CK version to pull content from
-    - must be validated before calling get_tree()
 
     returned tuple format is (content, error_msg, http_code)
     - content is either None (err), or a dict containing "question" and answers ("data")
@@ -796,25 +795,19 @@ def get_tree(index, version):
     node = None
     tree = []
 
-    # Tactic -> get Techniques
+    # if user is on a tactic, retrieve the list of techniques
     if is_tact_id(index):
-
-        # query tactic
+        # tactic root
         logger.debug(f"querying Tactic {index} under ATT&CK {version}")
         node = db.session.query(Tactic).filter(and_(Tactic.attack_version == version, Tactic.tact_id == index)).first()
         logger.debug("query done")
-
-        # not found -> 404
-        if node is None:
-            logger.error(f"can't fulfill request - can't find Tactic {index} within ATT&CK {version}")
-            return None, json.dumps({"message": f"{index} could not be found"}), 404
 
         node_id = node.tact_id
         node_name = node.tact_name
         question = node.tact_question
         technique_alias = aliased(Technique)
 
-        # query Techs
+        # technique children
         logger.debug(f"querying Techniques under Tactic {index} under ATT&CK {version}")
         query = (
             db.session.query(Technique, func.count(technique_alias.uid))
@@ -831,9 +824,8 @@ def get_tree(index, version):
         for technique, count in query:
             tree.append((technique.tech_id, technique.tech_answer, technique.tech_name, count))
 
-    # Start -> get Tactics
-    elif index == "start":
-
+    # if the user wants to look at content found on the very first page
+    elif index == "start":  # if the user is on the very first page, retrieve the tactics
         # start root
         node = ""
         node_id = "start"
@@ -850,36 +842,29 @@ def get_tree(index, version):
         ]
         logger.debug(f"got {len(tree)} Tactics")
 
-    # Technique (w/ Tactic context) -> get SubTechniques
+    # the user is on a technique, so query for subtechniques
     elif re.match(r"^TA[0-9]{4}\.T[0-9]{4}$", index):
-        tech_id = index.split(".")[1]
-
-        # query Technique
-        logger.debug(f"querying Technique {tech_id} under ATT&CK {version}")
+        # base technique root
+        logger.debug(f"querying Technique {index} under ATT&CK {version}")
         node = (
             db.session.query(Technique)
             .filter(
                 and_(
                     Technique.attack_version == version,
-                    Technique.tech_id == tech_id,
+                    Technique.tech_id == index.split(".")[1],
                 )
             )
             .first()
         )
         logger.debug("query done")
 
-        # not found -> 404
-        if node is None:
-            logger.error(f"can't fulfill request - can't find Technique {tech_id} within ATT&CK {version}")
-            return None, json.dumps({"message": f"{tech_id} could not be found"}), 404
-
         node_id = node.tech_id
         node_name = node.tech_name
         question = node.tech_question
         technique_alias = aliased(Technique)
 
-        # query SubTechs
-        logger.debug(f"querying SubTechniques under Technique {tech_id} under ATT&CK {version}")
+        # sub-technique children
+        logger.debug(f"querying SubTechniques under Technique {index} under ATT&CK {version}")
         query = (
             # techniques in current version
             db.session.query(Technique)
@@ -895,7 +880,7 @@ def get_tree(index, version):
         for technique in query:
             tree.append((technique.tech_id, technique.tech_answer, technique.tech_name, 0))
 
-    # bad format -> 400
+    # invalid index format
     else:
         logger.debug("the format of the index is not valid")
         return (
@@ -903,6 +888,11 @@ def get_tree(index, version):
             json.dumps({"message": "The format of the index is not valid."}),
             400,
         )
+
+    # couldn't find Tactic / Technique / SubTechnique specified
+    if node is None:
+        logger.error(f"can't fulfill request - couldn't locate index {index} within ATT&CK {version}")
+        return None, json.dumps({"message": f"{index} could not be found"}), 404
 
     # form editing / preview variants of MD
     results = [

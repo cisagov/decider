@@ -1,6 +1,8 @@
 #!/bin/sh
 
-# ensure environment variables are set
+# Required Env Var Presence Check ----------------------------------------------
+
+# database to [connect to, build]
 if [ -z "$DB_HOSTNAME" ]; then
     echo "DB_HOSTNAME is not set"
     exit 1
@@ -13,44 +15,102 @@ if [ -z "$DB_DATABASE" ]; then
     echo "DB_DATABASE is not set"
     exit 1
 fi
-if [ -z "$DB_USERNAME" ]; then
-    echo "DB_USERNAME is not set"
+
+# db admin user (full-access, used in db scripts / normal modes)
+if [ -z "$DB_ADMIN_NAME" ]; then
+    echo "DB_ADMIN_NAME is not set"
     exit 1
 fi
-if [ -z "$DB_PASSWORD" ]; then
-    echo "DB_PASSWORD is not set"
+if [ -z "$DB_ADMIN_PASS" ]; then
+    echo "DB_ADMIN_PASS is not set"
     exit 1
 fi
+
+# db kiosk user (limited read-only, used in kiosk mode)
+if [ -z "$DB_KIOSK_NAME" ]; then
+    echo "DB_KIOSK_NAME is not set"
+    exit 1
+fi
+if [ -z "$DB_KIOSK_PASS" ]; then
+    echo "DB_KIOSK_PASS is not set"
+    exit 1
+fi
+
+# cart encryption key
 if [ -z "$CART_ENC_KEY" ]; then
     echo "CART_ENC_KEY is not set"
     exit 1
 fi
-if [ -z "$ADMIN_EMAIL" ]; then
-    echo "ADMIN_EMAIL is not set"
+
+# default app admin login
+if [ -z "$APP_ADMIN_EMAIL" ]; then
+    echo "APP_ADMIN_EMAIL is not set"
     exit 1
 fi
-if [ -z "$ADMIN_PASS" ]; then
-    echo "ADMIN_PASS is not set"
+if [ -z "$APP_ADMIN_PASS" ]; then
+    echo "APP_ADMIN_PASS is not set"
     exit 1
 fi
+
+# kiosk mode is off (only kiosk is supported)
+if [ -z "$KIOSK_MODE" ]; then
+    echo "You set KIOSK_MODE='', this is ignored, as only kiosk is supported in this build."
+fi
+
+# ------------------------------------------------------------------------------
 
 cd /opt/decider
+. ./venv/bin/activate
 
-# generate user.json (for potential build usage)
-python create_user_json.py
+# sync config
+# - user.json: only copy updates
+# - others   : copy updated / new / deleted
+echo "Syncing config files"
+SOURCES_CHANGED="no"
+if rsync -rLKt --delete --exclude 'build_sources/user.json' --out-format='%n' ro_config/* config | grep -q 'build_sources'; then
+    SOURCES_CHANGED="yes"
+fi
+if rsync -rLKt --ignore-missing-args --out-format='%n' ro_config/build_sources/user.json config/build_sources | grep -q 'build_sources'; then
+    SOURCES_CHANGED="yes"
+fi
 
-# build database
-# (if FULL_BUILD_MODE=preserve: only rebuild if no AttackVersion table or no versions in the table)
-python -m app.utils.db.actions.full_build --config DefaultConfig
+# (general) correct ownership
+chown -R decider:decider config
 
-# clear user.json
-rm app/utils/jsons/source/user.json
+# (general) correct permissions
+find config -type d -exec chmod 0755 {} +
+find config -type f -exec chmod 0644 {} +
+
+# (certs) correct ownership / perms
+chown -R root:root config/certs
+if [ -f config/certs/decider.crt ]; then
+    chmod 644 config/certs/decider.crt
+fi
+if [ -f config/certs/decider.key ]; then
+    chmod 600 config/certs/decider.key
+fi
+
+# ------------------------------------------------------------------------------
+
+# create user.json from .env if missing
+if [ ! -f config/build_sources/user.json ]; then
+    echo "user.json is missing, creating it from env vars."
+    python create_user_json.py
+fi
+
+# sources changed -> build database
+if [ "$SOURCES_CHANGED" = "yes" ]; then
+    echo "build_sources changed, rebuilding database."
+    python -m app.utils.db.actions.full_build --config DefaultConfig
+fi
 
 # HTTP:
 if [ -z "$WEB_HTTPS_ON" ]; then
 
     echo "Running in HTTP mode"
-    uwsgi --master --socket 0.0.0.0:5000 --protocol=http --module decider:app
+
+    echo "Running Decider as a Kiosk"
+    uwsgi --ini uwsgi-http-kiosk.ini
 
 # HTTPS:
 else
@@ -58,7 +118,7 @@ else
     echo "Running in HTTPS mode"
 
     # Cert Found:
-    if [ -f app/utils/certs/decider.crt ] && [ -f app/utils/certs/decider.key ]; then
+    if [ -f config/certs/decider.crt ] && [ -f config/certs/decider.key ]; then
 
         echo "SSL Cert Found"
 
@@ -68,19 +128,20 @@ else
         echo "SSL Cert Missing - Generating new one"
 
         # clear (1 could still exist, and .csr to be sure)
-        rm -f app/utils/certs/decider.crt app/utils/certs/decider.key app/utils/certs/decider.csr
+        rm -f config/certs/decider.crt config/certs/decider.key config/certs/decider.csr
 
         # generate
         openssl req \
             -x509 \
             -newkey rsa:4096 \
-            -keyout app/utils/certs/decider.key \
-            -out app/utils/certs/decider.crt \
+            -keyout config/certs/decider.key \
+            -out config/certs/decider.crt \
             -nodes \
             -sha256 \
             -days 365 \
             -subj "/C=US/ST=Virginia/L=McLean/O=Company Name/OU=Org/CN=www.example.com"
     fi
 
-    uwsgi --master --https 0.0.0.0:5000,app/utils/certs/decider.crt,app/utils/certs/decider.key --module decider:app
+    echo "Running Decider as a Kiosk"
+    uwsgi --ini uwsgi-https-kiosk.ini
 fi

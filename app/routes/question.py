@@ -15,7 +15,7 @@
 # Technique|Sub Page (for tech with Qs)   /tactic/technique/001
 
 from operator import and_
-from flask import Blueprint, redirect, render_template, current_app, g
+from flask import Blueprint, redirect, render_template, current_app, g, url_for
 from app.models import (
     AttackVersion,
     Platform,
@@ -47,7 +47,8 @@ from app.routes.utils import (
     is_tact_id,
     is_tech_id,
     outgoing_markdown,
-    checkbox_filters_component
+    checkbox_filters_component,
+    remove_html_tag
 )
 from app.routes.utils import ErrorDuringHTMLRoute, wrap_exceptions_as
 
@@ -66,7 +67,10 @@ def home():
     """
     g.route_title = "Base Redirect"
 
-    destination = f"/question/{VersionPicker().cur_version}"
+    destination = url_for(
+        "question_.question_start_page",
+        version=VersionPicker().cur_version
+    )
 
     logger.info(f"redirecting from / to {destination}")
     return redirect(destination, code=302)
@@ -95,7 +99,10 @@ def crumb_bar(ids, version_context):
         return None
 
     # start always present
-    crumbs = [{"name": "start", "url": f"/question/{version_context}"}]
+    crumbs = [{
+        "name": "start",
+        "url": url_for("question_.question_start_page", version=version_context),
+    }]
 
     # tactic if present
     if len(ids) > 1:
@@ -242,28 +249,49 @@ def get_examples(index, version):
     index: str of TechID of technique to get reports for
     version: str of ATT&CK version to pull content from
 
-    returns list[dict], each dict having keys "file_name", "url", "sentence"
+    returns
+    [
+        {
+            sentence: "md rendered to html",
+            links: [
+                {
+                    name: "Report File Name",
+                    url: "https://report-url"
+                },
+                ...
+            ]
+        },
+        ...
+    ]
     """
+
     logger.debug(f"querying CTI examples of {index} ({version})")
     blurbs = (
-        db.session.query(Blurb)
+        db.session.query(
+            Blurb.sentence,
+            func.array_agg(array([Blurb.file_name, Blurb.url]))
+        )
         .join(Technique, Technique.uid == Blurb.technique)
         .filter(and_(Technique.tech_id == index, Technique.attack_version == version))
-        .order_by(asc(Blurb.uid))
+        .order_by(asc(Blurb.sentence))
+        .group_by(Blurb.sentence)
     ).all()
     logger.debug(f"got {len(blurbs)} examples")
 
-    blurbs = [
+    examples = [
         {
-            "file_name": b.file_name,
-            "url": b.url,
-            "sentence": outgoing_markdown(b.sentence),
-        }
-        for b in blurbs
+            "sentence": remove_html_tag(outgoing_markdown(sentence), 'sup'),
+            "links": [
+                {
+                    "name": name,
+                    "url": url
+                } for name, url in name_url_pairs
+            ]
+        } for sentence, name_url_pairs in blurbs
     ]
 
     logger.info("successfully collected examples")
-    return blurbs
+    return examples
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -305,13 +333,14 @@ def question_page_vars(cur_node, index, tactic_context, version_context):
         [p.readable_name for p in ver_platforms],  # platform names
         "questionClearPlatforms()",
         "questionUpdatePlatforms(this)",
+        different_name="Platform",
     )
     data_source_filters = checkbox_filters_component(
         "data_source",
         [s.readable_name for s in ver_data_sources],
         "questionClearDataSources()",
         "questionUpdateDataSources(this)",
-        different_name="data Source",
+        different_name="Data Source",
     )
 
     if is_tact_id(index):
@@ -402,10 +431,9 @@ def success_page_vars(index, tactic_context, version_context):
     }
 
 
-@question_.route("/question/", methods=["GET"])
 @question_.route("/question/<version>", methods=["GET"])
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
-def question_start_page(version=None):
+def question_start_page(version):
     """Route of Decider's "home" question page (start -> tactics) (HTML response)
 
     version: str of ATT&CK version to pull content from
@@ -413,13 +441,11 @@ def question_start_page(version=None):
     g.route_title = "Start -> Tactics Question Page"
 
     # validate version / derive from last used
-    if version:
-        if not is_attack_version(version):
-            logger.error("failed - request had a malformed ATT&CK version")
-            return render_template("status_codes/404.html"), 404
+    if not is_attack_version(version):
+        logger.error("failed - request had a malformed ATT&CK version")
+        return render_template("status_codes/404.html"), 404
 
-        logger.debug(f"querying existence of version {version}")
-
+    logger.debug(f"querying existence of version {version}")
     version_pick = VersionPicker(version=version)
     if not version_pick.set_vars():
         logger.error("requested ATT&CK version does not exist")

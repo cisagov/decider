@@ -1,50 +1,57 @@
-# See 'old-compose.yaml' if you cloned before April 24th
 name: decider
 services:
-  web:
-    container_name: decider-web
-    restart: unless-stopped
-    env_file: .env
-    depends_on:
-      db:
-        condition: service_healthy
-    build:
-      context: .
-      dockerfile: ./docker/web/Dockerfile
-    ports:
-      - '${WEB_IP}:${WEB_PORT}:5000'
-    environment:
-      FULL_BUILD_MODE: preserve
-      DB_HOSTNAME: ${DB_HOSTNAME}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_DATABASE: ${DB_DATABASE}
-      DB_PORT: ${DB_PORT}
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_PASS: ${ADMIN_PASS}
-      CART_ENC_KEY: ${CART_ENC_KEY}
-      WEB_HTTPS_ON: ${WEB_HTTPS_ON}
-  db:
-    container_name: decider-db
-    restart: unless-stopped
-    env_file: .env
-    build:
-      context: .
-      dockerfile: ./docker/db/Dockerfile
-    environment:
-      POSTGRES_INITDB_ARGS: '--auth=md5'
-      POSTGRES_HOST_AUTH_METHOD: md5
-      POSTGRES_USER: ${DB_USERNAME}
-      PGUSER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - db_data:/var/lib/postgresql/data
+    web:
+        container_name: decider-web
+        env_file: .env
+        depends_on:
+            db:
+                condition: service_healthy
+        build:
+            context: .
+            dockerfile: ./docker/web/Dockerfile
+        ports:
+            - '${WEB_IP}:${WEB_PORT}:5000'
+        environment:
+            # decider config
+            KIOSK_MODE: 'yes'
+            # db to [connect to, build]
+            DB_HOSTNAME: ${DB_HOSTNAME}
+            DB_PORT: ${DB_PORT}
+            DB_DATABASE: ${DB_DATABASE}
+            # db admin user [for building db]
+            DB_ADMIN_NAME: ${DB_ADMIN_NAME}
+            DB_ADMIN_PASS: ${DB_ADMIN_PASS}
+            # db kiosk user [run app under]
+            DB_KIOSK_NAME: ${DB_KIOSK_NAME}
+            DB_KIOSK_PASS: ${DB_KIOSK_PASS}
+            # default app admin [create]
+            APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL}
+            APP_ADMIN_PASS: ${APP_ADMIN_PASS}
+            # cart encryption key
+            CART_ENC_KEY: ${CART_ENC_KEY}
+        volumes:
+            - type: bind
+              source: ./config
+              target: /opt/decider/ro_config
+              read_only: true
+    db:
+        container_name: decider-db
+        env_file: .env
+        image: postgres:14-alpine
+        environment:
+            POSTGRES_INITDB_ARGS: '--auth=scram-sha-256'
+            POSTGRES_HOST_AUTH_METHOD: 'scram-sha-256'
+            POSTGRES_USER: ${DB_ADMIN_NAME}
+            PGUSER: ${DB_ADMIN_NAME}
+            POSTGRES_PASSWORD: ${DB_ADMIN_PASS}
+            POSTGRES_DB: ${DB_DATABASE}
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${DB_ADMIN_NAME} -d ${DB_DATABASE}']
+            interval: 4s
+            timeout: 2s
+            retries: 8
+        volumes:
+            - db_data:/var/lib/postgresql/data
 
 volumes:
-  db_data:
+    db_data:

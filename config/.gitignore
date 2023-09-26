@@ -1,0 +1,3 @@
+# ignore user's config
+*
+!.gitignore

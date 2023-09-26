@@ -1,6 +1,7 @@
 import re
 
 
+# TODO: can improve by using literal numbering, vs usage order + possible overcounting via inc
 def transform_description_citations(item):
     description = item["description"]
     counter = 1
@@ -14,7 +15,6 @@ def transform_description_citations(item):
             None,
         )
         if external_ref:
-
             # ----------------------------------------------------------
             # only used in blurb formation compatibility
             # url always present for Techniques

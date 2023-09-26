@@ -4,7 +4,7 @@ from sqlalchemy.sql.functions import func
 from sqlalchemy import REAL, literal_column, String, or_, and_
 from sqlalchemy.orm.util import aliased
 
-from flask import Blueprint, request, render_template, jsonify, g, make_response
+from flask import Blueprint, request, render_template, jsonify, g, make_response, url_for
 
 from app.models import (
     db,
@@ -30,6 +30,8 @@ from app.routes.utils import (
 )
 from app.routes.utils import ErrorDuringHTMLRoute, ErrorDuringAJAXRoute, wrap_exceptions_as
 
+from dataclasses import dataclass
+from typing import Dict, Tuple, Union
 from boolean import boolean
 
 import re
@@ -73,7 +75,7 @@ def mini_search(version):
         logger.debug(f"querying Techniques by ID under ATT&CK {version}")
         techniques = (
             db.session.query(
-                Technique.tech_name,
+                Technique.full_tech_name,
                 Technique.tech_id,
             )
             .filter(Technique.attack_version == version)
@@ -88,13 +90,13 @@ def mini_search(version):
         logger.debug(f"querying Techniques by name under ATT&CK {version}")
         subq = (
             db.session.query(
-                Technique.tech_name,
+                Technique.full_tech_name,
                 Technique.tech_id,
-                literal_column(f"WORD_SIMILARITY({phrase}, technique.tech_name)", type_=REAL).label("sml"),
+                literal_column(f"WORD_SIMILARITY({phrase}, technique.full_tech_name)", type_=REAL).label("sml"),
             ).filter(Technique.attack_version == version)
         ).subquery()
         techniques = (
-            db.session.query(subq).filter(subq.c.sml > 0.25).order_by(subq.c.sml.desc(), subq.c.tech_name)
+            db.session.query(subq).filter(subq.c.sml > 0.25).order_by(subq.c.sml.desc(), subq.c.full_tech_name)
         ).all()
 
     logger.debug(f"got {len(techniques)} Techniques")
@@ -102,7 +104,7 @@ def mini_search(version):
     # Make response from entries
     dictified = []
     for tech_name, tech_id, *_ in techniques:
-        app_url = f"/no_tactic/{version}/{tech_id.replace('.', '/')}"
+        app_url = url_for("question_.notactic_success", version=version, subpath=tech_id.replace(".", "/"))
         dictified.append({"tech_name": tech_name, "tech_id": tech_id, "url": app_url})
 
     logger.info("sending search results to user")
@@ -210,34 +212,26 @@ def search_page():
         tactic_names,
         "searchClearTactics()",
         "searchUpdateTactics(this)",
-        different_name="tactic",
+        different_name="Tactic",
     )
     platform_filters = checkbox_filters_component(
         "platform_fs",
         platform_names,
         "searchClearPlatforms()",
         "searchUpdatePlatforms(this)",
-        different_name="platform",
+        different_name="Platform",
     )
     data_source_filters = checkbox_filters_component(
         "data_source_fs",
         data_source_names,
         "searchClearDataSources()",
         "searchUpdateDataSources(this)",
-        different_name="data Source",
+        different_name="Data Source",
     )
 
     response = make_response(
         render_template("search.html", **tactic_filters, **platform_filters, **data_source_filters)
     )
-
-    # Prevents this page from being cached
-    # - ensures that the search always has the latest content present on the server
-    # - ensures that scrolling to the last clicked result works - as it isn't invoked on a cached page
-    # Reference: https://stackoverflow.com/questions/49547/how-do-we-control-web-page-caching-across-all-browsers
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"  # HTTP 1.1.
-    response.headers["Pragma"] = "no-cache"  # HTTP 1.0.
-    response.headers["Expires"] = "0"  # Proxies.
 
     logger.info("serving page")
     return response
@@ -246,29 +240,41 @@ def search_page():
 # ---------------------------------------------------------------------------------------------------------------------
 
 
-def parse_search_str(sstr: str, joiner: str = "&"):
+@dataclass
+class ParsedSearchString:
+    """
+    Represents a parsed search string
+    - (parse success) holds a boolean representation of the search and a symbol lookup table
+    - (parse failure) holds a string explaining the parse issue
+    - bool_expr is a BooleanAlgebra expression of symbols 's0', 's1',.. 'sN' (easy to process recursively)
+    - sym_to_term is a dict mapping symbols to search terms and if they're prefix-matched 's0' -> ('bios', False)
+    """
+
+    # success
+    bool_expr: Union[boolean.Expression, None] = None
+    sym_to_term: Union[Dict[str, Tuple[str, bool]], None] = None
+
+    # failure
+    error: Union[str, None] = None
+
+
+def parse_search_str(search: str, joiner: str = "&") -> ParsedSearchString:
     """Converts a boolean search string into a boolean expression
 
-    sstr: a user-entered search string that can include boolean operators, prefix-matching, and quoted phrases
-    joiner: (str) boolean operator to combine adjacent terms with
+    search: a user-entered search string that can include boolean operators, prefix-matching, and quoted phrases
+    joiner: boolean operator to combine adjacent terms with
     - '&' AND is default
     - '|' OR is also an option
 
-    returns a tuple of (err, bool_expr, sym_to_term)
-    - err is str on failure, None on pass (other terms become None on failure)
-    - bool_expr is a BooleanAlgebra expression of symbols 's0', 's1',.. 'sN' (easy to process recursively)
-    - sym_to_term is a dict mapping symbols to search terms and if they're prefix-matched 's0' -> ('bios', False)
-
-    errors if the boolean expression is invalid or if there isn't at least one a-zA-Z0-9 term
+    sets ParsedSearchString.error if the boolean expression is invalid or if there isn't at least one a-zA-Z0-9 term
     """
 
     term_pattern = r'("[^"]+"\*?|[^\(\)\|\&\~"\* ]+\*?)'
 
     # pull terms from search string and process
-    terms = re.findall(term_pattern, sstr)
+    terms = re.findall(term_pattern, search)
     sym_to_term = {}
     for num, t in enumerate(terms):
-
         # note if prefix-matching enabled, remove indicator if present
         prefix = t[-1] == "*"
         if prefix:
@@ -281,13 +287,13 @@ def parse_search_str(sstr: str, joiner: str = "&"):
         # remove and collapse any non-alphanumerics, Error on term with no alphanum content
         t = re.sub("[^A-Za-z0-9]+", " ", t).strip()
         if not t:
-            return ("Term must have at-least one A-Za-z0-9 character", None, None)
+            return ParsedSearchString(error="Term must have at-least one A-Za-z0-9 character")
 
         # store term and if prefix-match is enabled
         sym_to_term[f"s{num}"] = (t, prefix)
 
     # replace all terms with 's', then remove any spaces
-    expr = re.sub(term_pattern, "s", sstr)
+    expr = re.sub(term_pattern, "s", search)
     expr = re.sub(" +", "", expr)
 
     # replace all 's' with 's0', 's1', .., 'sN'
@@ -314,9 +320,9 @@ def parse_search_str(sstr: str, joiner: str = "&"):
     try:
         bool_expr = boolean.BooleanAlgebra().parse(expr)
     except Exception:
-        return ("Search query is formatted improperly", None, None)
+        return ParsedSearchString(error="Search query is formatted improperly")
 
-    return (None, bool_expr, sym_to_term)
+    return ParsedSearchString(bool_expr=bool_expr, sym_to_term=sym_to_term)
 
 
 def tsqry_rep(bexpr, sym_terms):
@@ -521,13 +527,21 @@ def full_search():
         logger.info("request skipped - query >512 characters long entered")
         return jsonify(status="Please type a shorter search query"), 200
 
-    # try and get expression and terms from search string - respond back with error if fails
-    # 2 potential error cases have been identified and the proper string will go to the front end
-    err, bool_expr, sym_to_terms = parse_search_str(search_str)
-    if err is not None:
-        logger.info("request skipped - they typed an invalid search query")
-        return jsonify(status=err), 200
-    search_tsqry = tsqry_rep(bool_expr, sym_to_terms)
+    # parse the search string
+    try:
+        parsed_search = parse_search_str(search_str)
+
+        # handled misformatting -> relay error msg
+        if parsed_search.error is not None:
+            logger.info("request skipped - they typed an invalid search query")
+            return jsonify(status=parsed_search.error), 200
+
+    # unexpected error -> generic response
+    except Exception:
+        logger.info("request skipped - they typed an invalid search query (unexpected error)")
+        return jsonify(status="Unable to parse the provided search query"), 200
+
+    search_tsqry = tsqry_rep(parsed_search.bool_expr, parsed_search.sym_to_term)
 
     tsvec = PSQLTxt.multiline_cleanup(
         """
@@ -660,14 +674,13 @@ def full_search():
         hl_desc,
         hl_akas,
     ) in result_q:
-
         # for ts_headlined descriptions - finish off any ... between snippets
         if len(hl_desc) > 50:
             tdesc = hl_desc.replace("<red>", '<span class="redtext">').replace("</red>", "</span>")
 
         # if no terms are matched in the description - get the first 250 chars, cut to last space, and add ... in red
         else:
-            cleaned_desc = bleach.clean(markdown.markdown(tech_desc), strip=True)[:250]
+            cleaned_desc = bleach.clean(markdown.markdown(tech_desc), tags=[], strip=True)[:250]
             cleaned_desc = cleaned_desc[: cleaned_desc.rfind(" ")]
             tdesc = f'{cleaned_desc}<span class="redtext">...</span>'
 
@@ -678,7 +691,9 @@ def full_search():
                 "tech_name": hl_name,
                 "description": tdesc,
                 "attack_url": tech_url,
-                "internal_url": f'/no_tactic/{version}/{tech_id.replace(".", "/")}',
+                "internal_url": url_for(
+                    "question_.notactic_success", version=version, subpath=tech_id.replace(".", "/")
+                ),
                 "akas": hl_akas.split("    ") if hl_akas else [],
             }
         )
@@ -688,7 +703,7 @@ def full_search():
 
     # send results and what search was used for debugging purposes
     logger.info("sending search results")
-    return jsonify(techniques=results, status=plain_rep(bool_expr, sym_to_terms)), 200
+    return jsonify(techniques=results, status=plain_rep(parsed_search.bool_expr, parsed_search.sym_to_term)), 200
 
 
 @search_.route("/search/answer_cards", methods=["GET"])
@@ -745,7 +760,6 @@ def answer_card_search():
 
     # index (existence)
     if parent_is_technique:
-
         logger.debug(f"Querying existence of Technique {index} in {version}")
         tech_parent_uid = (
             db.session.query(Technique.uid)
@@ -808,12 +822,21 @@ def answer_card_search():
         logger.info("request skipped - query >512 characters long entered")
         return jsonify(status="Search query too long"), 200
 
-    # search (validate by attempting tokenization)
-    err, bool_expr, sym_to_terms = parse_search_str(search, "|")
-    if err is not None:
-        logger.info("request skipped - they typed an invalid search query")
-        return jsonify(status=err), 200
-    search_tsqry = tsqry_rep(bool_expr, sym_to_terms)
+    # parse the search string
+    try:
+        parsed_search = parse_search_str(search, joiner="|")
+
+        # handled misformatting -> relay error msg
+        if parsed_search.error is not None:
+            logger.info("request skipped - they typed an invalid search query")
+            return jsonify(status=parsed_search.error), 200
+
+    # unexpected error -> generic response
+    except Exception:
+        logger.info("request skipped - they typed an invalid search query (unexpected error)")
+        return jsonify(status="Unable to parse the provided search query"), 200
+
+    search_tsqry = tsqry_rep(parsed_search.bool_expr, parsed_search.sym_to_term)
 
     # -------- perform search --------
 
@@ -971,4 +994,4 @@ def answer_card_search():
 
     # send match scores / highlights and how search was interpreted
     logger.info("sending search result scores & highlights to user")
-    return jsonify(results=result_info, status=plain_rep(bool_expr, sym_to_terms)), 200
+    return jsonify(results=result_info, status=plain_rep(parsed_search.bool_expr, parsed_search.sym_to_term)), 200

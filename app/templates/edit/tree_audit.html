@@ -1,33 +1,9 @@
 {% extends 'base.html' %}
+
+{% block title %}Audit Question Tree{% endblock %}
+
 {% block content %}
 
-<div class="container column card is-12">
-    <section class="section content">
-        <div style="margin-bottom: 1rem;">
-            <a href="/edit/tree"><i class="mdi mdi-18px mdi-arrow-left-bold"></i> Go to Editing</a>
-        </div>
-
-        <div class="card-header-title">
-            <h3 class="title is-4">Question / Answer Card Audit</h3>
-        </div>
-
-        <div>
-            <table id="qna-card-audit-table">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Issue Description</th>
-                </tr>
-                {% for row in audit_rows %}
-                <tr>
-                    <td>{{ row['id'] }}</td>
-                    <td><a target="_blank" rel="noreferrer noopener" href="{{ row['url'] }}">{{ row['name'] }}</a></td>
-                    <td>{{ row['issue'] }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </section>
-</div>
+<p>edit/tree_audit.html</p>
 
 {% endblock %}

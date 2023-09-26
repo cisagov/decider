@@ -1,0 +1,3 @@
+# ignore the dumped tables, keep the ignorance
+*
+!.gitignore

@@ -4,11 +4,6 @@
 ## Install Script
 - Assumes terminal bracketed paste mode is on (gnome default)
   - If it is off, a sudo prompt eats later lines of a pasted block
-- See **ubuntu_22_04_2.sh** for the adventurous.. **otherwise just follow this file**
-  - Not idempotent
-  - No error handling
-  - Doesn't ask you to change default passwords
-  - Good for setup on a clean OS install
 
 
 ## Install Note
@@ -57,9 +52,26 @@ sudo systemctl status postgresql
 ### Clone Repository
 ```bash
 sudo apt install -y git
-sudo mkdir /opt/decider
 git clone https://github.com/cisagov/decider.git
-sudo cp -a ./decider/. /opt/decider/1.0.0
+```
+
+
+### Compress Static Assets (JS/CSS/etc)
+```bash
+find decider/app/static/ -type f -not -name "*.gz" -exec gzip -9fk {} +
+```
+
+
+### Install PCRE (for uWSGI Compressed Static Handling)
+```bash
+sudo apt install libpcre3 libpcre3-dev
+```
+
+
+### Copy Repository to Install Directory
+```bash
+sudo mkdir /opt/decider
+sudo cp -a ./decider/. /opt/decider
 sudo chown -R decider:decider /opt/decider
 ```
 
@@ -87,22 +99,52 @@ cd ..
 - Useful instead of installing directly into Decider's own Py3.8.10 - as future versions could change packages in use
 ```bash
 sudo -u decider -g decider /opt/decider/python3.8.10/bin/python3.8 -m \
-    venv /opt/decider/1.0.0/venv/
-sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
-    pip --no-cache-dir install -r /opt/decider/1.0.0/requirements-pre.txt
-sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
-    pip --no-cache-dir install -r /opt/decider/1.0.0/requirements.txt
+    venv /opt/decider/venv/
+sudo -u decider -g decider /opt/decider/venv/bin/python -m \
+    pip --no-cache-dir install -r /opt/decider/requirements-pre.txt
+sudo -u decider -g decider /opt/decider/venv/bin/python -m \
+    pip --no-cache-dir install -r /opt/decider/requirements.txt
 ```
 
 
 ### Create user.json file &amp; Initialize DB
 - **'Optional:'** Change default passwords in .env after copy command
 ```bash
-sudo -u decider -g decider cp /opt/decider/1.0.0/.env.manual /opt/decider/1.0.0/.env
-sudo -u decider -g decider chmod 660 /opt/decider/1.0.0/.env
-sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python /opt/decider/1.0.0/initial_setup.py
-sudo -i -u postgres psql -a -f /opt/decider/1.0.0/init.sql
-sudo -u decider -g decider rm /opt/decider/1.0.0/init.sql
+sudo -u decider -g decider cp /opt/decider/.env.manual /opt/decider/.env
+sudo -u decider -g decider chmod 660 /opt/decider/.env
+sudo -u decider -g decider /opt/decider/venv/bin/python /opt/decider/initial_setup.py
+sudo -i -u postgres psql -a -f /opt/decider/init.sql
+sudo -u decider -g decider rm /opt/decider/init.sql
+```
+
+
+### Modify Postgres's Authentication Away From Ident
+- Our user uses a password, it is not a system account
+  - SQLAlchemy connects to Postgres over ipv4 or ipv6 - which is 'host' type
+  - Solves problem of `(psycopg2.OperationalError) FATAL:  Ident authentication failed for user "deciderdbuser"`
+```bash
+# run these line-by-line
+# line 1 shows file location
+# you must add this to line 2
+sudo -i -u postgres psql -U postgres -c 'SHOW hba_file'
+sudo -i -u postgres nano <FILE LOCATION>
+sudo -i -u postgres psql -c 'SELECT pg_reload_conf()'
+
+# EDIT TO MAKE WHEN EDITOR APPEARS (Scroll Down)
+#
+# # TYPE  DATABASE        USER            ADDRESS                 METHOD
+#
+# # "local" is for Unix domain socket connections only
+# local   all             all                                     peer
+# # IPv4 local connections:
+# host    all             all             127.0.0.1/32            md5  <---CHANGE-TO- scram-sha-256 --|
+# # IPv6 local connections:
+# host    all             all             ::1/128                 md5  <---CHANGE-TO- scram-sha-256 --|
+# # Allow replication connections from localhost, by a user with the
+# # replication privilege.
+# local   replication     all                                     peer
+# host    replication     all             127.0.0.1/32            ident
+# host    replication     all             ::1/128                 ident
 ```
 
 
@@ -111,7 +153,7 @@ sudo -u decider -g decider rm /opt/decider/1.0.0/init.sql
 - [Configuring Logging](https://docs.python.org/3.8/howto/logging.html#configuring-logging)
 ```bash
 # (optional)
-# sudo -u decider -g decider nano --restricted /opt/decider/1.0.0/app/logging_conf.json
+# sudo -u decider -g decider nano --restricted /opt/decider/config/logging.json
 ```
 
 
@@ -125,10 +167,10 @@ sudo -u decider -g decider rm /opt/decider/1.0.0/init.sql
 
 ### Build Database
 ```bash
-cd /opt/decider/1.0.0/
-sudo -u decider -g decider /opt/decider/1.0.0/venv/bin/python -m \
+cd /opt/decider/
+sudo -u decider -g decider /opt/decider/venv/bin/python -m \
     app.utils.db.actions.full_build --config DefaultConfig
-sudo -u decider -g decider rm /opt/decider/1.0.0/app/utils/jsons/source/user.json
+sudo -u decider -g decider rm /opt/decider/config/build_sources/user.json
 ```
 
 ### Add UFW Exception
@@ -140,18 +182,18 @@ sudo -u decider -g decider rm /opt/decider/1.0.0/app/utils/jsons/source/user.jso
 
 ### Generate Self-Signed SSL Cert / Add Your Own
 - **If you have your own cert already** - don't run the code, just write these 2 files:
-  - /opt/decider/1.0.0/app/utils/certs/decider.key
-  - /opt/decider/1.0.0/app/utils/certs/decider.crt
+  - /opt/decider/config/certs/decider.key
+  - /opt/decider/config/certs/decider.crt
 ```bash
-sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl genrsa \
-    -out /opt/decider/1.0.0/app/utils/certs/decider.key 2048
-sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl req -new \
-    -key /opt/decider/1.0.0/app/utils/certs/decider.key \
-    -out /opt/decider/1.0.0/app/utils/certs/decider.csr
-sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd openssl x509 -req -days 365 \
-    -in /opt/decider/1.0.0/app/utils/certs/decider.csr \
-    -signkey /opt/decider/1.0.0/app/utils/certs/decider.key \
-    -out /opt/decider/1.0.0/app/utils/certs/decider.crt
+sudo -u decider -g decider RANDFILE=/opt/decider/config/certs/.rnd openssl genrsa \
+    -out /opt/decider/config/certs/decider.key 2048
+sudo -u decider -g decider RANDFILE=/opt/decider/config/certs/.rnd openssl req -new \
+    -key /opt/decider/config/certs/decider.key \
+    -out /opt/decider/config/certs/decider.csr
+sudo -u decider -g decider RANDFILE=/opt/decider/config/certs/.rnd openssl x509 -req -days 365 \
+    -in /opt/decider/config/certs/decider.csr \
+    -signkey /opt/decider/config/certs/decider.key \
+    -out /opt/decider/config/certs/decider.crt
 ```
 
 
@@ -159,12 +201,12 @@ sudo -u decider -g decider RANDFILE=/opt/decider/1.0.0/app/utils/certs/.rnd open
 - Runs as a systemd service
 ```bash
 # (optional - allows tweaking uwsgi threads, decider port, etc)
-# sudo -u decider -g decider nano --restricted /opt/decider/1.0.0/uwsgi.ini
+# sudo -u decider -g decider nano --restricted /opt/decider/uwsgi.ini
 
 # (alternative - Decider can be launched without systemd)
-# sudo /opt/decider/1.0.0/venv/bin/uwsgi --ini /opt/decider/1.0.0/uwsgi.ini
+# sudo /opt/decider/venv/bin/uwsgi --ini /opt/decider/uwsgi.ini
 
-sudo cp /opt/decider/1.0.0/decider.service /etc/systemd/system/decider.service
+sudo cp /opt/decider/decider.service /etc/systemd/system/decider.service
 sudo chmod 644 /etc/systemd/system/decider.service
 sudo systemctl start decider
 sudo systemctl status decider

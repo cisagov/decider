@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, request, jsonify, g
 from app.models import Cart, db, User, Role
 from sqlalchemy import asc, func
 
-from app.routes.profile import admin_permission
+from app.routes.auth import admin_permission, disabled_in_kiosk
 
 from flask_login import current_user
 import bcrypt
@@ -21,6 +21,7 @@ admin_ = Blueprint("admin_", __name__, template_folder="templates")
 
 
 @admin_.route("/admin/user", methods=["GET"])
+@disabled_in_kiosk
 @admin_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringHTMLRoute)
 def admin_user_get():
@@ -38,6 +39,7 @@ def admin_user_get():
 
 
 @admin_.route("/admin/user", methods=["POST"])
+@disabled_in_kiosk
 @admin_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def admin_user_post():
@@ -101,6 +103,7 @@ def admin_user_post():
 
 
 @admin_.route("/admin/user", methods=["PATCH"])
+@disabled_in_kiosk
 @admin_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def admin_user_patch():
@@ -179,6 +182,7 @@ def admin_user_patch():
 
 
 @admin_.route("/admin/user", methods=["DELETE"])
+@disabled_in_kiosk
 @admin_permission.require(http_exception=403)
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def admin_user_delete():

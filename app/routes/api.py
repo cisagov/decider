@@ -1,6 +1,7 @@
 import logging
 from app.models import CoOccurrence, Platform, db, Tactic, Technique, Mismapping, AttackVersion, DataSource
 from app.models import technique_platform_map, tactic_technique_map, tactic_ds_map, technique_ds_map
+from app.routes.auth import disabled_in_kiosk
 
 from app.routes.utils import (
     build_url,
@@ -14,7 +15,7 @@ from app.routes.utils import (
 )
 from app.routes.utils import ErrorDuringAJAXRoute, wrap_exceptions_as
 
-from flask import Blueprint, request, current_app, jsonify, g
+from flask import Blueprint, request, current_app, jsonify, g, url_for
 
 from flask_login import current_user
 from sqlalchemy import asc, func, distinct, and_, or_, literal_column
@@ -143,7 +144,11 @@ def get_tactics():
             "uid": tactic.uid,
             "tactic_id": tactic.tact_id,
             "tactic_name": tactic.tact_name,
-            "url": f"/question/{version}/{tactic.tact_id}",
+            "url": url_for(
+                "question_.question_tactic_page",
+                version=version,
+                tactic_id=tactic.tact_id
+            ),
             "techniques": [{"technique_id": technique[0], "technique_name": technique[1]} for technique in techniques],
         }
         for tactic, techniques in tactics
@@ -217,6 +222,7 @@ def get_techniques():
 
 
 @api_.route("/api/user_version_change", methods=["PATCH"])
+@disabled_in_kiosk
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def user_version_change():
     """Updates the last used ATT&CK version for a logged-in user (JSON request, JSON response)"""
@@ -346,7 +352,6 @@ def answers_api():
 
     # technique -> subtechs / self
     elif is_base_tech_id(index):
-
         # validate tactic
         if not is_tact_id(tactic_context):
             logger.error("request failed - tactic field malformed")
@@ -415,7 +420,7 @@ def answers_api_start(args):
             "path": build_url(None, tactic.tact_id, version_context),
             "platforms": platforms,
             "num": num,
-            "data_sources": data_sources,
+            "data_sources": [ds for ds in data_sources if ds],
         }
         for tactic, num, platforms, data_sources in items
     ]
@@ -478,7 +483,7 @@ def answers_api_tactic(args):
             "path": build_url(technique, index, version_context, num == 0),  # *
             "platforms": platforms,
             "num": num,
-            "data_sources": data_sources,
+            "data_sources": [ds for ds in data_sources if ds],
         }
         for technique, num, platforms, data_sources in items
     ]
@@ -554,7 +559,6 @@ def answers_api_technique(args):
     # form answers
     answers = []
     for technique, sub, platforms, data_sources in items:
-
         # sub is the BaseTech (general case)
         if sub.uid == technique.uid:
             path = build_url(technique, tactic_context, version_context, True)  # end=True, success page view
@@ -575,7 +579,7 @@ def answers_api_technique(args):
                 "path": path,
                 "platforms": platforms,
                 "num": 0,  # num of children the answer card has, SubTechs have none
-                "data_sources": data_sources,
+                "data_sources": [ds for ds in data_sources if ds],
             }
         )
 
@@ -664,7 +668,6 @@ def cooccurrences_api():
     implied_techs = {}
     logger.debug("querying CoOccurrences")
     for _, score, implied_tech in cooccurrences.all():
-
         # already added - just increase score
         itid = implied_tech.tech_id
         if itid in implied_techs:
@@ -676,7 +679,11 @@ def cooccurrences_api():
                 "tech_name": implied_tech.tech_name,
                 "tech_id": itid,
                 "tech_desc": outgoing_markdown(implied_tech.tech_description),
-                "url": f'/no_tactic/{version}/{itid.replace(".", "/")}',
+                "url": url_for(
+                    "question_.notactic_success",
+                    version=version,
+                    subpath=itid.replace(".", "/")
+                ),
                 "score": score,
             }
     logger.debug(f"got {len(implied_techs)} CoOccurrences")

@@ -1,0 +1,3 @@
+# ignore the certs, keep the ignorance
+*
+!.gitignore

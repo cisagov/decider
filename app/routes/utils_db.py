@@ -47,7 +47,7 @@ class VersionPicker:
             self.is_valid = True
 
             # version saved -> use that
-            if current_user.last_attack_ver:
+            if current_user.is_authenticated and current_user.last_attack_ver:
                 self.cur_version = current_user.last_attack_ver
 
             # no version saved -> most recent version default
@@ -65,7 +65,6 @@ class VersionPicker:
             g.version_picker = {
                 "all_versions": self.all_versions,
                 "cur_version": self.cur_version,
-                "cur_version_float": float(self.cur_version.replace("v", "")),
             }
         return self.is_valid
 

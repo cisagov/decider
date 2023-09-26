@@ -7,18 +7,20 @@ from collections import defaultdict
 from sqlalchemy import func, tuple_
 from sqlalchemy.dialects.postgresql import array, aggregate_order_by
 
-from app.models import db, Tactic, Technique, tactic_technique_map
+from app.models import AttackVersion, db, Tactic, Technique, tactic_technique_map
+
+from app.routes.auth import public_route
 
 from app.routes.utils import DictValidator, is_attack_version, is_tact_id, is_tech_id
 from app.routes.utils import ErrorDuringHTMLRoute, ErrorDuringAJAXRoute, wrap_exceptions_as
 from app.routes.utils_db import VersionPicker
-from app.version import DECIDER_APP_VERSION
 
 logger = logging.getLogger(__name__)
 misc_ = Blueprint("misc_", __name__)
 
 
 @misc_.route("/favicon.ico", methods=["GET"])
+@public_route
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
 def favicon():
     """Returns the static Decider favicon"""
@@ -49,7 +51,6 @@ def suggestions(version):
 
 
 def is_cart_entry_format_valid(entry):
-
     if not isinstance(entry, dict):
         return False
 
@@ -58,8 +59,8 @@ def is_cart_entry_format_valid(entry):
         {
             "index": dict(type_=str, validator=is_tech_id),
             "tactic": dict(type_=str, validator=is_tact_id),
+            # v--- unused in validity check / report building
             "notes": dict(type_=str, optional=True),
-            # unused in report building - must be mentioned for DictValidator
             "name": dict(type_=str, optional=True),
             "tacticName": dict(type_=str, optional=True),
         },
@@ -69,7 +70,6 @@ def is_cart_entry_format_valid(entry):
 
 
 def is_cart_format_valid(cart):
-
     if not isinstance(cart, dict):
         return False
 
@@ -77,7 +77,8 @@ def is_cart_format_valid(cart):
         cart,
         {
             "title": dict(type_=str, optional=True),
-            "version": dict(type_=str),
+            # ^--- unused in validity check / report building
+            "version": dict(type_=str, validator=lambda v: AttackVersion.query.get(v) is not None),
             "entries": dict(type_=list, validator=lambda es: all((is_cart_entry_format_valid(e) for e in es))),
         },
     )
@@ -86,7 +87,6 @@ def is_cart_format_valid(cart):
 
 
 def query_db_for_cart_content(cart):
-
     id_pairs = set()
     for entry in cart["entries"]:
         id_pairs.add((entry["tactic"], entry["index"]))
@@ -125,7 +125,6 @@ def query_db_for_cart_content(cart):
 
 
 def is_query_db_for_cart_successful(cart, tacts_and_techs):
-
     db_tact_to_techs = defaultdict(set)
     for tact_id, _, _, techs in tacts_and_techs:
         for tech_id, _, _ in techs:
@@ -141,11 +140,13 @@ def is_query_db_for_cart_successful(cart, tacts_and_techs):
     return True
 
 
-@misc_.route("/word_export", methods=["POST"])
+@misc_.route("/api/sort_cart", methods=["POST"])
 @wrap_exceptions_as(ErrorDuringAJAXRoute)
-def export_cart_to_word():
-    """Returns data (Tech/Tacts ID/Name/URLs in sorted order) to help with MS Docx report generation
-       given a users cart (posted data)
+def sort_cart():
+    """
+    Returns data (Tech/Tacts ID/Name/URLs in sorted order) to help with:
+    - MS Docx report generation
+    - Cart validity checking
 
     JSON request:
     - dict with at least "version" and "entries" keys ("title" optional)
@@ -155,61 +156,36 @@ def export_cart_to_word():
       - optional entry keys: "notes", "tacticName", "name"
 
     JSON response:
-    - data is sent back instead of a file as JavaScript docx is now used instead of python-docx
-      - has support for links & coloration without making you manage raw XML
-    - data structure below
-      - appVersion is just the app version string - allowing marking it in the report header
-      - usages is a lookup allowing all entry notes to be accessed by Tact+Tech
-      - tactsAndTechs's root level is in matrix tactic order
-        - techniques within a tactic are in name alphabetical order
-    {
-        appVersion: "x.y.z",
+    - a list of Tactics in matrix-order [id, name, url, <techs>]
+      - with <techs> being each Tech's [id, name, url] mapped under that Tactic in alphabetical-order
 
-        usages: {
-            "tactId--techId": [
-                "Mapping rationale 1",
-                "Mapping rationale 2",
-                ...
-            ],
+    [
+        ...,
+        [tactId, tactName, tactUrl, [
+            [techId, techName, techUrl],
+            [techId, techName, techUrl],
             ...
-        },
-
-        tactsAndTechs: [
-            ...,
-            [tactId, tactName, tactUrl, [
-                [techId, techName, techUrl],
-                [techId, techName, techUrl],
-                ...
-            ]],
-            ...
-        ]
-    }
+        ]],
+        ...
+    ]
     """
-    g.route_title = "Export Cart as Docx"
 
-    # grab cart & validate structure
+    g.route_title = "Validate Cart / Sort Cart for Docx"
+
     try:
         cart = request.json
         if not is_cart_format_valid(cart):
-            raise Exception("cart format invalid")
-        if len(cart["entries"]) == 0:
-            raise Exception("cart is empty")
+            raise Exception
     except Exception:
-        logger.warning("request body missing, or misshaped, or 0 entries - malformed request")
-        return jsonify(message="Failed to make report - malformed request."), 400
+        msg = "Request body missing or malformed"
+        logger.warning(msg)
+        return jsonify(message=msg), 400
 
     # query DB for cart entries & check that all were located
     tacts_and_techs = query_db_for_cart_content(cart)
     if not is_query_db_for_cart_successful(cart, tacts_and_techs):
-        logger.warning("cart contained 1+ invalid Tactic-Technique combinations - malformed request")
-        return jsonify(message="Failed to make report - malformed request."), 400
+        msg = "Cart contained 1+ invalid Tactic-Technique combinations - malformed"
+        logger.warning(msg)
+        return jsonify(message=msg), 400
 
-    # index usages for fast grab in doc building
-    lookup_usages = defaultdict(list)
-    for entry in cart["entries"]:
-        tact_id = entry["tactic"]
-        tech_id = entry["index"]
-        usage = entry.get("notes", "") or "-"  # handles missing / blank
-        lookup_usages[f"{tact_id}--{tech_id}"].append(usage)
-
-    return jsonify(tactsAndTechs=tacts_and_techs, usages=lookup_usages, appVersion=DECIDER_APP_VERSION)
+    return jsonify(tacts_and_techs)

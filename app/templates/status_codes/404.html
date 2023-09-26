@@ -1,28 +1,19 @@
 {% extends 'base.html' %}
 
+{% block title %}404 - Not Found{% endblock %}
+
 {% block content %}
 
-<section class="hero is-medium" style="background-color: #F2EFFB;">
-    <div class="hero-body">
-        <p class="title">
-            404 Page not Found
-        </p>
-        <p class="subtitle">
+<div class="container-fluid">
+    <h1>404 - Not Found</h1>
 
-        <!-- extra user assistance -->
+    <p>
         {% if reason_for_404 is defined %}
-            {{ reason_for_404 }}
-
-        <!-- general not found -->
-        {% else %}
-            {% if current_user.is_authenticated %}
-                You should probably go <a href="/"><u><b>home</b></u></a>... or, you can edit the URL if it was entered incorrectly
-            {% else %}
-                You should probably <a href="/login"><u><b>login</b></u></a>... logged-out users can only access the login page anyway
-            {% endif %}
+            <strong>Reason for 404:</strong> {{ reason_for_404 }}<br>
         {% endif %}
-        </p>
-    </div>
-</section>
+
+        You should probably go <a href="/">Home</a>... or, you can edit the URL if it was entered incorrectly
+    </p>
+</div>
 
 {% endblock %}
