@@ -4,7 +4,7 @@ FROM python:3.8-bullseye
 WORKDIR /opt/decider
 
 # local config
-RUN mkdir /opt/decider/config
+RUN mkdir config
 
 # make non-root app user
 RUN adduser --no-create-home --system --shell /bin/false decider && \
@@ -38,7 +38,3 @@ RUN dos2unix entrypoint.sh
 # own app files + run (uWSGI drops up)
 RUN chown -R decider:decider .
 ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
-
-# (disabled for now)
-# # compress static js/css/etc
-# RUN find app/static/ -type f -not -name "*.gz" -exec gzip -9fk {} +
