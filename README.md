@@ -5,8 +5,6 @@ This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](http
 
 ## :newspaper: 3.0.0 - Kiosk is Here
 
-:construction: Tackling a uWSGI memory leak at the moment. It's eating 7GB of RAM. It was fine on ~100MB before. :construction:
-
 - Decider is now login-less and responsive.
 - Content updates have been simplified to copying files and restarting Docker.
 - The Docker setup has changed enough that there isn't exactly a 2 &rarr; 3 update process, just a fresh install of 3.
