@@ -170,15 +170,13 @@ Exact required version(s) unspecified.
 
 #### Suggested Specs
 
-Decider has not yet been tested against many concurrent users (this is soon to change).  
-This is a rough suggestion.
-
-- 2-4 Cores
-- 4-8 GB Memory
+- 1-2 Cores
+- 1-2 GB Memory
 - 20 GB Disk Space
 
-Requirements for a single user are quite minimal. Scale according to need.  
-Adjust up or down as desired.
+Decider has not yet been tested against many concurrent users (this is soon to change).  
+But it is extremely lightweight - it sits at roughly 250MB of RAM total for both containers (`docker stats`).  
+It does peak during the build process where sources are loaded into RAM, hitting 375MB or so.
 
 ## :judge: ATT&amp;CK&reg; Data Disclaimer
 
