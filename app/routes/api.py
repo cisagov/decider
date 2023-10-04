@@ -548,10 +548,10 @@ def answers_api_technique(args):
         )
         .join(
             technique_platform_map,
-            technique_platform_map.c.technique == Technique.uid,
+            technique_platform_map.c.technique == technique_alias.uid,
         )
         .join(Platform, technique_platform_map.c.platform == Platform.uid)
-        .outerjoin(technique_ds_map, technique_ds_map.c.technique == Technique.uid)
+        .outerjoin(technique_ds_map, technique_ds_map.c.technique == technique_alias.uid)
         .outerjoin(DataSource, technique_ds_map.c.data_source == DataSource.uid)
         .group_by(Technique.uid, technique_alias.uid)
     ).all()
