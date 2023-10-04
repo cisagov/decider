@@ -2,7 +2,7 @@
     "TA0043": {
         "__name": "Reconnaissance",
         "question": "How is the adversary trying to **gather information to support targeting**?",
-        "answer": "**Actively or passively gathering information** (such as details about a potential victim\u2019s organization, infrastructure, or staff/personal) **to support targeting**."
+        "answer": "**Actively or passively gathering information** (such as details about a potential victim\u2019s organization, infrastructure, or staff/personnel) **to support targeting**."
     },
     "TA0042": {
         "__name": "Resource Development",
