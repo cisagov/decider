@@ -129,6 +129,8 @@ body {
     --strong-blue: #0000aa;
     --strong-blue-alt: #0000ff;
 
+    --strong-code: #900022;
+
     --cisa-nav-blue: #005288;
     --cisa-nav-blue-dark: #003e66;
 }
@@ -182,6 +184,16 @@ mark {
     text-decoration-color: var(--attack-orange-alt) !important;
 }
 
+/* <code> contrast adjust */
+.strong-code {
+    color: var(--strong-code) !important;
+}
+
+.has-strong-codes code {
+    color: var(--strong-code) !important;
+}
+
+/* <a> contrast adjust */
 .link-strong-blue {
     color: var(--strong-blue) !important;
     -webkit-text-decoration-color: var(--strong-blue) !important;
@@ -189,6 +201,18 @@ mark {
 }
 .link-strong-blue:hover,
 .link-strong-blue:focus {
+    color: var(--strong-blue-alt) !important;
+    -webkit-text-decoration-color: var(--strong-blue-alt) !important;
+    text-decoration-color: var(--strong-blue-alt) !important;
+}
+
+.has-strong-blue-links a {
+    color: var(--strong-blue) !important;
+    -webkit-text-decoration-color: var(--strong-blue) !important;
+    text-decoration-color: var(--strong-blue) !important;
+}
+.has-strong-blue-links a:hover,
+.has-strong-blue-links a:focus {
     color: var(--strong-blue-alt) !important;
     -webkit-text-decoration-color: var(--strong-blue-alt) !important;
     text-decoration-color: var(--strong-blue-alt) !important;

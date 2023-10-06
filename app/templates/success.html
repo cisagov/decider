@@ -152,7 +152,7 @@
     {% if success.mismappings |length > 0 %}
     <section>
         <h2 class="fs-3">Mismappings</h2>
-        <table class="table">
+        <table class="table has-strong-blue-links">
             <thead>
                 <tr>
                     <th>Other Potential Technique</th>
@@ -165,7 +165,7 @@
                     <tr class="{{ loop.cycle('table-light', '') }}">
                         {% if m.corrected_techname %}
                             <td>
-                                <a href="{{ m.url }}" class="link-strong-blue">{{ m.corrected_techname }} [{{ m.corrected }}]</a>
+                                <a href="{{ m.url }}">{{ m.corrected_techname }} [{{ m.corrected }}]</a>
                             </td>
                         {% else %}
                             <td>N/A</td>
@@ -190,7 +190,7 @@
             </label>
         </div>
 
-        <table class="table">
+        <table class="table has-strong-codes has-strong-blue-links">
             <thead>
                 <tr>
                     <th>Technique</th>
@@ -205,7 +205,6 @@
                                 <a
                                     :href="resolveURL(tech.url)"
                                     x-text="`${tech.tech_name} [${tech.tech_id}]`"
-                                    class="link-strong-blue"
                                 ></a>
                                 <button
                                     class="btn btn-secondary btn-sm mt-1 w-100"
@@ -235,7 +234,7 @@
     <section x-cloak x-show="$store.success.usage_examples.length > 0">
         <h2 class="fs-3">Usage Examples</h2>
 
-        <table class="table">
+        <table class="table has-strong-codes has-strong-blue-links">
             <thead>
                 <tr>
                     <th>Description</th>
@@ -245,15 +244,15 @@
             <template x-for="(example, index) in $store.success.usage_examples" :key="example.appId">
                 <tbody>
                     <tr :class="(index % 2 == 0) ? 'table-light' : ''">
-                        <td class="align-middle text-break" x-html="strongBluifyLinks(example.sentence)" :rowspan="example.links.length"></td>
+                        <td class="align-middle text-break" x-html="example.sentence" :rowspan="example.links.length"></td>
                         <td class="align-middle text-break">
-                            <a :href="resolveURL(example.links[0].url)" x-text="example.links[0].name" class="link-strong-blue"></a>
+                            <a :href="resolveURL(example.links[0].url)" x-text="example.links[0].name"></a>
                         </td>
                     </tr>
                     <template x-for="link in example.links.slice(1)" :key="link.appId">
                         <tr :class="(index % 2 == 0) ? 'table-light' : ''">
                             <td class="align-middle text-break">
-                                <a :href="resolveURL(link.url)" x-text="link.name" class="link-strong-blue"></a>
+                                <a :href="resolveURL(link.url)" x-text="link.name"></a>
                             </td>
                         </tr>
                     </template>

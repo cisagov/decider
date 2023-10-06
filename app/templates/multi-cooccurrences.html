@@ -23,7 +23,7 @@
     </div>
 
     {# coocs table #}
-    <table class="table" x-cloak x-show="loaded && (coocs.length > 0)">
+    <table class="table has-strong-codes has-strong-blue-links" x-cloak x-show="loaded && (coocs.length > 0)">
         <thead>
             <tr>
                 <th>Technique</th>
@@ -38,7 +38,6 @@
                             <a
                                 :href="resolveURL(tech.url)"
                                 x-text="`${tech.tech_name} [${tech.tech_id}]`"
-                                class="link-strong-blue"
                             ></a>
                             <button
                                 class="btn btn-secondary btn-sm mt-1 w-100"

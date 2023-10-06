@@ -143,13 +143,6 @@ function bracketizeCrumbIDs(crumbs) {
     return crumbs.map(({ url, name }) => ({ url, name: name.replaceAll('(', '[').replaceAll(')', ']') }));
 }
 
-function strongBluifyLinks(html) {
-    const div = $('<div></div>');
-    div.html(html);
-    div.find('a').addClass('link-strong-blue');
-    return div.html();
-}
-
 document.addEventListener('alpine:init', function () {
     Alpine.store('attackIDHelper', {
         loadedVersion: null,
@@ -555,7 +548,7 @@ document.addEventListener('alpine:init', function () {
 
                 coocs.forEach((cooc) => {
                     // displayed when expanded
-                    cooc.tech_desc = strongBluifyLinks(cooc.tech_desc);
+                    // cooc.tech_desc
 
                     // displayed when collapsed (prevents tabbing)
                     cooc.short_desc = $(cooc.tech_desc).text();
@@ -1138,7 +1131,7 @@ document.addEventListener('alpine:init', function () {
 
                     coocs.forEach((cooc) => {
                         // displayed when expanded
-                        cooc.tech_desc = strongBluifyLinks(cooc.tech_desc);
+                        // cooc.tech_desc
 
                         // displayed when collapsed (prevents tabbing)
                         cooc.short_desc = $(cooc.tech_desc).text();
