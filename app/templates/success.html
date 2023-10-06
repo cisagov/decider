@@ -61,16 +61,16 @@
         {# Add to Cart #}
         <div x-data="successAddToCart" class="d-flex justify-content-end">
             <div>
+                <label for="successTacticSelect">Map Technique Under Tactic:</label>
                 <div class="input-group">
                     <select
-                        aria-label="Tactic Used"
                         class="form-select"
                         id="successTacticSelect"
                         x-model="tacticId"
                         style="max-width: max-content;"
                     >
                         <template x-if="$store.success.tactic_context === 'TA0000'">
-                            <option selected disabled value="TA0000">Confirm Tactic...</option>
+                            <option selected disabled value="TA0000">Pick Tactic...</option>
                         </template>
 
                         <template x-for="tact in $store.success.tactics" :key="tact.tact_id">
