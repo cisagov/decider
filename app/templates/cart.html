@@ -10,7 +10,7 @@
     {# Header #}
     <div class="offcanvas-header py-2 px-4">
         <h2 id="shoppingCartLabel" class="offcanvas-title fs-4">CTI Shopping Cart</h2>
-        <button x-ref="closeCart" type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button x-ref="closeCart" type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close Cart Panel"></button>
     </div>
 
     {# Body #}
@@ -178,7 +178,7 @@
                     :disabled="inCloseConfirm"
                 >
                     <i class="bi bi-trash-fill" aria-hidden="true"></i>
-                    Close Cart
+                    Empty Cart
                 </button>
 
             </div>
@@ -194,9 +194,10 @@
                         type="button"
                         class="btn btn-danger btn-border-dark btn-sm w-25"
                         @click="closeCartConfirm"
+                        aria-label="Confirm Emptying Cart"
                     >
                         <i class="bi bi-trash-fill" aria-hidden="true"></i>
-                        Close
+                        Confirm
                     </button>
 
                     {# Cancel Close Cart #}
@@ -205,7 +206,7 @@
                         type="button"
                         class="btn btn-dark btn-border-dark btn-sm w-25"
                         @click="closeCartCancel"
-                        aria-label="Cancel. Shift tab to access Confirm."
+                        aria-label="Cancel Emptying Cart. Shift tab to access Confirm."
                     >
                         <i class="bi bi-x" aria-hidden="true"></i>
                         Cancel

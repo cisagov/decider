@@ -1,7 +1,13 @@
 {% from 'cart.html' import cart %}
 
 <!doctype html>
-<html lang="en">
+
+{# Prevent skip-link target cutoff - for use with banner or without #}
+{% if frontend_conf.classification_level|length and frontend_conf.classification_message|length %}
+<html lang="en" style="scroll-padding-top: 2em;">
+{% else %}
+<html lang="en" style="scroll-padding-top: 0.5em;">
+{% endif %}
 
 <head>
     <meta charset="utf-8">
@@ -17,22 +23,44 @@
     {% if frontend_conf.use_minified_srcs %}
         <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.min.css">
         <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="/static/css/decider.css">
+        <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23oct6">
     {% else %}
         <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.css">
         <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.css">
-        <link rel="stylesheet" href="/static/css/decider.css">
+        <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23oct6">
     {% endif %}
 </head>
 
+{# Add banner if set #}
 {% if frontend_conf.classification_level|length and frontend_conf.classification_message|length %}
-<body class="classification-banner" data-classification="{{ frontend_conf.classification_level }}" data-banner-content="{{ frontend_conf.classification_message }}"></body>
+<body class="classification-banner" data-classification="{{ frontend_conf.classification_level }}" data-banner-content="{{ frontend_conf.classification_message }}">
 {% else %}
 <body>
 {% endif %}
 
+    {# Misconfig - JavaScript Required #}
+    <noscript>
+        <div class="alert alert-danger" role="alert" style="display: inline-block;">
+            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+            <strong>Warning:</strong> Decider requires JavaScript to be enabled in order to function.
+        </div>
+    </noscript>
+
+    {# Misconfig - Only Kiosk-Mode is Implemented #}
+    {% if not g.kiosk_mode %}
+    <div class="alert alert-danger" role="alert" style="display: inline-block;">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+        <strong>Warning:</strong> Only Kiosk-mode is implemented for this instance of Decider.<br>
+        Please restart Decider with <code>--config KioskConfig</code>.
+    </div>
+    {% endif %}
+
     {# Skip Link #}
-    <a x-data="{ urlNoHash: getURLNoHash() }" class="visually-hidden-focusable" :href="urlNoHash + '#main'">Skip to main content</a>
+    <a
+        x-data="{ urlNoHash: getURLNoHash() }"
+        class="visually-hidden-focusable"
+        :href="urlNoHash + '#{% if self.main_id_block() %}{% block main_id_block %}{% endblock %}{% else %}main{% endif %}'"
+    >Skip to main content</a>
 
     {# Navbar #}
     <nav id="navbar" class="navbar navbar-expand-lg" data-bs-theme="dark">
@@ -227,27 +255,6 @@
     {# Main #}
     <div id="main" class="container flex-grow-1">
         <main>
-
-            {# Misconfiguration Alerts #}
-            <div>
-                {# JavaScript Required #}
-                <noscript>
-                    <div class="alert alert-danger" role="alert" style="display: inline-block;">
-                        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
-                        <strong>Warning:</strong> Decider requires JavaScript to be enabled in order to function.
-                    </div>
-                </noscript>
-
-                {# Only Kiosk-Mode is Implemented #}
-                {% if not g.kiosk_mode %}
-                    <div class="alert alert-danger" role="alert" style="display: inline-block;">
-                        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
-                        <strong>Warning:</strong> Only Kiosk-mode is implemented for this instance of Decider.<br>
-                        Please restart Decider with <code>--config KioskConfig</code>.
-                    </div>
-                {% endif %}
-            </div>
-
             {# Main Content + Scroll-to-Top #}
             <div>
                 <div class="my-3">
@@ -338,7 +345,7 @@
         <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.min.js"></script>
         <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.min.js"></script>
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.min.js"></script>
-        <script src="/static/js/decider.js"></script>
+        <script src="/static/js/decider.js?cache_bust=23oct6"></script>
     {% else %}
         <script src="/static/js/lib/jquery-3.7.0.slim/jquery-3.7.0.slim.js"></script>
         <script src="/static/js/lib/mark.js-9.0.0/jquery.mark.es6.js"></script>
@@ -348,7 +355,7 @@
         <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.js"></script>
         <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.js"></script>
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.js"></script>
-        <script src="/static/js/decider.js"></script>
+        <script src="/static/js/decider.js?cache_bust=23oct6"></script>
     {% endif %}
 </body>
 

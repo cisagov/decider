@@ -484,13 +484,14 @@ def full_search():
     - each dict is a Technique result from the search
     - results are ordered first by strength of match, and secondly by TechniqueID as a tie-breaker
     - each dict has these keys:
-      - tech_id       : (str)     match-highlighted Tech ID
-      - tech_id_plain : (str)     raw Tech ID
-      - tech_name     : (str)     match-highlighted Tech Name
-      - description   : (str)     match-highlighted Tech Description (just text near highlights; or just start if none)
-      - attack_url    : (str)     link to MITRE ATT&CK page for this Tech
-      - internal_url  : (str)     link to Decider no_tactic success page for this Tech
-      - akas          : list[str] match-highlighted list of tags associated with Tech
+      - tech_id         : (str)     match-highlighted Tech ID
+      - tech_id_plain   : (str)     raw Tech ID
+      - tech_name       : (str)     match-highlighted Full Tech Name
+      - tech_name_plain : (str)     raw Full Tech Name
+      - description     : (str)     match-highlighted Tech Description (just text near highlights; or just start if none)
+      - attack_url      : (str)     link to MITRE ATT&CK page for this Tech
+      - internal_url    : (str)     link to Decider no_tactic success page for this Tech
+      - akas            : list[str] match-highlighted list of tags associated with Tech
 
     Search Technology TL;DR
     -----------------------
@@ -663,7 +664,7 @@ def full_search():
     results = []
     for (
         tech_id,
-        _,  # tech_name
+        tech_name,
         tech_desc,
         tech_url,
         _,  # tactic_ids
@@ -689,6 +690,7 @@ def full_search():
                 "tech_id": hl_id,
                 "tech_id_plain": tech_id,
                 "tech_name": hl_name,
+                "tech_name_plain": tech_name,
                 "description": tdesc,
                 "attack_url": tech_url,
                 "internal_url": url_for(

@@ -2,6 +2,8 @@
 
 {% block title %}Technique Search{% endblock %}
 
+{% block main_id_block %}fullTechniqueSearchBox{% endblock %}
+
 {% block content %}
 
 <div x-data="fullSearchPage" class="container-fluid">
@@ -239,10 +241,12 @@
                                 <a
                                     class="link-strong-blue card-link stretched-link"
                                     :href="resolveURL(card.internal_url)"
+                                    :aria-label="`Select Card ${card.tech_name_plain} ${card.tech_id_plain}`"
                                 >Select Card</a>
                                 <a
                                     class="link-attack-orange card-link position-relative z-2"
                                     :href="resolveURL(card.attack_url)"
+                                    :aria-label="`Attack Page for ${card.tech_name_plain} ${card.tech_id_plain}`"
                                     target="_blank"
                                     rel="noreferrer noopener"
                                 >ATT&amp;CK Page</a>

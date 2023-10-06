@@ -17,7 +17,7 @@ from app.env_vars import (
 init_sql_template = txt_dedent(
     """
     -- Flask Connection / Only User
-    CREATE USER {db_admin_name} WITH LOGIN PASSWORD '{db_admin_pass}';
+    CREATE ROLE {db_admin_name} WITH CREATEROLE LOGIN PASSWORD '{db_admin_pass}';
     CREATE DATABASE {db_database};
     \\c {db_database};
     GRANT ALL PRIVILEGES ON DATABASE {db_database} to {db_admin_name};

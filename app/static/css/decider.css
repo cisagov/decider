@@ -129,6 +129,8 @@ body {
     --strong-blue: #0000aa;
     --strong-blue-alt: #0000ff;
 
+    --strong-code: #900022;
+
     --cisa-nav-blue: #005288;
     --cisa-nav-blue-dark: #003e66;
 }
@@ -182,6 +184,16 @@ mark {
     text-decoration-color: var(--attack-orange-alt) !important;
 }
 
+/* <code> contrast adjust */
+.strong-code {
+    color: var(--strong-code) !important;
+}
+
+.has-strong-codes code {
+    color: var(--strong-code) !important;
+}
+
+/* <a> contrast adjust */
 .link-strong-blue {
     color: var(--strong-blue) !important;
     -webkit-text-decoration-color: var(--strong-blue) !important;
@@ -189,6 +201,18 @@ mark {
 }
 .link-strong-blue:hover,
 .link-strong-blue:focus {
+    color: var(--strong-blue-alt) !important;
+    -webkit-text-decoration-color: var(--strong-blue-alt) !important;
+    text-decoration-color: var(--strong-blue-alt) !important;
+}
+
+.has-strong-blue-links a {
+    color: var(--strong-blue) !important;
+    -webkit-text-decoration-color: var(--strong-blue) !important;
+    text-decoration-color: var(--strong-blue) !important;
+}
+.has-strong-blue-links a:hover,
+.has-strong-blue-links a:focus {
     color: var(--strong-blue-alt) !important;
     -webkit-text-decoration-color: var(--strong-blue-alt) !important;
     text-decoration-color: var(--strong-blue-alt) !important;
@@ -282,17 +306,16 @@ span.redtext {
 }
 
 /* ----------------------------------------------------------------------------------------------------------------- */
-/* Classification Banner Styling */
+/* Classification Banner Styling (modified from original) */
 /* https://codepen.io/kvangrae/pen/EWJBpo */
 
 .classification-banner:before,
 .classification-banner:not([data-single-banner]):after {
     display: block;
-    background-color: #5e5e5e;
+    background-color: #505050;
     color: #fff;
     font-weight: bold;
     text-align: center;
-    text-shadow: 1px 1px 0 #444;
     content: attr(data-classification);
 }
 .classification-banner[data-banner-content]:before,
@@ -301,19 +324,20 @@ span.redtext {
 }
 .classification-banner[data-classification^='U']:before,
 .classification-banner[data-classification^='U']:after {
-    background-color: #5cb85c;
+    background-color: #08680e;
 }
 .classification-banner[data-classification^='C']:before,
 .classification-banner[data-classification^='C']:after {
-    background-color: #286090;
+    background-color: #175b96;
 }
 .classification-banner[data-classification^='S']:before,
 .classification-banner[data-classification^='S']:after {
-    background-color: #d9534f;
+    background-color: #b40a04;
 }
 .classification-banner[data-classification^='T']:before,
 .classification-banner[data-classification^='T']:after {
     background-color: #f0ad4e;
+    color: #000;
 }
 .classification-banner[data-font-size-small]:before,
 .classification-banner[data-font-size-small]:not([data-single-banner]):after {
