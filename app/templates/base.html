@@ -17,11 +17,11 @@
     {% if frontend_conf.use_minified_srcs %}
         <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.min.css">
         <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="/static/css/decider.css">
+        <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23oct6">
     {% else %}
         <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.css">
         <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.css">
-        <link rel="stylesheet" href="/static/css/decider.css">
+        <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23oct6">
     {% endif %}
 </head>
 
@@ -338,7 +338,7 @@
         <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.min.js"></script>
         <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.min.js"></script>
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.min.js"></script>
-        <script src="/static/js/decider.js"></script>
+        <script src="/static/js/decider.js?cache_bust=23oct6"></script>
     {% else %}
         <script src="/static/js/lib/jquery-3.7.0.slim/jquery-3.7.0.slim.js"></script>
         <script src="/static/js/lib/mark.js-9.0.0/jquery.mark.es6.js"></script>
@@ -348,7 +348,7 @@
         <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.js"></script>
         <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.js"></script>
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.js"></script>
-        <script src="/static/js/decider.js"></script>
+        <script src="/static/js/decider.js?cache_bust=23oct6"></script>
     {% endif %}
 </body>
 
