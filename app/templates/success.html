@@ -53,6 +53,8 @@
         <h1 class="fs-2" id="successTechNameHeader" class="mb-2">
             <span>{{ success.name }} [</span><a
                 :href="resolveURL($store.success.url)"
+                target="_blank"
+                rel="noreferrer noopener"
                 class="link-attack-orange"
                 aria-label="`ATT&amp;CK Page {{ success.name }} {{ success.id }}`"
             >{{ success.id }}</a><span>]</span>
