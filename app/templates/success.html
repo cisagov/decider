@@ -248,13 +248,23 @@
                     <tr :class="(index % 2 == 0) ? 'table-light' : ''">
                         <td class="align-middle text-break" x-html="example.sentence" :rowspan="example.links.length"></td>
                         <td class="align-middle text-break">
-                            <a :href="resolveURL(example.links[0].url)" x-text="example.links[0].name"></a>
+                            <a
+                                :href="resolveURL(example.links[0].url)"
+                                target="_blank"
+                                rel="noreferrer noopener"
+                                x-text="example.links[0].name"
+                            ></a>
                         </td>
                     </tr>
                     <template x-for="link in example.links.slice(1)" :key="link.appId">
                         <tr :class="(index % 2 == 0) ? 'table-light' : ''">
                             <td class="align-middle text-break">
-                                <a :href="resolveURL(link.url)" x-text="link.name"></a>
+                                <a
+                                    :href="resolveURL(link.url)"
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                    x-text="link.name"
+                                ></a>
                             </td>
                         </tr>
                     </template>
