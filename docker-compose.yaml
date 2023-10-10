@@ -1,6 +1,7 @@
 name: decider
 services:
     web:
+        restart: unless-stopped
         container_name: decider-web
         env_file: .env
         depends_on:
@@ -35,6 +36,7 @@ services:
               target: /opt/decider/ro_config
               read_only: true
     db:
+        restart: unless-stopped
         container_name: decider-db
         env_file: .env
         image: postgres:14-alpine
