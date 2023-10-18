@@ -26,6 +26,6 @@ ruamel.yaml.clib==0.2.7
 safety==2.3.4
 toml==0.10.2
 tomli==2.0.1
-urllib3==1.26.17
+urllib3==1.26.18
 virtualenv==20.21.0
 wcwidth==0.2.6
