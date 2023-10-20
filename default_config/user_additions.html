@@ -1,0 +1,34 @@
+{#
+    Modify to add custom HTML at various places within app/templates/base.html
+
+    [____]_top()    : placed just after the opening tag
+    [____]_bottom() : placed just before the closing tag
+
+    Head / Body: Good for CSS / JS / Analytics
+    Footer     : Good for additional links / resources at bottom of page
+
+    Templating Language: https://jinja.palletsprojects.com/en/3.1.x/
+
+    Available Libraries
+    -------------------
+    CSS: Bootstrap + Bootstrap-Icons
+    JS : alpine.js + jQuery + lodash (& others)
+#}
+
+{% macro head_top() -%}
+{%- endmacro %}
+
+{% macro head_bottom() -%}
+{%- endmacro %}
+
+{% macro body_top() -%}
+{%- endmacro %}
+
+{% macro body_bottom() -%}
+{%- endmacro %}
+
+{% macro footer_top() -%}
+{%- endmacro %}
+
+{% macro footer_bottom() -%}
+{%- endmacro %}
