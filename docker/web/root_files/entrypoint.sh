@@ -74,6 +74,29 @@ if rsync -rLKt --ignore-missing-args --out-format='%n' ro_config/build_sources/u
     SOURCES_CHANGED="yes"
 fi
 
+# - user-specified additional HTML
+
+if [ -f ro_config/user_additions.html ]; then
+    # external present
+
+    echo "user_additions.html in config, copying over"
+    cp -f ro_config/user_additions.html app/templates/user_additions.html
+
+else
+    # external missing
+
+    if [ -f app/templates/user_additions.html ]; then
+        # internal present
+        echo "user_additions.html missing in config, present internally, skipping"
+
+    else
+        # internal missing
+        echo "ERROR: user_additions.html missing in config, and missing internally, please copy default_config/ -> config/"
+        exit 1
+
+    fi
+fi
+
 # (general) correct ownership
 chown -R decider:decider config
 

@@ -1,4 +1,5 @@
 {% from 'cart.html' import cart %}
+{% import 'user_additions.html' as user_additions %}
 
 <!doctype html>
 
@@ -10,6 +11,8 @@
 {% endif %}
 
 <head>
+    {{ user_additions.head_top() }}
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -29,6 +32,8 @@
         <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.css">
         <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23oct6">
     {% endif %}
+
+    {{ user_additions.head_bottom() }}
 </head>
 
 {# Add banner if set #}
@@ -37,6 +42,7 @@
 {% else %}
 <body>
 {% endif %}
+    {{ user_additions.body_top() }}
 
     {# Misconfig - JavaScript Required #}
     <noscript>
@@ -291,6 +297,8 @@
 
     {# Footer #}
     <footer id="deciderFooter" class="text-center w-100 py-3">
+        {{ user_additions.footer_top() }}
+
         Version: {{ g.decider_app_version }} &bull;
         <a
             href="https://github.com/cisagov/decider"
@@ -300,15 +308,16 @@
         >
             GitHub Repo <i class="bi bi-github" aria-hidden="true"></i>
         </a><br>
-        This project makes use of MITRE ATT&amp;CK&reg;<br>
-        <a
+        Decider uses MITRE ATT&amp;CK&reg; &bull; <a
             href="https://attack.mitre.org/resources/terms-of-use/"
             target="_blank"
             rel="noreferrer noopener"
             class="link-light"
         >
-            ATT&amp;CK Terms of Use
+            Terms of Use
         </a>
+
+        {{ user_additions.footer_bottom() }}
     </footer>
 
     {# Toaster #}
@@ -369,6 +378,8 @@
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.js"></script>
         <script src="/static/js/decider.js?cache_bust=23oct6"></script>
     {% endif %}
+
+    {{ user_additions.body_bottom() }}
 </body>
 
 </html>
