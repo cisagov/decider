@@ -151,7 +151,7 @@ def outgoing_markdown(database_md):
             "li",
             "sup",
         ],
-        attributes={"a": ["href"]},
+        attributes={"a": ["href", "title"]},
         strip=True,
     )
 

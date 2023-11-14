@@ -23,14 +23,16 @@
     <link rel="shortcut icon" href="/static/favicon.ico">
     <title>Decider: {% block title %}{% endblock %}</title>
 
-    {% if frontend_conf.use_minified_srcs %}
+    {% if frontend_conf.use_cdn_resources %}
+    {{ user_additions.cdn_css() }}
+    {% elif frontend_conf.use_minified_srcs %}
         <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.min.css">
         <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23oct6">
+        <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23nov14">
     {% else %}
         <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.css">
         <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.css">
-        <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23oct6">
+        <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23nov14">
     {% endif %}
 
     {{ user_additions.head_bottom() }}
@@ -62,11 +64,14 @@
     {% endif %}
 
     {# Skip Link #}
-    <a
-        x-data="{ urlNoHash: getURLNoHash() }"
-        class="visually-hidden-focusable"
-        :href="urlNoHash + '#{% if self.main_id_block() %}{% block main_id_block %}{% endblock %}{% else %}main{% endif %}'"
-    >Skip to main content</a>
+    <button
+        x-data
+        id="skip-to-main-content"
+        class="visually-hidden-focusable btn btn-sm btn-link"
+        @click="document.getElementById('{% if self.main_id_block() %}{% block main_id_block %}{% endblock %}{% else %}main{% endif %}').focus()"
+    >Skip to main content</button>
+
+    {{ user_additions.after_skip_link() }}
 
     {# Navbar #}
     <nav id="navbar" class="navbar navbar-expand-lg" data-bs-theme="dark">
@@ -261,7 +266,7 @@
     </nav>
 
     {# Main #}
-    <div id="main" class="container flex-grow-1">
+    <div tabindex="-1" id="main" class="container flex-grow-1">
         <main>
             {# Main Content + Scroll-to-Top #}
             <div>
@@ -272,9 +277,9 @@
                 {# Scroll-to-Top #}
                 <button
                     {% if frontend_conf.classification_level|length and frontend_conf.classification_message|length %}
-                    class="btn btn-outline-danger mb-4"
+                    class="btn btn-light btn-border-dark mb-4"
                     {% else %}
-                    class="btn btn-outline-danger mb-0"
+                    class="btn btn-light btn-border-dark mb-0"
                     {% endif %}
                     id="btnScrollToTop"
                     x-data="scrollToTop"
@@ -297,27 +302,29 @@
 
     {# Footer #}
     <footer id="deciderFooter" class="text-center w-100 py-3">
-        {{ user_additions.footer_top() }}
+        <div class="container">
+            {{ user_additions.footer_top() }}
 
-        Version: {{ g.decider_app_version }} &bull;
-        <a
-            href="https://github.com/cisagov/decider"
-            target="_blank"
-            rel="noreferrer noopener"
-            class="link-light icon-link"
-        >
-            GitHub Repo <i class="bi bi-github" aria-hidden="true"></i>
-        </a><br>
-        Decider uses MITRE ATT&amp;CK&reg; &bull; <a
-            href="https://attack.mitre.org/resources/terms-of-use/"
-            target="_blank"
-            rel="noreferrer noopener"
-            class="link-light"
-        >
-            Terms of Use
-        </a>
+            Version: {{ g.decider_app_version }} &bull;
+            <a
+                href="https://github.com/cisagov/decider"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="link-light icon-link"
+            >
+                GitHub Repo <i class="bi bi-github" aria-hidden="true"></i>
+            </a><br>
+            Decider uses MITRE ATT&amp;CK&reg; &bull; <a
+                href="https://attack.mitre.org/resources/terms-of-use/"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="link-light"
+            >
+                Terms of Use
+            </a>
 
-        {{ user_additions.footer_bottom() }}
+            {{ user_additions.footer_bottom() }}
+        </div>
     </footer>
 
     {# Toaster #}
@@ -344,6 +351,43 @@
         </div>
     </template>
 
+    {# Welcome Modal #}
+    <div
+        x-data="{ open: false }"
+        id="welcomeModal"
+        class="modal fade"
+        data-bs-backdrop="static"
+        data-bs-focus="true"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="welcomeModalLabel"
+        aria-hidden="true"
+        @show-bs-modal.dot="open = true"
+        @hide-bs-modal.dot="open = false; localStorage.setItem('has-seen-welcome', 'yes')"
+        @hidden-bs-modal.dot="document.getElementById('skip-to-main-content').focus()"
+        >
+        <div class="modal-dialog" x-trap="open">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-2" id="welcomeModalLabel">Welcome to Decider!</h1>
+                </div>
+                <div class="modal-body fs-5">
+                    <p>Decider is a web application that assists network defenders, analysts, and researchers in the process of mapping adversary behaviors to the MITRE ATT&amp;CK&reg; Framework.</p>
+                    <span>It does this by offering:</span>
+                    <ul>
+                        <li><strong>A Question Tree</strong> &ndash; from Tactic to Technique to SubTechnique<b>,</b></li>
+                        <li><strong>A Technique Search</strong> with boolean operators and filtering options<b>,</b></li>
+                        <li><b>and</b> <strong>Suggestions</strong> of other Techniques that may have occurred</li>
+                    </ul>
+                    <p>Be sure to check out the <a href="/static/documentation.pdf" target="_blank">Docs</a> if you need guidance.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {# Scripts #}
     <script>
         const csrfToken = {{ csrf_token() | tojson }};
@@ -357,7 +401,9 @@
             });
         });
     </script>
-    {% if frontend_conf.use_minified_srcs %}
+    {% if frontend_conf.use_cdn_resources %}
+    {{ user_additions.cdn_js() }}
+    {% elif frontend_conf.use_minified_srcs %}
         <script src="/static/js/lib/jquery-3.7.0.slim/jquery-3.7.0.slim.min.js"></script>
         <script src="/static/js/lib/mark.js-9.0.0/jquery.mark.es6.min.js"></script>
         <script src="/static/js/lib/bootstrap-bundle-5.3.0/bootstrap.bundle.min.js"></script>
@@ -365,8 +411,9 @@
         <script src="/static/js/lib/FileSaver/FileSaver.min.js"></script>
         <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.min.js"></script>
         <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.min.js"></script>
+        <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-focus-3.12.2.min.js"></script>
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.min.js"></script>
-        <script src="/static/js/decider.js?cache_bust=23oct6"></script>
+        <script src="/static/js/decider.js?cache_bust=23nov14"></script>
     {% else %}
         <script src="/static/js/lib/jquery-3.7.0.slim/jquery-3.7.0.slim.js"></script>
         <script src="/static/js/lib/mark.js-9.0.0/jquery.mark.es6.js"></script>
@@ -375,8 +422,9 @@
         <script src="/static/js/lib/FileSaver/FileSaver.js"></script>
         <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.js"></script>
         <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.js"></script>
+        <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-focus-3.12.2.js"></script>
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.js"></script>
-        <script src="/static/js/decider.js?cache_bust=23oct6"></script>
+        <script src="/static/js/decider.js?cache_bust=23nov14"></script>
     {% endif %}
 
     {{ user_additions.body_bottom() }}

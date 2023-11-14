@@ -51,6 +51,7 @@ FRONTEND_CONF = dict(
     use_minified_srcs=True,
     classification_level="",
     classification_message="",
+    use_cdn_resources=False,
 )
 with open("config/frontend.json", "rt") as fh:
     try:
