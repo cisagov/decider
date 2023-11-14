@@ -62,11 +62,13 @@
     {% endif %}
 
     {# Skip Link #}
-    <a
-        x-data="{ urlNoHash: getURLNoHash() }"
-        class="visually-hidden-focusable"
-        :href="urlNoHash + '#{% if self.main_id_block() %}{% block main_id_block %}{% endblock %}{% else %}main{% endif %}'"
-    >Skip to main content</a>
+    <button
+        x-data
+        id="skip-to-main-content"
+        class="visually-hidden-focusable btn btn-sm btn-link"
+        style="width: fit-content;"
+        @click="document.getElementById('{% if self.main_id_block() %}{% block main_id_block %}{% endblock %}{% else %}main{% endif %}').focus()"
+    >Skip to main content</button>
 
     {{ user_additions.after_skip_link() }}
 
@@ -263,7 +265,7 @@
     </nav>
 
     {# Main #}
-    <div id="main" class="container flex-grow-1">
+    <div tabindex="-1" id="main" class="container flex-grow-1">
         <main>
             {# Main Content + Scroll-to-Top #}
             <div>
@@ -274,9 +276,9 @@
                 {# Scroll-to-Top #}
                 <button
                     {% if frontend_conf.classification_level|length and frontend_conf.classification_message|length %}
-                    class="btn btn-outline-danger mb-4"
+                    class="btn btn-light btn-border-dark mb-4"
                     {% else %}
-                    class="btn btn-outline-danger mb-0"
+                    class="btn btn-light btn-border-dark mb-0"
                     {% endif %}
                     id="btnScrollToTop"
                     x-data="scrollToTop"
