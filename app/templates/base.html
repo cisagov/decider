@@ -68,6 +68,8 @@
         :href="urlNoHash + '#{% if self.main_id_block() %}{% block main_id_block %}{% endblock %}{% else %}main{% endif %}'"
     >Skip to main content</a>
 
+    {{ user_additions.after_skip_link() }}
+
     {# Navbar #}
     <nav id="navbar" class="navbar navbar-expand-lg" data-bs-theme="dark">
         <div class="container-fluid">

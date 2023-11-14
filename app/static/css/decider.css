@@ -348,8 +348,8 @@ span.redtext {
     font-size: 1.33333333em;
 }
 body.classification-banner {
-    padding-top: 1.17em;
-    padding-bottom: 1.17em;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
 }
 body.classification-banner:before,
 body.classification-banner:not([data-single-banner]):after {
