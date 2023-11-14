@@ -44,6 +44,12 @@ body {
 
 /* ----------------------------------------------------------------------------------------------------------------- */
 
+#skip-to-main-content {
+    width: fit-content;
+    padding: 0;
+    margin: 4px;
+}
+
 #navbar {
     padding: 0.25rem 0;
     background-color: var(--cisa-nav-blue);

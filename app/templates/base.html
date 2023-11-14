@@ -68,7 +68,6 @@
         x-data
         id="skip-to-main-content"
         class="visually-hidden-focusable btn btn-sm btn-link"
-        style="width: fit-content;"
         @click="document.getElementById('{% if self.main_id_block() %}{% block main_id_block %}{% endblock %}{% else %}main{% endif %}').focus()"
     >Skip to main content</button>
 
