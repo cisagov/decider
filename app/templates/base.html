@@ -299,27 +299,29 @@
 
     {# Footer #}
     <footer id="deciderFooter" class="text-center w-100 py-3">
-        {{ user_additions.footer_top() }}
+        <div class="container">
+            {{ user_additions.footer_top() }}
 
-        Version: {{ g.decider_app_version }} &bull;
-        <a
-            href="https://github.com/cisagov/decider"
-            target="_blank"
-            rel="noreferrer noopener"
-            class="link-light icon-link"
-        >
-            GitHub Repo <i class="bi bi-github" aria-hidden="true"></i>
-        </a><br>
-        Decider uses MITRE ATT&amp;CK&reg; &bull; <a
-            href="https://attack.mitre.org/resources/terms-of-use/"
-            target="_blank"
-            rel="noreferrer noopener"
-            class="link-light"
-        >
-            Terms of Use
-        </a>
+            Version: {{ g.decider_app_version }} &bull;
+            <a
+                href="https://github.com/cisagov/decider"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="link-light icon-link"
+            >
+                GitHub Repo <i class="bi bi-github" aria-hidden="true"></i>
+            </a><br>
+            Decider uses MITRE ATT&amp;CK&reg; &bull; <a
+                href="https://attack.mitre.org/resources/terms-of-use/"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="link-light"
+            >
+                Terms of Use
+            </a>
 
-        {{ user_additions.footer_bottom() }}
+            {{ user_additions.footer_bottom() }}
+        </div>
     </footer>
 
     {# Toaster #}
