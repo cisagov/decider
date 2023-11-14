@@ -1,3 +1,11 @@
+$(document).ready(function () {
+    const needsAWelcome = localStorage.getItem('has-seen-welcome') === null;
+    if (needsAWelcome) {
+        const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+        welcomeModal.show();
+    }
+});
+
 // broofa's UUIDv4 generator
 // https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid/2117523#2117523
 function uuidv4() {

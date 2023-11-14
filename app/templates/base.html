@@ -352,6 +352,43 @@
         </div>
     </template>
 
+    {# Welcome Modal #}
+    <div
+        x-data="{ open: false }"
+        id="welcomeModal"
+        class="modal fade"
+        data-bs-backdrop="static"
+        data-bs-focus="true"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="welcomeModalLabel"
+        aria-hidden="true"
+        @show-bs-modal.dot="open = true"
+        @hide-bs-modal.dot="open = false; localStorage.setItem('has-seen-welcome', 'yes')"
+        @hidden-bs-modal.dot="document.getElementById('skip-to-main-content').focus()"
+        >
+        <div class="modal-dialog" x-trap="open">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-2" id="welcomeModalLabel">Welcome to Decider!</h1>
+                </div>
+                <div class="modal-body fs-5">
+                    <p>Decider is a web application that assists network defenders, analysts, and researchers in the process of mapping adversary behaviors to the MITRE ATT&amp;CK&reg; Framework.</p>
+                    <span>It does this by offering:</span>
+                    <ul>
+                        <li><strong>A Question Tree</strong> &ndash; from Tactic to Technique to SubTechnique<b>,</b></li>
+                        <li><strong>A Technique Search</strong> with boolean operators and filtering options<b>,</b></li>
+                        <li><b>and</b> <strong>Suggestions</strong> of other Techniques that may have occurred</li>
+                    </ul>
+                    <p>Be sure to check out the <a href="/static/documentation.pdf" target="_blank">Docs</a> if you need guidance.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {# Scripts #}
     <script>
         const csrfToken = {{ csrf_token() | tojson }};
@@ -375,6 +412,7 @@
         <script src="/static/js/lib/FileSaver/FileSaver.min.js"></script>
         <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.min.js"></script>
         <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.min.js"></script>
+        <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-focus-3.12.2.min.js"></script>
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.min.js"></script>
         <script src="/static/js/decider.js?cache_bust=23nov14"></script>
     {% else %}
@@ -385,6 +423,7 @@
         <script src="/static/js/lib/FileSaver/FileSaver.js"></script>
         <script src="/static/js/lib/lodash-4.17.15/lodash-4.17.15.js"></script>
         <script src="/static/js/lib/minisearch-6.1.0/minisearch-6.1.0.js"></script>
+        <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-focus-3.12.2.js"></script>
         <script defer src="/static/js/lib/alpinejs-3.12.2/alpinejs-3.12.2.js"></script>
         <script src="/static/js/decider.js?cache_bust=23nov14"></script>
     {% endif %}
