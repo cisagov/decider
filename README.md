@@ -180,6 +180,8 @@ It does peak during the build process where sources are loaded into RAM, hitting
 
 JSONs under default_config/build_sources/enterprise-attack are pulled from https://github.com/mitre-attack/attack-stix-data/tree/master/enterprise-attack
 
+&copy; 2023 The MITRE Corporation. This work is reproduced and distributed with the permission of The MITRE Corporation.
+
 ## Appendix A: Updating ATT&amp;CK Content on Decider 1/2
 
 ### :whale: Docker Update Instructions
