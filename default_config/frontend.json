@@ -4,10 +4,13 @@
         "base_url_href         : change this if not hosting directly at the root path of a server",
         "use_minified_srcs     : setting this false will make the app use unminified JS/CSS libraries (good for debug)",
         "classification_level  : 'U', 'C', 'S', or 'T' (see app/static/css/decider.css > Classification Banner Styling)",
-        "classification_message: when this and level are set, a banner appears at the top and bottom of the site"
+        "classification_message: when this and level are set, a banner appears at the top and bottom of the site",
+        "use_cdn_resources     : takes precedent over 'use_minified_srcs'. uses cdn_css() and cdn_js() macros from",
+        "                        user_additions.html to specify CDN variants of libraries to load (be careful of order)"
     ],
     "base_url_href"         : "/",
     "use_minified_srcs"     : true,
     "classification_level"  : "",
-    "classification_message": ""
+    "classification_message": "",
+    "use_cdn_resources"     : false
 }

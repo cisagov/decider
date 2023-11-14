@@ -6,6 +6,8 @@
 
     Head / Body: Good for CSS / JS / Analytics
     Footer     : Good for additional links / resources at bottom of page
+    CDN        : Good for specifying CDN links to the CSS / JS libraries
+                 Use with frontend.json > "use_cdn_resources": true
 
     Templating Language: https://jinja.palletsprojects.com/en/3.1.x/
 
@@ -34,4 +36,10 @@
 {%- endmacro %}
 
 {% macro footer_bottom() -%}
+{%- endmacro %}
+
+{% macro cdn_css() -%}
+{%- endmacro %}
+
+{% macro cdn_js() -%}
 {%- endmacro %}

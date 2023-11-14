@@ -23,7 +23,9 @@
     <link rel="shortcut icon" href="/static/favicon.ico">
     <title>Decider: {% block title %}{% endblock %}</title>
 
-    {% if frontend_conf.use_minified_srcs %}
+    {% if frontend_conf.use_cdn_resources %}
+    {{ user_additions.cdn_css() }}
+    {% elif frontend_conf.use_minified_srcs %}
         <link rel="stylesheet" href="/static/css/lib/bootstrap-5.3.0/bootstrap.min.css">
         <link rel="stylesheet" href="/static/css/lib/bootstrap-icons-1.10.5/bootstrap-icons.min.css">
         <link rel="stylesheet" href="/static/css/decider.css?cache_bust=23nov14">
@@ -363,7 +365,9 @@
             });
         });
     </script>
-    {% if frontend_conf.use_minified_srcs %}
+    {% if frontend_conf.use_cdn_resources %}
+    {{ user_additions.cdn_js() }}
+    {% elif frontend_conf.use_minified_srcs %}
         <script src="/static/js/lib/jquery-3.7.0.slim/jquery-3.7.0.slim.min.js"></script>
         <script src="/static/js/lib/mark.js-9.0.0/jquery.mark.es6.min.js"></script>
         <script src="/static/js/lib/bootstrap-bundle-5.3.0/bootstrap.bundle.min.js"></script>
