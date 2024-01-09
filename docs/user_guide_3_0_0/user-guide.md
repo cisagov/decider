@@ -2,52 +2,42 @@
 Pandoc Manual
 https://pandoc.org/MANUAL.html
 
-Render to PDF
-pandoc --from markdown+link_attributes+implicit_figures --toc --to pdf -o user-guide-3-0-0.pdf user-guide-3-0-0.md
+Render to HTML
+pandoc --from markdown+link_attributes+implicit_figures --strip-comments --section-divs --embed-resources --standalone --toc --toc-depth=6 --to html -o ../../app/static/user-guide.html user-guide.md
 -->
 
 ---
+lang: en-US
+
 colorlinks: true
 linkcolor: blue
 urlcolor: blue
 toccolor: black
-
-geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
 
 title: Decider User Guide
 
 subtitle: |
     Version 3.0.0 - Loginless 'Kiosk'  
     _(use version 2.x.y for content authoring)_
-
-abstract: |
-    A web application that assists network defenders, analysts, and researchers in the process of mapping adversary behaviors to the MITRE ATT&amp;CK&reg; framework. 
-
-include-before: |
-    ---
-
-    **Prepared For**  
-    Department of Homeland Security  
-    ![Department of Homeland Security Seal](imgs/logos/homeland-security.png){width=280}\
-
-    ---
-
-    **Product Of**  
-    Homeland Security Systems Engineering and Development Institute (HSSEDI&trade;)  
-    ![Homeland Security Systems Engineering and Development Institute Logo](imgs/logos/hssedi.png){width=300}\
-
-    ---
-
-    **Code:** [Decider's GitHub Repo](https://github.com/cisagov/decider)
-
-    **Notice:** This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/)
 ---
 
 # Introduction
 
-## About Decider
+## About
 
-Decider is a web app that helps analysts map adversary behaviors to the MITRE ATT&amp;CK Matrix.
+Decider is a web application that assists network defenders, analysts, and researchers in the process of mapping adversary behaviors to the MITRE ATT&amp;CK&reg; framework. 
+
+**Produced For**  
+Department of Homeland Security  
+![Department of Homeland Security Seal](imgs/logos/homeland-security.png){width=280}\
+
+**Produced By**  
+Homeland Security Systems Engineering and Development Institute (HSSEDI&trade;)  
+![Homeland Security Systems Engineering and Development Institute Logo](imgs/logos/hssedi.png){width=300}\
+
+**Code:** [Decider's GitHub Repo](https://github.com/cisagov/decider)
+
+**Notice:** This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/)
 
 ### What is the 'Kiosk'?
 
@@ -166,9 +156,10 @@ Consider techniques and sub-techniques as elements of an adversary’s playbook,
 
 ## Question Tree (Home) + Navbar
 
-![Screenshot of Question Tree on Matrix to Tactics Page (Home)](imgs/app/question-tree-home.png)\
+![Screenshot of Question Tree on Matrix to Tactics Page (Home). Read the Usage section just below this for a long description](imgs/app/question-tree-home.png)\
 
-**Usage**  
+### Usage {.unlisted}
+
 Answer the _Question_ (8) by clicking one of the _Answer Cards_ (11).  
 Optionally reduce the amount of cards to sift through by settings _Filters_ (9).  
 Optionally order the answer cards by keyword relevance using _Search_ (10).
@@ -193,7 +184,7 @@ Optionally order the answer cards by keyword relevance using _Search_ (10).
             - The goal of filters is to generally narrow how many answer card you need to look at _(Defense Evasion has 42 'Base' Techniques as of v13)_
 10. **Search Answer Cards** - This re-orders the _Answer Cards_ (11) by relevance to the keywords you've entered
     - Search Functionality
-        - **On Matrix -> Tactics Homepage**
+        - **On Matrix &rarr; Tactics Homepage**
             - There are only 14 Tactics, this is a basic keyword search
         - **On Deeper Pages**
             - Advanced search functionality is supported here
@@ -202,7 +193,7 @@ Optionally order the answer cards by keyword relevance using _Search_ (10).
             - **|** requires either term to be present
             - **~** requires a term to be absent
             - **\(\)** can be used to order AND/OR/NOT operators
-            - **\*** is used for prefix matching _(proc\* -> proc, process, procedure)_
+            - **\*** is used for prefix matching _(proc\* &rarr; proc, process, procedure)_
             - **&quot;&quot;** specify that each word in a phrase must be present _(non a-z0-9 characters are stripped)_
 11. **Answer Cards** - You pick the answer that best answers the _Question_ (8).  
     - These represent Tactics, the Techniques, and finally SubTechniques as you progress through the ATT&amp;CK hierarchy structure.
@@ -211,16 +202,19 @@ Optionally order the answer cards by keyword relevance using _Search_ (10).
 
 ### Navbar > Version Picker
 
-![Screenshot of Navbar's Version Picker](imgs/app/navbar-version-picker.png)\
+![Screenshot of Navbar's Version Picker. Read the Usage section just below this for a long description](imgs/app/navbar-version-picker.png)\
+
+#### Usage {.unlisted}
 
 1. **Current Version** - This shows the current ATT&amp;CK version the app is showing content for. Clicking this reveals _Other Versions_ (2)
 2. **Other Versions** - Clicking a version will make the app display content for it
 
 ### Navbar > Mini Technique Search
 
-![Screenshot of Navbar's Mini Technique Search](imgs/app/navbar-mini-search.png)\
+![Screenshot of Navbar's Mini Technique Search. Read the Usage section just below this for a long description](imgs/app/navbar-mini-search.png)\
 
-**Usage**  
+#### Usage {.unlisted}
+
 Use to quickly jump to a Technique's Success Page.  
 Or to start a Full Technique Search.
 
@@ -232,7 +226,9 @@ Or to start a Full Technique Search.
 
 ### Question Tree > Tactic
 
-![Screenshot of Question Tree on Tactic to Techniques Page](imgs/app/question-tree-tactic.png)\
+![Screenshot of Question Tree on Tactic to Techniques Page. Read the Usage section just below this for a long description](imgs/app/question-tree-tactic.png)\
+
+#### Usage {.unlisted}
 
 1. **Crumbs Bar** - This shows your progress through the question tree
     - You can click crumbs to navigate back up the tree
@@ -241,13 +237,17 @@ Or to start a Full Technique Search.
 
 ### Question Tree > Technique
 
-![Screenshot of Question Tree on Technique to SubTechniques Page](imgs/app/question-tree-technique.png)\
+![Screenshot of Question Tree on Technique to SubTechniques Page. Read the Usage section just below this for a long description](imgs/app/question-tree-technique.png)\
+
+#### Usage {.unlisted}
 
 1. **Base Technique Card** - Notice that this answer card has the same ID as the question page we're on. This is because the 'Base' Technique still applies even if we did not find behavior specific to any of the SubTechniques
 
 ### Question Tree > Technique Success Page
 
-![Screenshot of Technique Success Page](imgs/app/success-page-malicious-link.png)\
+![Screenshot of Technique Success Page. Read the Usage section just below this for a long description](imgs/app/success-page-malicious-link.png)\
+
+#### Usage {.unlisted}
 
 1. **Technique Name / ID** - The ID is also a link to the Technique's ATT&amp;CK page
 2. **Technique Description** - This is the same description as on the Technique's ATT&amp;CK page
@@ -277,7 +277,9 @@ Or to start a Full Technique Search.
 
 ## CTI Shopping Cart
 
-![Screenshot of Shopping Cart Pane](imgs/app/shopping-cart.png)\
+![Screenshot of Shopping Cart Pane. Read the Usage section just below this for a long description](imgs/app/shopping-cart.png)\
+
+### Usage {.unlisted}
 
 1. **Close Cart** - Closes the cart
 2. **Edit Name** - Allows naming the cart _(changes name of exported files + saved / loaded cart)_
@@ -294,7 +296,9 @@ Or to start a Full Technique Search.
 
 ### Cart-Wide Frequently Appears With
 
-![Screenshot of Cart-Wide Frequently Appears With Page](imgs/app/cart-wide-coocs.png)\
+![Screenshot of Cart-Wide Frequently Appears With Page. Read the Usage section just below this for a long description](imgs/app/cart-wide-coocs.png)\
+
+#### Usage {.unlisted}
 
 - A cart-wide variant of Technique Success Page > _Frequently Appears With_
 - Suggests Techniques that _may_ have occurred based upon the contents of your cart
@@ -304,7 +308,9 @@ Read the full description to confirm a mapping before adding it to your cart.
 
 ## Full Technique Search
 
-![Screenshot of Full Technique Search Page](imgs/app/full-technique-search.png)\
+![Screenshot of Full Technique Search Page. Read the Usage section just below this for a long description](imgs/app/full-technique-search.png)\
+
+### Usage {.unlisted}
 
 1. **Filters** - Only Techniques that match at least 1 filter _(per each type)_ are shown. _(a filter is ignored if 0 are set)_
     - Filter Types
@@ -330,7 +336,7 @@ Read the full description to confirm a mapping before adding it to your cart.
             - **|** requires either term to be present
             - **~** requires a term to be absent
             - **\(\)** can be used to order AND/OR/NOT operators
-            - **\*** is used for prefix matching _(proc\* -> proc, process, procedure)_
+            - **\*** is used for prefix matching _(proc\* &rarr; proc, process, procedure)_
             - **&quot;&quot;** specify that each word in a phrase must be present _(non a-z0-9 characters are stripped)_
 3. **Search Status** - Provides feedback on your search
     - Warns if the search query is malformed / invalid
