@@ -189,12 +189,12 @@ Optionally order the answer cards by keyword relevance using _Search Answers_ (1
         - **On Deeper Pages**
             - Advanced search functionality is supported here
             - Typed words are OR'd together by default
-            - **&amp;** requires both terms to be present
-            - **|** requires either term to be present
-            - **~** requires a term to be absent
-            - **\(\)** can be used to order AND/OR/NOT operators
-            - **\*** is used for prefix matching _(proc\* &rarr; proc, process, procedure)_
-            - **&quot;&quot;** specify that each word in a phrase must be present _(non a-z0-9 characters are stripped)_
+            - **&amp;** _(ampersand)_ requires both terms to be present
+            - **|** _(pipe)_ requires either term to be present
+            - **~** _(tilde)_ requires a term to be absent
+            - **\(\)** _(parentheses)_ can be used to order AND/OR/NOT operators
+            - **\*** _(asterisk)_ is used for prefix matching _(proc\* &rarr; proc, process, procedure)_
+            - **&quot;&quot;** _(double quotes)_ specify that each word in a phrase must be present _(non a-z0-9 characters are stripped)_
 11. **Answer Cards** - You pick the answer that best answers the _Question_ (8).  
     - These represent Tactics, the Techniques, and finally SubTechniques as you progress through the ATT&amp;CK hierarchy structure.
     - Clicking the card progresses you through the tree (same as clicking 'Select Card').
@@ -349,12 +349,12 @@ The full search page allows you to locate Techniques by searching their names, I
         - **Advanced Search**
             - Advanced search functionality is supported here
             - Typed words are AND'd together by default
-            - **&amp;** requires both terms to be present
-            - **|** requires either term to be present
-            - **~** requires a term to be absent
-            - **\(\)** can be used to order AND/OR/NOT operators
-            - **\*** is used for prefix matching _(proc\* &rarr; proc, process, procedure)_
-            - **&quot;&quot;** specify that each word in a phrase must be present _(non a-z0-9 characters are stripped)_
+            - **&amp;** _(ampersand)_ requires both terms to be present
+            - **|** _(pipe)_ requires either term to be present
+            - **~** _(tilde)_ requires a term to be absent
+            - **\(\)** _(parentheses)_ can be used to order AND/OR/NOT operators
+            - **\*** _(asterisk)_ is used for prefix matching _(proc\* &rarr; proc, process, procedure)_
+            - **&quot;&quot;** _(double quotes)_ specify that each word in a phrase must be present _(non a-z0-9 characters are stripped)_
 3. **Search Status** - Provides feedback on your search
     - Warns if the search query is malformed / invalid
     - **(otherwise)** Indicates how the search query was interpreted
