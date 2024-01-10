@@ -453,8 +453,8 @@ shopping cart, and app documentation.</p>
 Cards</em> (11).<br />
 Optionally reduce the amount of cards to sift through by settings
 <em>Filters</em> (9).<br />
-Optionally order the answer cards by keyword relevance using
-<em>Search</em> (10).</p>
+Optionally order the answer cards by keyword relevance using <em>Search
+Answers</em> (10).</p>
 <ol type="1">
 <li><strong>CISA Logo</strong> - Links to <a href="https://www.cisa.gov/">CISA.gov</a></li>
 <li><strong>Decider Tree Home</strong> - Takes you to this page <em>(the
@@ -550,8 +550,8 @@ supported.</p>
 <li><strong>Current Version</strong> - This shows the current ATT&amp;CK
 version the app is showing content for. Clicking this reveals <em>Other
 Versions</em> (2)</li>
-<li><strong>Other Versions</strong> - Clicking a version will make the
-app display content for it</li>
+<li><strong>Other Versions</strong> - This shows as a dropdown of
+available versions, each prefaced with ‘(change to)’</li>
 </ol>
 </section>
 </section>
@@ -591,13 +591,13 @@ picking which Technique under the current Tactic applies.</p>
 <section id="usage-3" class="level4 unlisted">
 <h4 class="unlisted">Usage</h4>
 <ol type="1">
-<li><strong>Crumbs Bar</strong> - This shows your progress through the
-question tree
+<li><strong>Breadcrumb Bar</strong> - This shows your progress through
+the question tree
 <ul>
 <li>You can click crumbs to navigate back up the tree</li>
 </ul></li>
-<li><strong>Answer Card Page Navigation</strong> - These buttons allow
-you to flip through the available answer cards
+<li><strong>Page Select</strong> - These buttons allow you to flip
+through the available answer card pages
 <ul>
 <li>5 answer cards are shows per page</li>
 </ul></li>
@@ -618,7 +618,8 @@ applies, allows picking the base Technique to view its Success Page.</p>
 <li><strong>Base Technique Card</strong> - Notice that this answer card
 has the same ID as the question page we’re on. This is because the
 ‘Base’ Technique still applies even if we did not find behavior specific
-to any of the SubTechniques</li>
+to any of the SubTechniques. (This card’s heading matches the current
+page breadcrumb that is above the question).</li>
 </ol>
 </section>
 </section>
@@ -636,7 +637,7 @@ about the Technique.</p>
 Technique’s ATT&amp;CK page</li>
 <li><strong>Technique Description</strong> - This is the same
 description as on the Technique’s ATT&amp;CK page</li>
-<li><strong>Confirm Tactic + Add to Cart</strong>
+<li><strong>Map Technique Under Tactic + Add to Cart</strong>
 <ul>
 <li>‘Technique Success Pages’ can be reached through the Question Tree
 or through the Full Technique Search
@@ -703,26 +704,26 @@ exported to Word Docs or ATT&amp;CK Navigator sheets.</p>
 <section id="usage-6" class="level3 unlisted">
 <h3 class="unlisted">Usage</h3>
 <ol type="1">
-<li><strong>Close Cart</strong> - Closes the cart</li>
+<li><strong>Close Cart Panel</strong> - Closes the cart panel</li>
 <li><strong>Edit Name</strong> - Allows naming the cart <em>(changes
 name of exported files + saved / loaded cart)</em></li>
-<li><strong>Save Cart to .json</strong> - Saves the contents of the cart
+<li><strong>Save to .json File</strong> - Saves the contents of the cart
 as a JSON file</li>
-<li><strong>Load Cart from .json</strong> - Loads a prior-saved JSON
+<li><strong>Load from .json File</strong> - Loads a prior-saved JSON
 cart file</li>
 <li><strong>Export to Docx Table</strong> - Creates a Microsoft Word
 DOCX file containing a table of the Tactics / Techniques mapped and
 their mapping rationales</li>
-<li><strong>Export to ATT&amp;CK Navigator</strong> - Creates a <a href="https://mitre-attack.github.io/attack-navigator/">MITRE
+<li><strong>Export to ATT&amp;CK Navigator Layer</strong> - Creates a <a href="https://mitre-attack.github.io/attack-navigator/">MITRE
 ATT&amp;CK® Navigator</a> layer with cart entries highlighted. The
 mapping rationales are also added to the Navigator layer in the form of
 comments</li>
 <li><strong>View Suggested Techniques</strong> - A cart-wide variant of
 the Technique Success Page &gt; <em>Frequently Appears With</em>
 listing</li>
-<li><strong>Close Cart</strong> <em>(has confirmation screen)</em> -
-Deletes / closes the cart. Make sure you saved to a JSON before clicking
-this - otherwise the cart is irrecoverable</li>
+<li><strong>Empty Cart</strong> <em>(has confirmation screen)</em> -
+Deletes the cart. Make sure you saved to a JSON before clicking this -
+otherwise the cart is irrecoverable</li>
 <li><strong>Cart Entry</strong> - A mapped Technique + Tactic combo
 <ul>
 <li><strong>App Success Page</strong> - Takes you to the Technique

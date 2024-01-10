@@ -162,7 +162,7 @@ The **Navbar** allows you to quickly access key parts of the app: the start of t
 
 Answer the _Question_ (8) by clicking one of the _Answer Cards_ (11).  
 Optionally reduce the amount of cards to sift through by settings _Filters_ (9).  
-Optionally order the answer cards by keyword relevance using _Search_ (10).
+Optionally order the answer cards by keyword relevance using _Search Answers_ (10).
 
 1. **CISA Logo** - Links to [CISA.gov](https://www.cisa.gov/)
 2. **Decider Tree Home** - Takes you to this page _(the question tree home)_
@@ -209,7 +209,7 @@ The version picker allows you to change what ATT&amp;CK version the app is showi
 #### Usage {.unlisted}
 
 1. **Current Version** - This shows the current ATT&amp;CK version the app is showing content for. Clicking this reveals _Other Versions_ (2)
-2. **Other Versions** - Clicking a version will make the app display content for it
+2. **Other Versions** - This shows as a dropdown of available versions, each prefaced with '(change to)'
 
 ### Navbar > Mini Technique Search
 
@@ -236,9 +236,9 @@ A Tactic card was clicked to reach this page. This page allows picking which Tec
 
 #### Usage {.unlisted}
 
-1. **Crumbs Bar** - This shows your progress through the question tree
+1. **Breadcrumb Bar** - This shows your progress through the question tree
     - You can click crumbs to navigate back up the tree
-2. **Answer Card Page Navigation** - These buttons allow you to flip through the available answer cards
+2. **Page Select** - These buttons allow you to flip through the available answer card pages
     - 5 answer cards are shows per page
 
 ### Question Tree > Technique
@@ -249,7 +249,7 @@ A Tactic card and then a Technique card were clicked to reach this page. This pa
 
 #### Usage {.unlisted}
 
-1. **Base Technique Card** - Notice that this answer card has the same ID as the question page we're on. This is because the 'Base' Technique still applies even if we did not find behavior specific to any of the SubTechniques
+1. **Base Technique Card** - Notice that this answer card has the same ID as the question page we're on. This is because the 'Base' Technique still applies even if we did not find behavior specific to any of the SubTechniques. (This card's heading matches the current page breadcrumb that is above the question).
 
 ### Question Tree > Technique Success Page
 
@@ -261,7 +261,7 @@ This Technique page is reachable through either the Question Tree, Full Search, 
 
 1. **Technique Name / ID** - The ID is also a link to the Technique's ATT&amp;CK page
 2. **Technique Description** - This is the same description as on the Technique's ATT&amp;CK page
-3. **Confirm Tactic + Add to Cart**
+3. **Map Technique Under Tactic + Add to Cart**
     - 'Technique Success Pages' can be reached through the Question Tree or through the Full Technique Search
         - The Question Tree already gives you the Tactic context you're working with (dropdown is pre-selected)
         - Whereas getting to a Success Page via Search will require you to select a Tactic before the Add-to-Cart button works
@@ -293,14 +293,14 @@ The cart allows you to record Techniques for observed behaviors, along with rati
 
 ### Usage {.unlisted}
 
-1. **Close Cart** - Closes the cart
+1. **Close Cart Panel** - Closes the cart panel
 2. **Edit Name** - Allows naming the cart _(changes name of exported files + saved / loaded cart)_
-3. **Save Cart to .json** - Saves the contents of the cart as a JSON file
-4. **Load Cart from .json** - Loads a prior-saved JSON cart file
+3. **Save to .json File** - Saves the contents of the cart as a JSON file
+4. **Load from .json File** - Loads a prior-saved JSON cart file
 5. **Export to Docx Table** - Creates a Microsoft Word DOCX file containing a table of the Tactics / Techniques mapped and their mapping rationales
-6. **Export to ATT&amp;CK Navigator** - Creates a [MITRE ATT&amp;CK&reg; Navigator](https://mitre-attack.github.io/attack-navigator/) layer with cart entries highlighted. The mapping rationales are also added to the Navigator layer in the form of comments
+6. **Export to ATT&amp;CK Navigator Layer** - Creates a [MITRE ATT&amp;CK&reg; Navigator](https://mitre-attack.github.io/attack-navigator/) layer with cart entries highlighted. The mapping rationales are also added to the Navigator layer in the form of comments
 7. **View Suggested Techniques** - A cart-wide variant of the Technique Success Page > _Frequently Appears With_ listing
-8. **Close Cart** _(has confirmation screen)_ - Deletes / closes the cart. Make sure you saved to a JSON before clicking this - otherwise the cart is irrecoverable
+8. **Empty Cart** _(has confirmation screen)_ - Deletes the cart. Make sure you saved to a JSON before clicking this - otherwise the cart is irrecoverable
 9. **Cart Entry** - A mapped Technique + Tactic combo
     - **App Success Page** - Takes you to the Technique Success Page for this entry
     - **Delete** - Removes this entry from your cart
