@@ -118,27 +118,24 @@ Once one has mappings - they can leverage the ATT&amp;CK website for further ins
 
 ## Proposed Workflow
 
-1. Go to the question tree homepage _(click **Decider** in the top left)_
+1. Go to the question tree homepage _(click **Decider (Tree Home)** in the top left)_
 2. Identify the goal of the adversary's actions _(Tactic)_ - click this card
 3. Identify what Platform(s) the adversary's actions occurred on/against and set these filters
     - _(optionally set Data Sources their behavior could be detected by)_
 4. Follow the remaining prompts to end up on a (Sub)Technique Success Page
 5. Read the Technique's description
-    - \*\*A. if it matches the observed behavior, then add it to your cart
-    - B. if it does not, backtrack
+    - A. if it matches the observed behavior, then add it to your cart
+        - Before adding to your cart
+            - If the **Mismappings** section is present
+                - double check that the **Other Potential Technique(s)** do not apply instead
+        - After adding to your cart
+            - If the **Frequently Appears With** section is present
+                - skim the suggested Techniques, as the adversary _may_ have leveraged them too
+    - B. if it does not match the observed behavior, backtrack
         - a different SubTechnique may apply
         - **(or)** the 'Base' Technique may apply instead of one of its SubTechniques
         - **(or)** a different Technique may apply
         - **(or)** a different Tactic may apply even
-
-\*\* 5.A. Continued
-
-- Before adding to your cart
-    - If the **Mismappings** section is present
-        - double check that the **Other Potential Technique(s)** do not apply instead
-- After adding to your cart
-    - If the **Frequently Appears With** section is present
-        - skim the suggested Techniques, as the adversary _may_ have leveraged them too
 
 ## CISA Best Practices for MITRE ATT&CK Mapping
 
