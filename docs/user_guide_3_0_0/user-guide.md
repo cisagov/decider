@@ -335,7 +335,7 @@ The full search page allows you to locate Techniques by searching their names, I
         - **Data Sources:** sources that can be used to detect the behavior
     - Filtering Advice
         - **Be generous,** it's better to accidentally include slightly more results than to miss the correct Technique by over-constraining
-2. **Search** - Your search goes here
+2. **Search Techniques** - Your search goes here
     - Searched Fields
         - IDs
         - Names

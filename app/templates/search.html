@@ -208,16 +208,15 @@
             <div class="row">
                 <div class="col-12">
 
-                    {# Input #}
-                    <div>
-                        <div class="form-floating">
-                            <input placeholder="Search Techniques" type="search" id="fullTechniqueSearchBox" class="form-control mb-1" x-model.debounce="search">
-                            <label for="fullTechniqueSearchBox">Search Techniques</label>
-                        </div>
-                        <p x-cloak x-show="searchStatus.length > 0" class="mb-0">
-                            <strong>Status:</strong> <span x-text="searchStatus" class="text-break"></span>
-                        </p>
+                    <h2 class="visually-hidden">Search</h2>
+
+                    <div class="form-floating">
+                        <input placeholder="Search Techniques" type="search" id="fullTechniqueSearchBox" class="form-control mb-1" x-model.debounce="search">
+                        <label for="fullTechniqueSearchBox">Search Techniques</label>
                     </div>
+                    <p x-cloak x-show="searchStatus.length > 0" class="mb-0">
+                        <strong aria-label="Search Status">Status:</strong> <span x-text="searchStatus" class="text-break"></span>
+                    </p>
 
                 </div>
             </div>
