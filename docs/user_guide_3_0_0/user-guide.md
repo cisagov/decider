@@ -269,21 +269,22 @@ This Technique page is reachable through either the Question Tree, Full Search, 
 4. **Tactics** - Goals this behavior can achieve
 5. **Platforms** - Systems this Technique can be leveraged against/on
 6. **Tech and Subs** - Success Page links for the Base Technique and its Sub Techniques
-7. \*\***Mismappings** - Techniques listed here may have occurred instead of the Technique on this page
+7. **Mismappings** - Techniques listed here may have occurred instead of the Technique on this page
     - That is, this table records knowledge of previously incorrectly mapped Techniques _(user editable)_
     - Decider does not provide any mismappings out of the box
     - Mismappings can be added via JSON during the build process
         - **(or)** a Decider 2.x.y instance can be pointed at the same database used by Kiosk (Decider 3.x.y) in order to edit these
-8. \*\***Frequently Appears With** - Techniques here are likely to have occurred with the current Technique being viewed
+    - _(This section is hidden if the Technique has no mismappings)_
+8. **Frequently Appears With** - Techniques here are likely to have occurred with the current Technique being viewed
     - Skim the Technique descriptions to see if any match the observed adversary behaviors
     - The table shows a slightly randomized subset of suggested Techniques - this is to help prevent availability bias in mapping
         - Checking **Show All** will list all suggestions
     - This dataset comes from Andy Applebaum's work - [Medium Article](https://medium.com/mitre-attack/finding-related-att-ck-techniques-f1a4e8dfe2b6)
         - In short: Techniques that frequently appear together in CTI reports, _may_ appear together in future adversary behavior too
-9. \*\***Usage Examples** - These are examples of the Technique being used by Campaigns, Groups, Software, and Tools.
+    - _(This section is hidden if the Technique has no cooccurrences)_
+9. **Usage Examples** - These are examples of the Technique being used by Campaigns, Groups, Software, and Tools.
     - Reports covering / mapping the observation are linked too
-
-\*\* _(Section hidden if no data for this Technique)_
+    - _(This section is hidden if the Technique has no usage examples)_
 
 ## CTI Shopping Cart
 
