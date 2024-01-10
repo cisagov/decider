@@ -153,6 +153,9 @@ Consider techniques and sub-techniques as elements of an adversary’s playbook,
 
 ## Question Tree (Home) + Navbar
 
+The **Question Tree** allows you to locate which Technique occurred by answering questions that narrow from Tactic to Technique, and optionally, SubTechnique.  
+The **Navbar** allows you to quickly access key parts of the app: the start of the question tree, the full search page, the CTI shopping cart, and app documentation.
+
 ![Screenshot of Question Tree on Matrix to Tactics Page (Home). Read the Usage section just below this for a long description](imgs/app/question-tree-home.png)\
 
 ### Usage {.unlisted}
@@ -199,6 +202,8 @@ Optionally order the answer cards by keyword relevance using _Search_ (10).
 
 ### Navbar > Version Picker
 
+The version picker allows you to change what ATT&amp;CK version the app is showing content for. Currently, only the Enterprise domain is supported.
+
 ![Screenshot of Navbar's Version Picker. Read the Usage section just below this for a long description](imgs/app/navbar-version-picker.png)\
 
 #### Usage {.unlisted}
@@ -207,6 +212,8 @@ Optionally order the answer cards by keyword relevance using _Search_ (10).
 2. **Other Versions** - Clicking a version will make the app display content for it
 
 ### Navbar > Mini Technique Search
+
+The mini search allows you to quickly reach a Technique's Success Page by its name or ID.
 
 ![Screenshot of Navbar's Mini Technique Search. Read the Usage section just below this for a long description](imgs/app/navbar-mini-search.png)\
 
@@ -223,6 +230,8 @@ Or to start a Full Technique Search.
 
 ### Question Tree > Tactic
 
+A Tactic card was clicked to reach this page. This page allows picking which Technique under the current Tactic applies.
+
 ![Screenshot of Question Tree on Tactic to Techniques Page. Read the Usage section just below this for a long description](imgs/app/question-tree-tactic.png)\
 
 #### Usage {.unlisted}
@@ -234,6 +243,8 @@ Or to start a Full Technique Search.
 
 ### Question Tree > Technique
 
+A Tactic card and then a Technique card were clicked to reach this page. This page allows picking which SubTechnique under the current Technique applies (to view its Success Page). Or, if no SubTechnique applies, allows picking the base Technique to view its Success Page.
+
 ![Screenshot of Question Tree on Technique to SubTechniques Page. Read the Usage section just below this for a long description](imgs/app/question-tree-technique.png)\
 
 #### Usage {.unlisted}
@@ -241,6 +252,8 @@ Or to start a Full Technique Search.
 1. **Base Technique Card** - Notice that this answer card has the same ID as the question page we're on. This is because the 'Base' Technique still applies even if we did not find behavior specific to any of the SubTechniques
 
 ### Question Tree > Technique Success Page
+
+This Technique page is reachable through either the Question Tree, Full Search, Mini Search, or CTI Shopping Cart. It provides information about the Technique.
 
 ![Screenshot of Technique Success Page. Read the Usage section just below this for a long description](imgs/app/success-page-malicious-link.png)\
 
@@ -274,6 +287,8 @@ Or to start a Full Technique Search.
 
 ## CTI Shopping Cart
 
+The cart allows you to record Techniques for observed behaviors, along with rationales for mapping them. Carts can be saved, loaded, and exported to Word Docs or ATT&amp;CK Navigator sheets.
+
 ![Screenshot of Shopping Cart Pane. Read the Usage section just below this for a long description](imgs/app/shopping-cart.png)\
 
 ### Usage {.unlisted}
@@ -293,6 +308,8 @@ Or to start a Full Technique Search.
 
 ### Cart-Wide Frequently Appears With
 
+This page suggests other Techniques that _may_ have occurred, based upon the contents of your cart.
+
 ![Screenshot of Cart-Wide Frequently Appears With Page. Read the Usage section just below this for a long description](imgs/app/cart-wide-coocs.png)\
 
 #### Usage {.unlisted}
@@ -304,6 +321,8 @@ Skim the Technique descriptions to see if any match the observed adversary behav
 Read the full description to confirm a mapping before adding it to your cart.
 
 ## Full Technique Search
+
+The full search page allows you to locate Techniques by searching their names, IDs, and descriptions and by filtering on the Tactics, Platforms, and Data Sources that apply to them.
 
 ![Screenshot of Full Technique Search Page. Read the Usage section just below this for a long description](imgs/app/full-technique-search.png)\
 
