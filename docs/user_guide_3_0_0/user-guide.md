@@ -164,13 +164,13 @@ Answer the _Question_ (8) by clicking one of the _Answer Cards_ (11).
 Optionally reduce the amount of cards to sift through by settings _Filters_ (9).  
 Optionally order the answer cards by keyword relevance using _Search_ (10).
 
-1. **CISA Seal** - Links to [CISA.gov](https://www.cisa.gov/)
-2. **Decider Home** - Takes you to this page _(the question tree home)_
+1. **CISA Logo** - Links to [CISA.gov](https://www.cisa.gov/)
+2. **Decider Tree Home** - Takes you to this page _(the question tree home)_
 3. **Version Picker** - Lets you to change what version of ATT&amp;CK data you're viewing
 4. **Mini Technique Search** - Lets you quickly jump to a Technique's page by its name or ID
-5. **Documentation** - Opens this user guide
+5. **Docs** - Opens this user guide
 6. **Full Technique Search** - Opens the Full Technique Search page, which supports searching/filtering all Techniques at once
-7. **Shopping Cart** - Opens the CTI Shopping Cart, where your mappings can be viewed, edited, saved, or exported
+7. **CTI Shopping Cart** - Opens the CTI Shopping Cart, where your mappings can be viewed, edited, saved, or exported
 8. **Question** - You select the _Answer Card_ (11) that best answers this prompt
 9. **Filters** - These allows hiding _Answer Cards_ (11) that do not match the specified criteria
     - Filter Types
@@ -182,7 +182,7 @@ Optionally order the answer cards by keyword relevance using _Search_ (10).
         - **Be generous,** an answer card is shown if it matches any of the filters _(of a given type)_
             - Accidentally hiding the correct answer card by mis-selecting would be detrimental
             - The goal of filters is to generally narrow how many answer card you need to look at _(Defense Evasion has 42 'Base' Techniques as of v13)_
-10. **Search Answer Cards** - This re-orders the _Answer Cards_ (11) by relevance to the keywords you've entered
+10. **Search Answers** - This re-orders the _Answer Cards_ (11) by relevance to the keywords you've entered
     - Search Functionality
         - **On Matrix &rarr; Tactics Homepage**
             - There are only 14 Tactics, this is a basic keyword search

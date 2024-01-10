@@ -119,6 +119,7 @@
                     {# Version Picker #}
                     <li class="nav-item dropdown" id="versionPicker">
                         <a
+                            aria-label="Version Picker - currently on ATT&amp;CK Enterprise {{ g.version_picker.cur_version }}"
                             class="nav-link dropdown-toggle underline-hover"
                             href="#"
                             role="button"
@@ -153,7 +154,7 @@
 
                     {# Input Bar #}
                     <input
-                        aria-label="Search Tech Names / IDs"
+                        aria-label="Mini Technique Search"
                         type="search"
                         id="navMiniSearchInput"
                         autocomplete="off"
@@ -247,6 +248,7 @@
                         x-data
                         :href="resolveURL(`/search/page?version=${encodeURIComponent(Alpine.store('global').versionPicker.cur_version)}&search=`)"
                         class="btn btn-light btn-border-dark underline-hover"
+                        aria-label="Full Technique Search"
                     >Full Search <i class="bi bi-search" aria-hidden="true"></i>
                     </a>
 

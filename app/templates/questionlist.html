@@ -51,7 +51,10 @@
             </template>
 
             {# Question (Page Title) #}
-            <h1 class="fs-3 mb-3" x-html="filterQuestionHTML($store.question.text)"></h1>
+            <h1 class="fs-3 mb-3">
+                <span class="visually-hidden">Question: </span>
+                <span x-html="filterQuestionHTML($store.question.text)"></span>
+            </h1>
         </div>
     </div>
 
@@ -60,12 +63,13 @@
 
         {# Filters #}
         <div class="col-12 col-md-3 col-xl-2">
+            <h2 class="visually-hidden">Filters</h2>
 
             {# Platform #}
             <div x-data="collapseTracker(false, 'question-platform')" x-bind="binds" class="row mb-3 filterRow">
 
                 <div class="col-4 col-md-12 text-center">
-                    <p class="fs-5 my-1">Filter Platforms</p>
+                    <h3 class="fs-5 my-1">Filter Platforms</h3>
                     <div class="btn-group-vertical w-100 mb-2">
                         <button
                             class="btn btn-primary"
@@ -123,7 +127,7 @@
             <div x-data="collapseTracker(false, 'question-data-source')" x-bind="binds" class="row mb-3 filterRow">
 
                 <div class="col-4 col-md-12 text-center">
-                    <p class="fs-5 my-1">Filter Data Sources</p>
+                    <h3 class="fs-5 my-1">Filter Data Sources</h3>
                     <div class="btn-group-vertical w-100 mb-2">
                         <button
                             class="btn btn-primary"
@@ -202,6 +206,7 @@
 
             {# Answer Cards #}
             <div class="row">
+                <h2 class="visually-hidden">Answer Cards</h2>
 
                 <template x-for="card in paginatedCards[_.clamp(page, 1, paginatedCards.length) - 1]" :key="card.id">
                     <div
@@ -211,8 +216,10 @@
                     >
 
                         <div class="answer-card card" :class="card.id.startsWith('TA') ? 'h-100' : ''">
-                            <div class="card-header" x-html="card.label">
-                            </div>
+                            <h3
+                                class="card-header fs-6"
+                                x-html="card.label"
+                            ></h3>
 
                             <div class="card-body">
 
@@ -249,6 +256,8 @@
 
                 {# Page Select #}
                 <div class="col-12" x-cloak x-show="paginatedCards.length > 1">
+                    <h2 class="visually-hidden">Page Select</h2>
+
                     <div class="hstack gap-1 mt-1">
 
                         {# Back #}
@@ -267,8 +276,8 @@
                         <span
                             class="ms-2 me-2"
                             x-text="`${page} / ${paginatedCards.length}`"
-                            title="Answer card page progress"
-                            aria-label="Answer card page progress"
+                            title="Answer card page"
+                            :aria-label="`Answer card page ${page} / ${paginatedCards.length}`"
                         ></span>
 
                         {# Forward #}
