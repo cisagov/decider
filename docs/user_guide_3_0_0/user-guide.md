@@ -345,7 +345,7 @@ The full search page allows you to locate Techniques by searching their names, I
         - **Basic Search**
             - By default, terms are AND'd together here
             - So, typing more terms will constrain further
-            - You can use **|** between terms to OR them together for a simple keyword search
+            - You can use **|** _(pipe)_ between terms to OR them together for a simple keyword search
         - **Advanced Search**
             - Advanced search functionality is supported here
             - Typed words are AND'd together by default
