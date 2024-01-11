@@ -51,7 +51,10 @@
             </template>
 
             {# Question (Page Title) #}
-            <h1 class="fs-3 mb-3" x-html="filterQuestionHTML($store.question.text)"></h1>
+            <h1 class="fs-3 mb-3">
+                <span class="visually-hidden">Question: </span>
+                <span x-html="filterQuestionHTML($store.question.text)"></span>
+            </h1>
         </div>
     </div>
 
@@ -60,12 +63,13 @@
 
         {# Filters #}
         <div class="col-12 col-md-3 col-xl-2">
+            <h2 class="visually-hidden">Filters</h2>
 
             {# Platform #}
             <div x-data="collapseTracker(false, 'question-platform')" x-bind="binds" class="row mb-3 filterRow">
 
                 <div class="col-4 col-md-12 text-center">
-                    <p class="fs-5 my-1">Filter Platforms</p>
+                    <h3 class="fs-5 my-1">Filter Platforms</h3>
                     <div class="btn-group-vertical w-100 mb-2">
                         <button
                             class="btn btn-primary"
@@ -123,7 +127,7 @@
             <div x-data="collapseTracker(false, 'question-data-source')" x-bind="binds" class="row mb-3 filterRow">
 
                 <div class="col-4 col-md-12 text-center">
-                    <p class="fs-5 my-1">Filter Data Sources</p>
+                    <h3 class="fs-5 my-1">Filter Data Sources</h3>
                     <div class="btn-group-vertical w-100 mb-2">
                         <button
                             class="btn btn-primary"
@@ -186,22 +190,22 @@
             <div class="row">
                 <div class="col-12">
 
-                    {# Input #}
-                    <div>
-                        <div class="form-floating">
-                            <input placeholder="Search Answers" type="search" id="answerCardSearchBox" class="form-control mb-1" x-model.debounce="search">
-                            <label for="answerCardSearchBox">Search Answers</label>
-                        </div>
-                        <p x-cloak x-show="searchStatus.length > 0" class="mb-0">
-                            <strong>Status:</strong> <span x-text="searchStatus" class="text-break"></span>
-                        </p>
+                    <h2 class="visually-hidden">Search</h2>
+
+                    <div class="form-floating">
+                        <input placeholder="Search Answers" type="search" id="answerCardSearchBox" class="form-control mb-1" x-model.debounce="search">
+                        <label for="answerCardSearchBox">Search Answers</label>
                     </div>
+                    <p x-cloak x-show="searchStatus.length > 0" class="mb-0">
+                        <strong aria-label="Search Status">Status:</strong> <span x-text="searchStatus" class="text-break"></span>
+                    </p>
 
                 </div>
             </div>
 
             {# Answer Cards #}
             <div class="row">
+                <h2 class="visually-hidden">Answer Cards</h2>
 
                 <template x-for="card in paginatedCards[_.clamp(page, 1, paginatedCards.length) - 1]" :key="card.id">
                     <div
@@ -211,14 +215,20 @@
                     >
 
                         <div class="answer-card card" :class="card.id.startsWith('TA') ? 'h-100' : ''">
-                            <div class="card-header" x-html="card.label">
-                            </div>
+                            <h3
+                                class="card-header fs-6"
+                                x-html="card.label"
+                            ></h3>
 
                             <div class="card-body">
 
-                                <div class="card-text" x-html="card.content"></div>
+                                <div class="card-text">
+                                    <span class="visually-hidden">Answer: </span>
+                                    <div x-html="card.content"></div>
+                                </div>
+
                                 <div
-                                    class="card-text fs-6"
+                                    class="card-text"
                                     x-cloak
                                     x-show="(card.additional_matches ?? []).length > 0"
                                 >
@@ -249,6 +259,8 @@
 
                 {# Page Select #}
                 <div class="col-12" x-cloak x-show="paginatedCards.length > 1">
+                    <h2 class="visually-hidden">Page Select</h2>
+
                     <div class="hstack gap-1 mt-1">
 
                         {# Back #}
@@ -267,8 +279,8 @@
                         <span
                             class="ms-2 me-2"
                             x-text="`${page} / ${paginatedCards.length}`"
-                            title="Answer card page progress"
-                            aria-label="Answer card page progress"
+                            title="Answer card page"
+                            :aria-label="`Answer card page ${page} / ${paginatedCards.length}`"
                         ></span>
 
                         {# Forward #}

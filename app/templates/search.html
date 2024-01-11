@@ -23,12 +23,13 @@
 
         {# Filters #}
         <div class="col-12 col-md-3 col-xl-2">
+            <h2 class="visually-hidden">Filters</h2>
 
             {# Tactic #}
             <div x-data="collapseTracker(false, 'search-tactic')" x-bind="binds" class="row mb-3 filterRow">
 
                 <div class="col-4 col-md-12 text-center">
-                    <p class="fs-5 my-1">Filter Tactics</p>
+                    <h3 class="fs-5 my-1">Filter Tactics</h3>
                     <div class="btn-group-vertical w-100 mb-2">
                         <button
                             class="btn btn-primary"
@@ -86,7 +87,7 @@
             <div x-data="collapseTracker(false, 'search-platform')" x-bind="binds" class="row mb-3 filterRow">
 
                 <div class="col-4 col-md-12 text-center">
-                    <p class="fs-5 my-1">Filter Platforms</p>
+                    <h3 class="fs-5 my-1">Filter Platforms</h3>
                     <div class="btn-group-vertical w-100 mb-2">
                         <button
                             class="btn btn-primary"
@@ -144,7 +145,7 @@
             <div x-data="collapseTracker(false, 'search-data-source')" x-bind="binds" class="row mb-3 filterRow">
 
                 <div class="col-4 col-md-12 text-center">
-                    <p class="fs-5 my-1">Filter Data Sources</p>
+                    <h3 class="fs-5 my-1">Filter Data Sources</h3>
                     <div class="btn-group-vertical w-100 mb-2">
                         <button
                             class="btn btn-primary"
@@ -207,22 +208,22 @@
             <div class="row">
                 <div class="col-12">
 
-                    {# Input #}
-                    <div>
-                        <div class="form-floating">
-                            <input placeholder="Search Techniques" type="search" id="fullTechniqueSearchBox" class="form-control mb-1" x-model.debounce="search">
-                            <label for="fullTechniqueSearchBox">Search Techniques</label>
-                        </div>
-                        <p x-cloak x-show="searchStatus.length > 0" class="mb-0">
-                            <strong>Status:</strong> <span x-text="searchStatus" class="text-break"></span>
-                        </p>
+                    <h2 class="visually-hidden">Search</h2>
+
+                    <div class="form-floating">
+                        <input placeholder="Search Techniques" type="search" id="fullTechniqueSearchBox" class="form-control mb-1" x-model.debounce="search">
+                        <label for="fullTechniqueSearchBox">Search Techniques</label>
                     </div>
+                    <p x-cloak x-show="searchStatus.length > 0" class="mb-0">
+                        <strong aria-label="Search Status">Status:</strong> <span x-text="searchStatus" class="text-break"></span>
+                    </p>
 
                 </div>
             </div>
 
             {# Search Result Cards #}
             <div class="row">
+                <h2 class="visually-hidden">Search Result Cards</h2>
 
                 <template x-for="card in results" :key="card.tech_id_plain">
                     <div
@@ -230,8 +231,10 @@
                         style="padding: calc(var(--bs-gutter-x) * 0.5);"
                     >
                         <div class="answer-card card h-100">
-                            <div class="card-header" x-html="`${card.tech_name} [${card.tech_id}]`">
-                            </div>
+                            <h3
+                                class="card-header fs-6"
+                                x-html="`${card.tech_name} [${card.tech_id}]`"
+                            ></h3>
 
                             <div class="card-body">
                                 <div class="card-text" x-html="card.description"></div>

@@ -119,6 +119,7 @@
                     {# Version Picker #}
                     <li class="nav-item dropdown" id="versionPicker">
                         <a
+                            aria-label="Version Picker - currently on ATT&amp;CK Enterprise {{ g.version_picker.cur_version }}"
                             class="nav-link dropdown-toggle underline-hover"
                             href="#"
                             role="button"
@@ -153,7 +154,7 @@
 
                     {# Input Bar #}
                     <input
-                        aria-label="Search Tech Names / IDs"
+                        aria-label="Mini Technique Search"
                         type="search"
                         id="navMiniSearchInput"
                         autocomplete="off"
@@ -237,7 +238,7 @@
 
                     {# Docs PDF Link #}
                     <a
-                        href="/static/documentation.pdf" target="_blank"
+                        href="/static/user-guide.html" target="_blank"
                         class="btn btn-light btn-border-dark underline-hover"
                     >Docs <i class="bi bi-info-circle" aria-hidden="true"></i>
                     </a>
@@ -247,6 +248,7 @@
                         x-data
                         :href="resolveURL(`/search/page?version=${encodeURIComponent(Alpine.store('global').versionPicker.cur_version)}&search=`)"
                         class="btn btn-light btn-border-dark underline-hover"
+                        aria-label="Full Technique Search"
                     >Full Search <i class="bi bi-search" aria-hidden="true"></i>
                     </a>
 
@@ -257,6 +259,7 @@
                         data-bs-toggle="offcanvas"
                         data-bs-target="#shoppingCart"
                         aria-controls="shoppingCart"
+                        aria-label="Open CTI Shopping Cart"
                     >Cart <i class="bi bi-cart" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -379,7 +382,7 @@
                         <li><strong>A Technique Search</strong> with boolean operators and filtering options<b>,</b></li>
                         <li><b>and</b> <strong>Suggestions</strong> of other Techniques that may have occurred</li>
                     </ul>
-                    <p>Be sure to check out the <a href="/static/documentation.pdf" target="_blank">Docs</a> if you need guidance.</p>
+                    <p>Be sure to check out the <a href="/static/user-guide.html" target="_blank">Docs</a> if you need guidance.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
