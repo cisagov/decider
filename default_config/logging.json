@@ -51,6 +51,9 @@
         "app.routes.search": {
             "propagate": true
         },
+        "app.routes.tree_content": {
+            "propagate": true
+        },
         "app.routes.utils": {
             "propagate": true
         },

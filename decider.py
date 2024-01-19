@@ -23,6 +23,7 @@ from app.routes.auth import auth_
 from app.routes.profile import profile_
 from app.routes.question import question_
 from app.routes.search import search_
+from app.routes.tree_content import tree_content_
 from app.routes.utils_db import VersionPicker
 from app.routes.edit import edit_
 from app.routes.docs import docs_
@@ -146,6 +147,7 @@ def register_blueprints(app):
     app.register_blueprint(profile_)
     app.register_blueprint(question_)
     app.register_blueprint(search_)
+    app.register_blueprint(tree_content_)
     app.register_blueprint(edit_)
     app.register_blueprint(docs_)
     app.register_blueprint(admin_)
