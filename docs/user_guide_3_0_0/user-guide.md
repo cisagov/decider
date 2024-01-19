@@ -21,9 +21,9 @@ subtitle: |
     _(use version 2.x.y for content authoring)_
 ---
 
-# Introduction
+## Introduction
 
-## About
+### About
 
 Decider is a web application that assists network defenders, analysts, and researchers in the process of mapping adversary behaviors to the MITRE ATT&amp;CK&reg; framework. 
 
@@ -39,14 +39,14 @@ Homeland Security Systems Engineering and Development Institute (HSSEDI&trade;)
 
 **Notice:** This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/)
 
-### What is the 'Kiosk'?
+#### What is the 'Kiosk'?
 
 Decider Kiosk is a loginless version of Decider meant to be hosted as a publicly-accessible website.  
 User accounts, database-saved carts, and content authoring have all been removed from the application.  
 The frontend was also cleaned up - to improve accessibility and responsiveness.  
 The UI works on phones without issue.
 
-### Key Features
+#### Key Features
 
 Decider has 3 key features:
 
@@ -54,7 +54,7 @@ Decider has 3 key features:
 - Full Technique Search
 - Shopping Cart
 
-#### Question Tree
+##### Question Tree Summary
 _(structured progression through ATT&amp;CK)_
 
 Decider's homepage is the root of a question tree _(matrix level)_.  
@@ -74,7 +74,7 @@ Answer cards can be:
 - re-ordered by a keyword search
     - providing key terms allows progressing through cards in a more optimal order
 
-#### Full Technique Search
+##### Full Technique Search Summary
 _(ability to search and filter all Techniques at once)_
 
 Search Technique IDs / names / descriptions using:
@@ -89,7 +89,7 @@ Filter Techniques by relevant:
 - Platforms
 - Data Sources
 
-#### Shopping Cart
+##### Shopping Cart Summary
 _(a place to store your mappings, add context, and export to files)_
 
 The 'CTI Shopping Cart' is a place where your mappings are stored.
@@ -102,11 +102,11 @@ The 'CTI Shopping Cart' is a place where your mappings are stored.
     - Microsoft Word Doc
         - _(creates a table of mapped Techniques + mapping context that can be embedded in a report)_
 
-### Support / Troubleshooting
+#### Support / Troubleshooting
 
 Please create an issue / discussion on [Decider's GitHub](https://github.com/cisagov/decider).
 
-### Does Decider Compete with the ATT&amp;CK Website?
+#### Does Decider Compete with the ATT&amp;CK Website?
 
 **No**, Decider complements the ATT&amp;CK website.
 
@@ -116,7 +116,7 @@ It primarily contains information on Tactics, Techniques, and the Platforms / Da
 The goal of Decider is to aid in mapping threat reporting / adversary behaviors.  
 Once one has mappings - they can leverage the ATT&amp;CK website for further insights / next steps (i.e. detections, mitigations).
 
-## Proposed Workflow
+### Proposed Workflow
 
 1. Go to the question tree homepage _(click **Decider (Tree Home)** in the top left)_
 2. Identify the goal of the adversary's actions _(Tactic)_ - click this card
@@ -137,7 +137,7 @@ Once one has mappings - they can leverage the ATT&amp;CK website for further ins
         - **(or)** a different Technique may apply
         - **(or)** a different Tactic may apply even
 
-## CISA Best Practices for MITRE ATT&CK Mapping
+### CISA Best Practices for MITRE ATT&CK Mapping
 
 The mapping steps below follow those identified in [CISA's ATT&CK Mapping Guide](https://us-cert.cisa.gov/sites/default/files/publications/Best%20Practices%20for%20MITRE%20ATTCK%20Mapping.pdf). Analysts may choose their own starting point based on their familiarity with ATT&CK and the technical details / context available in the report.
 
@@ -149,16 +149,16 @@ The mapping steps below follow those identified in [CISA's ATT&CK Mapping Guide]
 
 Consider techniques and sub-techniques as elements of an adversary’s playbook, rather than as isolated activities. Adversaries often use information they obtain from each activity in an operation to determine what additional techniques they will use next in the attack cycle. Because of this, techniques and sub-techniques are often linked in the attack chain.
 
-# Navigating Decider
+## Navigating Decider
 
-## Question Tree (Home) + Navbar
+### Question Tree (Home) + Navbar
 
 The **Question Tree** allows you to locate which Technique occurred by answering questions that narrow from Tactic to Technique, and optionally, SubTechnique.  
 The **Navbar** allows you to quickly access key parts of the app: the start of the question tree, the full search page, the CTI shopping cart, and app documentation.
 
-![Screenshot of Question Tree on Matrix to Tactics Page (Home). Read the Usage section just below this for a long description](imgs/app/question-tree-home.png)\
+![Question Tree on Matrix to Tactics Page (Home). Read the Usage section just below this for a long description](imgs/app/question-tree-home.png)\
 
-### Usage {.unlisted}
+#### Usage {.unlisted}
 
 Answer the _Question_ (8) by clicking one of the _Answer Cards_ (11).  
 Optionally reduce the amount of cards to sift through by settings _Filters_ (9).  
@@ -200,24 +200,24 @@ Optionally order the answer cards by keyword relevance using _Search Answers_ (1
     - Clicking the card progresses you through the tree (same as clicking 'Select Card').
     - Clicking 'ATT&amp;CK Page' opens the ATT&amp;CK page for the given Tactic/Technique
 
-### Navbar > Version Picker
+#### Navbar > Version Picker
 
 The version picker allows you to change what ATT&amp;CK version the app is showing content for. Currently, only the Enterprise domain is supported.
 
-![Screenshot of Navbar's Version Picker. Read the Usage section just below this for a long description](imgs/app/navbar-version-picker.png)\
+![Navbar's Version Picker. Read the Usage section just below this for a long description](imgs/app/navbar-version-picker.png)\
 
-#### Usage {.unlisted}
+##### Usage {.unlisted}
 
 1. **Current Version** - This shows the current ATT&amp;CK version the app is showing content for. Clicking this reveals _Other Versions_ (2)
 2. **Other Versions** - This shows as a dropdown of available versions, each prefaced with '(change to)'
 
-### Navbar > Mini Technique Search
+#### Navbar > Mini Technique Search
 
 The mini search allows you to quickly reach a Technique's Success Page by its name or ID.
 
-![Screenshot of Navbar's Mini Technique Search. Read the Usage section just below this for a long description](imgs/app/navbar-mini-search.png)\
+![Navbar's Mini Technique Search. Read the Usage section just below this for a long description](imgs/app/navbar-mini-search.png)\
 
-#### Usage {.unlisted}
+##### Usage {.unlisted}
 
 Use to quickly jump to a Technique's Success Page.  
 Or to start a Full Technique Search.
@@ -228,36 +228,36 @@ Or to start a Full Technique Search.
     - **\[enter\]** to open the selected entry
         - If a selection has not yet been made, a Full Technique Search is performed by default
 
-### Question Tree > Tactic
+#### Question Tree > Tactic
 
 A Tactic card was clicked to reach this page. This page allows picking which Technique under the current Tactic applies.
 
-![Screenshot of Question Tree on Tactic to Techniques Page. Read the Usage section just below this for a long description](imgs/app/question-tree-tactic.png)\
+![Question Tree on Tactic to Techniques Page. Read the Usage section just below this for a long description](imgs/app/question-tree-tactic.png)\
 
-#### Usage {.unlisted}
+##### Usage {.unlisted}
 
 1. **Breadcrumb Bar** - This shows your progress through the question tree
     - You can click crumbs to navigate back up the tree
 2. **Page Select** - These buttons allow you to flip through the available answer card pages
     - 5 answer cards are shows per page
 
-### Question Tree > Technique
+#### Question Tree > Technique
 
 A Tactic card and then a Technique card were clicked to reach this page. This page allows picking which SubTechnique under the current Technique applies (to view its Success Page). Or, if no SubTechnique applies, allows picking the base Technique to view its Success Page.
 
-![Screenshot of Question Tree on Technique to SubTechniques Page. Read the Usage section just below this for a long description](imgs/app/question-tree-technique.png)\
+![Question Tree on Technique to SubTechniques Page. Read the Usage section just below this for a long description](imgs/app/question-tree-technique.png)\
 
-#### Usage {.unlisted}
+##### Usage {.unlisted}
 
 1. **Base Technique Card** - Notice that this answer card has the same ID as the question page we're on. This is because the 'Base' Technique still applies even if we did not find behavior specific to any of the SubTechniques. (This card's heading matches the current page breadcrumb that is above the question).
 
-### Question Tree > Technique Success Page
+#### Question Tree > Technique Success Page
 
 This Technique page is reachable through either the Question Tree, Full Search, Mini Search, or CTI Shopping Cart. It provides information about the Technique.
 
-![Screenshot of Technique Success Page. Read the Usage section just below this for a long description](imgs/app/success-page-malicious-link.png)\
+![Technique Success Page. Read the Usage section just below this for a long description](imgs/app/success-page-malicious-link.png)\
 
-#### Usage {.unlisted}
+##### Usage {.unlisted}
 
 1. **Technique Name / ID** - The ID is also a link to the Technique's ATT&amp;CK page
 2. **Technique Description** - This is the same description as on the Technique's ATT&amp;CK page
@@ -286,13 +286,13 @@ This Technique page is reachable through either the Question Tree, Full Search, 
     - Reports covering / mapping the observation are linked too
     - _(This section is hidden if the Technique has no usage examples)_
 
-## CTI Shopping Cart
+### CTI Shopping Cart
 
 The cart allows you to record Techniques for observed behaviors, along with rationales for mapping them. Carts can be saved, loaded, and exported to Word Docs or ATT&amp;CK Navigator sheets.
 
-![Screenshot of Shopping Cart Pane. Read the Usage section just below this for a long description](imgs/app/shopping-cart.png)\
+![Shopping Cart Pane. Read the Usage section just below this for a long description](imgs/app/shopping-cart.png)\
 
-### Usage {.unlisted}
+#### Usage {.unlisted}
 
 1. **Close Cart Panel** - Closes the cart panel
 2. **Edit Name** - Allows naming the cart _(changes name of exported files + saved / loaded cart)_
@@ -307,13 +307,13 @@ The cart allows you to record Techniques for observed behaviors, along with rati
     - **Delete** - Removes this entry from your cart
     - **Mapping Rationale** - An area for you to record context / rationale / evidence as to why this entry was mapped. A good place for notes too
 
-### Cart-Wide Frequently Appears With
+#### Cart-Wide Frequently Appears With
 
 This page suggests other Techniques that _may_ have occurred, based upon the contents of your cart.
 
-![Screenshot of Cart-Wide Frequently Appears With Page. Read the Usage section just below this for a long description](imgs/app/cart-wide-coocs.png)\
+![Cart-Wide Frequently Appears With Page. Read the Usage section just below this for a long description](imgs/app/cart-wide-coocs.png)\
 
-#### Usage {.unlisted}
+##### Usage {.unlisted}
 
 - A cart-wide variant of Technique Success Page > _Frequently Appears With_
 - Suggests Techniques that _may_ have occurred based upon the contents of your cart
@@ -321,13 +321,13 @@ This page suggests other Techniques that _may_ have occurred, based upon the con
 Skim the Technique descriptions to see if any match the observed adversary behaviors.  
 Read the full description to confirm a mapping before adding it to your cart.
 
-## Full Technique Search
+### Full Technique Search
 
 The full search page allows you to locate Techniques by searching their names, IDs, and descriptions and by filtering on the Tactics, Platforms, and Data Sources that apply to them.
 
-![Screenshot of Full Technique Search Page. Read the Usage section just below this for a long description](imgs/app/full-technique-search.png)\
+![Full Technique Search Page. Read the Usage section just below this for a long description](imgs/app/full-technique-search.png)\
 
-### Usage {.unlisted}
+#### Usage {.unlisted}
 
 1. **Filters** - Only Techniques that match at least 1 filter _(per each type)_ are shown. _(a filter is ignored if 0 are set)_
     - Filter Types
