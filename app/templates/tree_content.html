@@ -4,6 +4,58 @@
 
 {% block content %}
 
-<h1>Tree Content</h1>
+<!-- [ ] Better styling for text areas - need labels too (using headings / labeledby?) -->
+<!-- [ ] Need dumps button to export tree content -->
+<!-- [ ] Need load button to load tree content not pre-pop from server -->
+<!-- [ ] On-change for .answer_edit / .question_edit feeding respective _view's -->
+
+<div x-data="treeContent">
+    <h1 class="fs-3">Tree Content {{ version }}</h1>
+
+    <template x-for="nodeId in nodeOrder">
+
+        {# Node #}
+        <div x-data="treeContentNode(nodeLookup[nodeId])">
+            <hr>
+
+            {# ID - Name #}
+            <h2 class="fs-4" x-text="`${node.id} - ${node.name}`"></h2>
+
+            {# Answer #}
+            <div class="row">
+                <h3 class="fs-5">Answer</h3>
+                <div class="col-6">
+                    <textarea style="width: 100%; height: 80px;" x-model="node.answer_edit"></textarea>
+                </div>
+                <div class="col-6">
+                    <div x-html="node.answer_view"></div>
+                </div>
+            </div>
+
+            {# Question #}
+            <template x-if="node.has_children">
+                <div class="row">
+                    <h3 class="fs-5">Question</h3>
+                    <div class="col-6">
+                        <textarea style="width: 100%; height: 80px;" x-model="node.question_edit"></textarea>
+                    </div>
+                    <div class="col-6">
+                        <div x-html="node.question_view"></div>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+
+    </template>
+</div>
+
+<script>
+    document.addEventListener("alpine:init", () => {
+        const nodeLookup = {{ node_lookup | tojson }};
+        const nodeOrder  = {{ node_order | tojson }};
+        Alpine.store("treeContentStore", { nodeLookup, nodeOrder });
+    });
+</script>
 
 {% endblock %}

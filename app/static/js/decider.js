@@ -1423,6 +1423,26 @@ document.addEventListener('alpine:init', function () {
             this.results = data.techniques;
         },
     }));
+
+    Alpine.data('treeContent', () => ({
+        nodeLookup: {},
+        nodeOrder: [],
+        init() {
+            const data = Alpine.store("treeContentStore");
+            this.nodeLookup = data.nodeLookup;
+            this.nodeOrder = data.nodeOrder;
+        },
+    }));
+
+    Alpine.data('treeContentNode', (node) => ({
+        node: node,
+        init() {
+            Alpine.effect(() => {
+                // const answer_md = this.answer_edit;
+                // this.answer_view = answer_md;
+            });
+        },
+    }));
 });
 
 // Format validator function namespace

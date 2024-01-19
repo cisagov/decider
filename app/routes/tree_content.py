@@ -29,8 +29,10 @@ class TreeNode:
     type: Literal["tactic", "technique"]
     id: str
     name: str
-    answer_md: str
-    question_md: str
+    answer_edit: str
+    answer_view: str
+    question_edit: str
+    question_view: str
     has_children: bool
 
 
@@ -80,19 +82,20 @@ def tree_content(version):
             base_tech_id = tech_id.split(".")[0]
             has_children[base_tech_id] = True
 
-    nodes: List[TreeNode] = [
-        TreeNode(
+    node_lookup: Dict[str, TreeNode] = {
+        id: TreeNode(
             type="tactic" if id.startswith("TA") else "technique",
             id=id,
             name=name,
-            answer_md=outedit_markdown(answer or ""),
-            question_md=outedit_markdown(question or ""),
+            answer_edit=outedit_markdown(answer or ""),
+            answer_view=outgoing_markdown(answer or ""),
+            question_edit=outedit_markdown(question or ""),
+            question_view=outgoing_markdown(question or ""),
             has_children=True if id.startswith("TA") else has_children[id],
         )
         for id, name, answer, question in iter_chain(tactics, techniques)
-    ]
+    }
 
-    for n in nodes:
-        print(n)
+    node_order: List[str] = list(node_lookup.keys())
 
-    return render_template("tree_content.html")
+    return render_template("tree_content.html", version=version, node_lookup=node_lookup, node_order=node_order)
