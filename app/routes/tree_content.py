@@ -1,7 +1,7 @@
 import logging
-from flask import Blueprint, render_template, g
+from flask import Blueprint, jsonify, render_template, g, request
 
-from app.routes.utils import is_attack_version, outedit_markdown, outgoing_markdown
+from app.routes.utils import ErrorDuringAJAXRoute, ErrorDuringHTMLRoute, incoming_markdown, is_attack_version, outedit_markdown, outgoing_markdown, wrap_exceptions_as
 from app.routes.utils_db import VersionPicker
 
 from collections import defaultdict
@@ -36,7 +36,34 @@ class TreeNode:
     has_children: bool
 
 
+@tree_content_.route("/api/render_md", methods=["POST"])
+@wrap_exceptions_as(ErrorDuringAJAXRoute)
+def render_md():
+    """
+    Markdown rendering service
+    """
+    g.route_title = "Render MD"
+
+    try:
+        data = request.json
+        if not isinstance(data, dict):
+            raise Exception()
+        md = data.get("md")
+        if not isinstance(md, str):
+            raise Exception()
+    except Exception:
+        error_msg = "Request was malformed"
+        logger.error(error_msg)
+        return jsonify(message=error_msg), 400
+
+    escaped = incoming_markdown(md)
+    html = outgoing_markdown(escaped)
+
+    return jsonify(html=html), 200
+
+
 @tree_content_.route("/tree_content/<version>", methods=["GET"])
+@wrap_exceptions_as(ErrorDuringHTMLRoute)
 def tree_content(version):
     """
     Displays all Tree Content with Local Editing + Dump Feature

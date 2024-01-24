@@ -1431,6 +1431,10 @@ document.addEventListener('alpine:init', function () {
             const data = Alpine.store("treeContentStore");
             this.nodeLookup = data.nodeLookup;
             this.nodeOrder = data.nodeOrder;
+
+            Alpine.effect(() => {
+                console.log(this.nodeLookup);
+            });
         },
     }));
 
@@ -1438,9 +1442,32 @@ document.addEventListener('alpine:init', function () {
         node: node,
         init() {
             Alpine.effect(() => {
-                // const answer_md = this.answer_edit;
-                // this.answer_view = answer_md;
+                this.renderMd(node.answer_edit).then((html) => {
+                    if (typeof html !== 'undefined')
+                        node.answer_view = html;
+                });
             });
+
+            if (node.has_children) {
+                Alpine.effect(() => {
+                    this.renderMd(node.question_edit).then((html) => {
+                        if (typeof html !== 'undefined')
+                            node.question_view = html;
+                    });
+                });
+            }
+        },
+        async renderMd(md) {
+            const response = await fetchV2({
+                url: '/api/render_md',
+                method: 'POST',
+                body: { md: md }
+            });
+            if (response.netFail || !response.ok) {
+                doToast('Failed to render markdown.', false);
+                return undefined;
+            }
+            return response.data.html;
         },
     }));
 });
