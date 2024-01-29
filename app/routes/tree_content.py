@@ -17,7 +17,6 @@ tree_content_ = Blueprint("tree_content_", __name__, template_folder="templates"
 
 
 # [ ] Restrict access of route(s)
-# [ ] Add route that renders passed markdown
 
 
 @dataclass
