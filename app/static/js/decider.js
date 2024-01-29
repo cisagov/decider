@@ -1427,22 +1427,59 @@ document.addEventListener('alpine:init', function () {
     Alpine.data('treeContent', () => ({
         nodeLookup: {},
         nodeOrder: [],
+        version: '',
         init() {
             const data = Alpine.store("treeContentStore");
             this.nodeLookup = data.nodeLookup;
             this.nodeOrder = data.nodeOrder;
+            this.version = data.treeVersion;
+        },
+        loadFromJson() {
+            console.log("STUB: loadFromJson()");
+        },
+        saveToJson() {
+            const data = {};
 
-            Alpine.effect(() => {
-                console.log(this.nodeLookup);
+            this.nodeOrder.forEach((id) => {
+                const node = this.nodeLookup[id];
+
+                data[id] = {
+                    __name: node.name,
+                    question: node.has_children ? node.question_edit : null,
+                    answer: node.answer_edit
+                };
             });
+
+            const serial = JSON.stringify(data, null, 4);
+            const name = `tree-content-${this.version}.json`;
+            try {
+                const file = new Blob([serial], {
+                    type: 'application/JSON',
+                    name: name,
+                });
+                saveAs(file, name);
+            } catch {
+                doToast('Failed to save tree content as JSON file.', false);
+            }
         },
     }));
 
     Alpine.data('treeContentNode', (node) => ({
         node: node,
+        // skip effect running on init - as pre-rendered MD is provided by the server
+        answer_init: true,
+        question_init: true,
         init() {
             Alpine.effect(() => {
-                this.renderMd(node.answer_edit).then((html) => {
+                const answer_edit = node.answer_edit;
+                const answer_init = this.answer_init;
+
+                if (answer_init) {
+                    this.answer_init = false;
+                    return;
+                }
+
+                this.renderMd(answer_edit).then((html) => {
                     if (typeof html !== 'undefined')
                         node.answer_view = html;
                 });
@@ -1450,7 +1487,15 @@ document.addEventListener('alpine:init', function () {
 
             if (node.has_children) {
                 Alpine.effect(() => {
-                    this.renderMd(node.question_edit).then((html) => {
+                    const question_edit = node.question_edit;
+                    const question_init = this.question_init;
+
+                    if (question_init) {
+                        this.question_init = false;
+                        return;
+                    }
+
+                    this.renderMd(question_edit).then((html) => {
                         if (typeof html !== 'undefined')
                             node.question_view = html;
                     });
