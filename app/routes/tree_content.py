@@ -4,11 +4,10 @@ from flask import Blueprint, jsonify, render_template, g, request
 from app.routes.utils import ErrorDuringAJAXRoute, ErrorDuringHTMLRoute, incoming_markdown, is_attack_version, outedit_markdown, outgoing_markdown, wrap_exceptions_as
 from app.routes.utils_db import VersionPicker
 
-from collections import defaultdict
 from dataclasses import dataclass
-from typing import List, Tuple, Dict, Union, Literal
+from typing import List, Set, Dict, Literal
 
-from sqlalchemy import asc, desc
+from sqlalchemy import asc
 from app.models import db, Tactic, Technique
 
 from itertools import chain as iter_chain
@@ -103,11 +102,11 @@ def tree_content(version):
     ).all()
 
     # parents of subs have kids - all else have none
-    has_children: defaultdict[str, bool] = defaultdict(lambda: False)
+    has_children: Set[str] = set()
     for tech_id, *_ in techniques:
         if "." in tech_id:
             base_tech_id = tech_id.split(".")[0]
-            has_children[base_tech_id] = True
+            has_children.add(base_tech_id)
 
     node_lookup: Dict[str, TreeNode] = {
         id: TreeNode(
@@ -118,7 +117,7 @@ def tree_content(version):
             answer_view=outgoing_markdown(answer or ""),
             question_edit=outedit_markdown(question or ""),
             question_view=outgoing_markdown(question or ""),
-            has_children=True if id.startswith("TA") else has_children[id],
+            has_children=id.startswith("TA") or id in has_children,
         )
         for id, name, answer, question in iter_chain(tactics, techniques)
     }

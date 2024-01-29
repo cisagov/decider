@@ -1435,7 +1435,71 @@ document.addEventListener('alpine:init', function () {
             this.version = data.treeVersion;
         },
         loadFromJson() {
-            console.log("STUB: loadFromJson()");
+            document.getElementById('treeContentFile').click();
+        },
+        loadFromJsonFileChanged(inputEl) {
+            // get <input> file
+            const file = inputEl.files[0];
+            if (!file) {
+                doToast('Error loading Tree Content - file invalid.', false);
+                return;
+            }
+
+            // read file text -> loadFromJsonFileLoaded(e)
+            const reader = new FileReader();
+            reader.onload = (loadEvent) => {
+                this.loadFromJsonFileLoaded(loadEvent);
+            };
+            reader.onerror = () => {
+                doToast('Error loading Tree Content - issue loading file content.', false);
+            };
+            reader.readAsText(file);
+        },
+        async loadFromJsonFileLoaded(loadEvent) {
+            // get text -> json parse
+            const text = loadEvent.target.result;
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch {
+                doToast('Error loading Tree Content - not valid JSON.', false);
+                return;
+            }
+
+            // clear order + lookup
+            this.nodeOrder = [];
+            this.nodeLookup = {};
+
+            // wait for re-render to clear, then repopulate
+            this.$nextTick(() => {
+
+                // parents of subs have kids - all else have none
+                const hasChildren = new Set();
+                Object.keys(data).forEach((id) => {
+                    if (id.startsWith('TA')) { return; }
+                    if (id.includes('.')) {
+                        const base_tech_id = id.split('.')[0];
+                        hasChildren.add(base_tech_id);
+                    }
+                });
+
+                Object.entries(data).forEach(([id, node]) => {
+                    this.nodeLookup[id] = {
+                        type: id.startsWith('TA') ? 'tactic' : 'technique',
+                        id: id,
+                        name: node.__name,
+                        answer_edit: node.answer,
+                        answer_view: '',
+                        question_edit: node.question ?? '',
+                        question_view: '',
+                        has_children: id.startsWith('TA') || hasChildren.has(id),
+                        needs_init: true,
+                    };
+                    this.nodeOrder.push(id);
+                });
+            });
+
+            doToast('Successfully loaded Tree Content!', true);
         },
         saveToJson() {
             const data = {};
@@ -1452,6 +1516,7 @@ document.addEventListener('alpine:init', function () {
 
             const serial = JSON.stringify(data, null, 4);
             const name = `tree-content-${this.version}.json`;
+
             try {
                 const file = new Blob([serial], {
                     type: 'application/JSON',
@@ -1466,16 +1531,15 @@ document.addEventListener('alpine:init', function () {
 
     Alpine.data('treeContentNode', (node) => ({
         node: node,
-        // skip effect running on init - as pre-rendered MD is provided by the server
-        answer_init: true,
-        question_init: true,
+        answer_init: node.needs_init ?? false,
+        question_init: node.needs_init ?? false,
         init() {
             Alpine.effect(() => {
                 const answer_edit = node.answer_edit;
                 const answer_init = this.answer_init;
 
-                if (answer_init) {
-                    this.answer_init = false;
+                if (!answer_init) {
+                    this.answer_init = true;
                     return;
                 }
 
@@ -1490,8 +1554,8 @@ document.addEventListener('alpine:init', function () {
                     const question_edit = node.question_edit;
                     const question_init = this.question_init;
 
-                    if (question_init) {
-                        this.question_init = false;
+                    if (!question_init) {
+                        this.question_init = true;
                         return;
                     }
 

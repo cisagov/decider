@@ -14,6 +14,14 @@
 <div x-data="treeContent">
     <h1 class="fs-3">Tree Content {{ version }}</h1>
 
+    <input
+        aria-label="Load tree content json File"
+        type="file"
+        id="treeContentFile"
+        accept="application/JSON"
+        @change="loadFromJsonFileChanged($el)"
+        class="d-none"
+    >
     <button type="button" class="btn btn-primary btn-sm" @click="loadFromJson">
         Load
     </button>
@@ -22,7 +30,7 @@
         Save
     </button>
 
-    <template x-for="nodeId in nodeOrder">
+    <template x-for="nodeId in nodeOrder" :key="nodeId">
 
         {# Node #}
         <div x-data="treeContentNode(nodeLookup[nodeId])">
