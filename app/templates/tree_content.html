@@ -22,13 +22,41 @@
         @change="loadFromJsonFileChanged($el)"
         class="d-none"
     >
-    <button type="button" class="btn btn-primary btn-sm" @click="loadFromJson">
-        Load
-    </button>
 
-    <button type="button" class="btn btn-primary btn-sm" @click="saveToJson">
-        Save
-    </button>
+    <div class="hstack">
+        <!-- file i/o -->
+        <div class="pe-3 me-3" style="border-right: 2px solid #ccc;">
+            <div class="input-group">
+                <span class="input-group-text">Tree Content File</span>
+                <button type="button" class="btn btn-outline-dark btn-sm" @click="loadFromJson">
+                    Load
+                </button>
+                <button type="button" class="btn btn-outline-dark btn-sm" @click="saveToJson">
+                    Save
+                </button>
+            </div>
+        </div>
+
+        <!-- jump to id -->
+        <div class>
+            <div class="input-group">
+                <input
+                    x-ref="jumpToIdBox"
+                    type="text"
+                    class="form-control"
+                    placeholder="Tactic / Technique ID"
+                    aria-label="Tactic / Technique ID goes here, button allows jumping to the editing row"
+                    x-model="jumpId"
+                    @keydown.enter="jumpToId"
+                >
+                <button
+                    class="btn btn-outline-dark"
+                    type="button"
+                    @click="jumpToId"
+                >Jump To ID</button>
+            </div>
+        </div>
+    </div>
 
     <template x-for="nodeId in nodeOrder" :key="nodeId">
 
@@ -37,7 +65,13 @@
             <hr>
 
             {# ID - Name #}
-            <h2 :id="node.id" class="fs-4" x-text="`${node.id} - ${node.name}`"></h2>
+            <h2
+                tabindex="-1"
+                :id="node.id"
+                class="fs-4"
+                x-text="`${node.id} - ${node.name}`"
+                @keydown.escape="jumpToIdReturn"
+            ></h2>
 
             {# Answer #}
             <div class="row">
@@ -47,6 +81,7 @@
                         :aria-labelledby="`${node.id} ${node.id}-answer`"
                         style="width: 100%; height: 80px;"
                         x-model.debounce="node.answer_edit"
+                        @keydown.escape="jumpToIdReturn"
                     ></textarea>
                 </div>
                 <div class="col-6">
@@ -63,6 +98,7 @@
                             :aria-labelledby="`${node.id} ${node.id}-question`"
                             style="width: 100%; height: 80px;"
                             x-model.debounce="node.question_edit"
+                            @keydown.escape="jumpToIdReturn"
                         ></textarea>
                     </div>
                     <div class="col-6">

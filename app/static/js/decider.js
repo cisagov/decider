@@ -1428,6 +1428,7 @@ document.addEventListener('alpine:init', function () {
         nodeLookup: {},
         nodeOrder: [],
         version: '',
+        jumpId: '',
         init() {
             const data = Alpine.store("treeContentStore");
             this.nodeLookup = data.nodeLookup;
@@ -1526,6 +1527,26 @@ document.addEventListener('alpine:init', function () {
             } catch {
                 doToast('Failed to save tree content as JSON file.', false);
             }
+        },
+        jumpToId() {
+            const elem = null
+                ?? document.getElementById(this.jumpId)
+                ?? document.getElementById(this.jumpId.toUpperCase())
+                ?? document.getElementById(`TA${this.jumpId}`)
+                ?? document.getElementById(`T${this.jumpId}`);
+            if (elem === null) {
+                doToast("That ID doesn't exist.", false);
+            }
+            else {
+                elem.scrollIntoView({ behavior: 'instant' });
+                elem.focus();
+            }
+            this.jumpId = '';
+        },
+        jumpToIdReturn() {
+            const elem = this.$refs.jumpToIdBox;
+            elem.scrollIntoView({ behavior: 'instant' });
+            elem.focus();
         },
     }));
 
