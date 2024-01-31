@@ -1595,7 +1595,7 @@ document.addEventListener('alpine:init', function () {
             });
             if (response.netFail || !response.ok) {
                 doToast('Failed to render markdown.', false);
-                return undefined;
+                return '<mark>NETWORK ERROR - failed to render markdown</mark>';
             }
             return response.data.html;
         },
