@@ -102,6 +102,13 @@ which will recreate containers with modified environments
 
 ### :technologist: Manual Install
 
+#### :warning: Instructions out of date
+
+- Docker is the preferred method of install
+- The manual install instructions require adjustments if followed
+  - You need Python 3.12+ (instructions mention Python 3.8.16, which **will not** work :warning:)
+  - You may need PostgreSQL 16 (instructions mention PostgreSQL 12+, which ***should*** work)
+
 #### Ubuntu 22.04
 
 [Ubuntu Install Guide](docs/install/Ubuntu_22.04.2.md)
@@ -161,8 +168,8 @@ Exact required version(s) unspecified.
   - CentOS 7+
   - Ubuntu 22.04.2+
   - Fedora 37+ works fine *\(earlier versions should work too\)*
-- Python 3.8.16
-- PostgreSQL 12+
+- Python 3.12+ (instructions mention Python 3.8.16, which **will not** work :warning:)
+- PostgreSQL 16 (instructions mention PostgreSQL 12+, which ***should*** work)
 
 ### Hardware
 
