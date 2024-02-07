@@ -64,9 +64,7 @@ cp -r default_config/. config/
 sudo docker compose up
 ```
 
-Then visit http://localhost:8001/
-
-It is ready when **Starting uWSGI** appears
+Then visit the link once started (default: http://localhost:8001/).
 ![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-3.0.0.png)
 
 #### Config Made Easy

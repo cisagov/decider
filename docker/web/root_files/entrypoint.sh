@@ -1,5 +1,21 @@
 #!/bin/sh
 
+# Colors
+COLOR_OFF="\033[0m"
+COLOR_IRED="\033[0;91m"
+COLOR_IGREEN="\033[0;92m"
+COLOR_ICYAN="\033[0;96m"
+
+print_started_text () {
+    # https://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=Started
+    echo "███████ ████████  █████  ██████  ████████ ███████ ██████  "
+    echo "██         ██    ██   ██ ██   ██    ██    ██      ██   ██ "
+    echo "███████    ██    ███████ ██████     ██    █████   ██   ██ "
+    echo "     ██    ██    ██   ██ ██   ██    ██    ██      ██   ██ "
+    echo "███████    ██    ██   ██ ██   ██    ██    ███████ ██████  "
+    return 0
+}
+
 # Required Env Var Presence Check ----------------------------------------------
 
 # database to [connect to, build]
@@ -130,9 +146,10 @@ fi
 # HTTP:
 if [ -z "$WEB_HTTPS_ON" ]; then
 
-    echo "Running in HTTP mode"
-
-    echo "Running Decider as a Kiosk"
+    echo ""
+    print_started_text
+    echo "Decider as a Kiosk in ${COLOR_IRED}HTTP${COLOR_OFF} mode"
+    echo "${COLOR_ICYAN}http://${WEB_IP}:${WEB_PORT}/${COLOR_OFF}\n"
     uwsgi --ini uwsgi-http-kiosk.ini
 
 # HTTPS:
@@ -165,6 +182,9 @@ else
             -subj "/C=US/ST=Virginia/L=McLean/O=Company Name/OU=Org/CN=www.example.com"
     fi
 
-    echo "Running Decider as a Kiosk"
+    echo ""
+    print_started_text
+    echo "Decider as a Kiosk in ${COLOR_IGREEN}HTTPS${COLOR_OFF} mode"
+    echo "${COLOR_ICYAN}https://${WEB_IP}:${WEB_PORT}/${COLOR_OFF}\n"
     uwsgi --ini uwsgi-https-kiosk.ini
 fi
