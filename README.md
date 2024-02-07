@@ -60,6 +60,8 @@ Boolean expressions, prefix-matching, and stemming included.
 git clone https://github.com/cisagov/decider.git
 cd decider
 cp .env.docker .env
+# edit .env - define DB_ADMIN_PASS, DB_KIOSK_PASS, CART_ENC_KEY, APP_ADMIN_PASS
+# no default passwords are given :)
 cp -r default_config/. config/
 sudo docker compose up
 ```
