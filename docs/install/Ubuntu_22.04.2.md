@@ -212,8 +212,3 @@ sudo systemctl start decider
 sudo systemctl status decider
 sudo systemctl enable decider
 ```
-
-
-### Default Login
-- **email:** admin@admin.com
-- **password:** admin

@@ -25,7 +25,7 @@ services:
             # db kiosk user [run app under]
             DB_KIOSK_NAME: ${DB_KIOSK_NAME}
             DB_KIOSK_PASS: ${DB_KIOSK_PASS}
-            # default app admin [create]
+            # app admin [create]
             APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL}
             APP_ADMIN_PASS: ${APP_ADMIN_PASS}
             # cart encryption key
