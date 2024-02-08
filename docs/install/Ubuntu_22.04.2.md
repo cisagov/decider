@@ -108,7 +108,7 @@ sudo -u decider -g decider /opt/decider/venv/bin/python -m \
 
 
 ### Create user.json file &amp; Initialize DB
-- **'Optional:'** Change default passwords in .env after copy command
+- Set passwords in .env after copy command
 ```bash
 sudo -u decider -g decider cp /opt/decider/.env.manual /opt/decider/.env
 sudo -u decider -g decider chmod 660 /opt/decider/.env
@@ -212,8 +212,3 @@ sudo systemctl start decider
 sudo systemctl status decider
 sudo systemctl enable decider
 ```
-
-
-### Default Login
-- **email:** admin@admin.com
-- **password:** admin
