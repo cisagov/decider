@@ -325,7 +325,17 @@ body {
     --bs-btn-disabled-border-color: var(--dhs-red);
 }
 
-mark {
+.answer-card .card-header mark {
+    padding: 0.1rem !important;
+    background-color: inherit;
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--dhs-green);
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+}
+.answer-card .card-body mark {
     padding: 0.1rem !important;
     background-color: inherit;
     color: inherit;

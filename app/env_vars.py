@@ -24,7 +24,7 @@ try:
     # cart encryption key
     CART_ENC_KEY = os.environ["CART_ENC_KEY"]
 
-    # default app admin login
+    # app admin login
     APP_ADMIN_EMAIL = os.environ["APP_ADMIN_EMAIL"]
     APP_ADMIN_PASS = os.environ["APP_ADMIN_PASS"]
 

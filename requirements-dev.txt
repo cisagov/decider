@@ -19,13 +19,13 @@ pre-commit==3.2.2
 prettytable==3.6.0
 pycodestyle==2.10.0
 pyflakes==3.0.1
-PyYAML==6.0
+PyYAML==6.0.1
 requests==2.31.0
-ruamel.yaml==0.17.21
-ruamel.yaml.clib==0.2.7
+ruamel.yaml==0.18.5
+ruamel.yaml.clib==0.2.8
 safety==2.3.4
 toml==0.10.2
 tomli==2.0.1
-urllib3==1.26.18
+urllib3==2.2.0
 virtualenv==20.21.0
 wcwidth==0.2.6
