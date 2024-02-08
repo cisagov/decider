@@ -25,11 +25,14 @@ services:
             # db kiosk user [run app under]
             DB_KIOSK_NAME: ${DB_KIOSK_NAME}
             DB_KIOSK_PASS: ${DB_KIOSK_PASS}
-            # default app admin [create]
+            # app admin [create]
             APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL}
             APP_ADMIN_PASS: ${APP_ADMIN_PASS}
             # cart encryption key
             CART_ENC_KEY: ${CART_ENC_KEY}
+            # app endpoint [to display to user]
+            WEB_IP: ${WEB_IP}
+            WEB_PORT: ${WEB_PORT}
         volumes:
             - type: bind
               source: ./config
@@ -39,7 +42,7 @@ services:
         restart: unless-stopped
         container_name: decider-db
         env_file: .env
-        image: postgres:14-alpine
+        image: postgres:16-alpine
         environment:
             POSTGRES_INITDB_ARGS: '--auth=scram-sha-256'
             POSTGRES_HOST_AUTH_METHOD: 'scram-sha-256'

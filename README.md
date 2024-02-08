@@ -1,7 +1,7 @@
 # Decider
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.  
-This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/).
+This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/).
 
 ## :newspaper: 3.0.0 - Kiosk is Here
 
@@ -60,13 +60,13 @@ Boolean expressions, prefix-matching, and stemming included.
 git clone https://github.com/cisagov/decider.git
 cd decider
 cp .env.docker .env
+# edit .env - define DB_ADMIN_PASS, DB_KIOSK_PASS, CART_ENC_KEY, APP_ADMIN_PASS
+# no default passwords are given :)
 cp -r default_config/. config/
 sudo docker compose up
 ```
 
-Then visit http://localhost:8001/
-
-It is ready when **Starting uWSGI** appears
+Then visit the link once started (default: http://localhost:8001/).
 ![Decider on Docker Boot Terminal Output](./docs/imgs/docker-started-3.0.0.png)
 
 #### Config Made Easy
@@ -101,6 +101,13 @@ which will recreate containers with modified environments
 - If either file is missing, a self-signed cert is generated and used instead
 
 ### :technologist: Manual Install
+
+#### :warning: Instructions out of date
+
+- Docker is the preferred method of install
+- The manual install instructions require adjustments if followed
+  - You need Python 3.12+ (instructions mention Python 3.8.16, which **will not** work :warning:)
+  - You may need PostgreSQL 16 (instructions mention PostgreSQL 12+, which ***should*** work)
 
 #### Ubuntu 22.04
 
@@ -161,8 +168,8 @@ Exact required version(s) unspecified.
   - CentOS 7+
   - Ubuntu 22.04.2+
   - Fedora 37+ works fine *\(earlier versions should work too\)*
-- Python 3.8.16
-- PostgreSQL 12+
+- Python 3.12+ (instructions mention Python 3.8.16, which **will not** work :warning:)
+- PostgreSQL 16 (instructions mention PostgreSQL 12+, which ***should*** work)
 
 ### Hardware
 

@@ -9,7 +9,7 @@ from app.env_vars import (
     # db admin user
     DB_ADMIN_NAME,
     DB_ADMIN_PASS,
-    # app default admin login
+    # app admin login
     APP_ADMIN_EMAIL,
     APP_ADMIN_PASS,
 )

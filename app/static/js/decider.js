@@ -988,49 +988,69 @@ document.addEventListener('alpine:init', function () {
 
             // Future Polish
             // _____________
-            // IDEA: expanding BaseTechs for SubTechs that are mapped would be useful
             // IDEA: perhaps a lighter highlight too as partial coverage exists
 
-            // combine notes for tech+tact combos
-            const keyToNotesArr = {};
-            this.entries.forEach((e) => {
-                const techId = e.index;
-                const tactShortname = e.tacticName.toLowerCase().replaceAll(' ', '-');
-                const notes = e.notes.trim();
+            const keyToComments = {}; // str -> str[]   | absent key means unmapped
+            const keyToShowSubs = {}; // str -> boolean | absent key means false
 
+            // record existence / parent showSubs for each entry
+            this.entries.forEach(({ index, tacticName, notes }) => {
+
+                const techId = index;
+                const tactShortname = tacticName.toLowerCase().replaceAll(' ', '-');
+                const comment = notes.trim();
                 const key = `${techId}--${tactShortname}`;
 
-                keyToNotesArr[key] = keyToNotesArr[key] ?? [];
-                if (notes.length > 0) {
-                    keyToNotesArr[key].push(notes);
+                // tech is a sub
+                if (techId.includes('.')) {
+                    const baseId = techId.split('.')[0];
+                    const baseKey = `${baseId}--${tactShortname}`;
+
+                    // mark parent shows subs
+                    keyToShowSubs[baseKey] = true;
+                }
+
+                // mark exists
+                keyToComments[key] = keyToComments[key] ?? [];
+
+                // add comment if present
+                if (comment.length > 0) {
+                    keyToComments[key].push(comment);
                 }
             });
 
-            // form techniques (deduped on unique tech+tact combos)
-            const techniques = [];
-            Object.entries(keyToNotesArr).forEach(([key, notesArr]) => {
-                const [techId, tactShortname] = key.split('--');
-                const comment = notesArr.join(' | ') || '-no comment-';
+            const allKeys = Array.from(new Set([
+                ...Object.keys(keyToComments),
+                ...Object.keys(keyToShowSubs)
+            ]));
 
-                techniques.push({
+            const techniques = allKeys.map((key) => {
+
+                const [techId, tactShortname] = key.split('--');
+                const exists = typeof keyToComments[key] !== 'undefined';
+                const color = exists ? '#e60d0d' : '';
+                const comment = exists ? (keyToComments[key].join(',\n') || '-no comment-') : '';
+                const showSubs = keyToShowSubs[key] ?? false;
+
+                return {
                     techniqueID: techId,
                     tactic: tactShortname,
-                    color: '#e60d0d',
+                    color: color,
                     comment: comment,
                     enabled: true,
                     metadata: [],
                     links: [],
-                    showSubtechniques: true,
-                });
+                    showSubtechniques: showSubs
+                };
             });
 
             // base structure
             let navigatorJSON = {
                 name: 'layer',
                 versions: {
-                    attack: this.version.replaceAll('v', ''), // vx.y... -> x.y...
-                    navigator: '4.8.0',
-                    layer: '4.4',
+                    attack: this.version.replaceAll('v', '').split(".")[0], // vX.Y -> X
+                    navigator: '4.9.1',
+                    layer: '4.5',
                 },
                 domain: 'enterprise-attack',
                 description: '',
@@ -1057,21 +1077,27 @@ document.addEventListener('alpine:init', function () {
                     showName: true,
                     showAggregateScores: false,
                     countUnscored: false,
+                    expandedSubtechniques: 'annotated'
                 },
                 hideDisabled: false,
                 techniques: techniques,
                 gradient: {
-                    colors: ['#ff6666ff', '#ffe766ff', '#8ec843ff'],
+                    colors: [
+                        "#ff6666ff",
+                        "#ffe766ff",
+                        "#8ec843ff"
+                    ],
                     minValue: 0,
-                    maxValue: 100,
+                    maxValue: 100
                 },
                 legendItems: [],
                 metadata: [],
                 links: [],
                 showTacticRowBackground: false,
-                tacticRowBackground: '#dddddd',
-                selectTechniquesAcrossTactics: true,
+                tacticRowBackground: "#dddddd",
+                selectTechniquesAcrossTactics: false,
                 selectSubtechniquesWithParent: false,
+                selectVisibleTechniques: false
             };
 
             // dump it

@@ -37,7 +37,7 @@ Homeland Security Systems Engineering and Development Institute (HSSEDI&trade;)
 
 **Code:** [Decider's GitHub Repo](https://github.com/cisagov/decider)
 
-**Notice:** This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/terms-of-use/)
+**Notice:** This project makes use of MITRE ATT&amp;CK&reg; - [ATT&amp;CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/)
 
 #### What is the 'Kiosk'?
 

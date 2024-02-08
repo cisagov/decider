@@ -7,9 +7,6 @@
   <title>Decider User Guide</title>
   <style>
 html {
-line-height: 1.5;
-font-family: Georgia, serif;
-font-size: 20px;
 color: #1a1a1a;
 background-color: #fdfdfd;
 }
@@ -28,13 +25,16 @@ font-kerning: normal;
 @media (max-width: 600px) {
 body {
 font-size: 0.9em;
-padding: 1em;
+padding: 12px;
 }
 h1 {
 font-size: 1.8em;
 }
 }
 @media print {
+html {
+background-color: white;
+}
 body {
 background-color: transparent;
 color: black;
@@ -84,9 +84,10 @@ border-left: 2px solid #e6e6e6;
 color: #606060;
 }
 code {
-font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
 font-size: 85%;
 margin: 0;
+hyphens: manual;
 }
 pre {
 margin: 1em 0;
@@ -151,8 +152,10 @@ span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
 div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
+
+ul.task-list[class]{list-style: none;}
 ul.task-list li input[type="checkbox"] {
+font-size: inherit;
 width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
@@ -235,7 +238,7 @@ Homeland Security Systems Engineering and Development Institute
 </p>
 <p><strong>Code:</strong> <a href="https://github.com/cisagov/decider">Decider’s GitHub Repo</a></p>
 <p><strong>Notice:</strong> This project makes use of MITRE ATT&amp;CK®
-- <a href="https://attack.mitre.org/resources/terms-of-use/">ATT&amp;CK
+- <a href="https://attack.mitre.org/resources/legal-and-branding/terms-of-use/">ATT&amp;CK
 Terms of Use</a></p>
 <section id="what-is-the-kiosk" class="level4">
 <h4>What is the ‘Kiosk’?</h4>
