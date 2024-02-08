@@ -252,7 +252,7 @@
     "T1021.008": {
         "__name": "Direct Cloud VM Connections",
         "question": null,
-        "answer": "Using **cloud-hosted compute infrastructure** that was logged into through cloud native methods."
+        "answer": "Using **cloud native APIs or consoles** to **access cloud-hosted compute** infrastructure."
     },
     "T1025": {
         "__name": "Data from Removable Media",
@@ -322,7 +322,7 @@
     "T1027.012": {
         "__name": "LNK Icon Smuggling",
         "question": null,
-        "answer": "Hiding commands within the target field of **Windows shortcut files** (.LNK)"
+        "answer": "**Hiding commands to download payloads** in the icon location field of **Windows shortcut files** (.LNK)."
     },
     "T1029": {
         "__name": "Scheduled Transfer",
@@ -387,7 +387,7 @@
     "T1036.009": {
         "__name": "Break Process Trees",
         "question": null,
-        "answer": "**Detaching executed malware from its parent process** to avoid detection by endpoint software on the \"parent-child\" relationship. (may involve the `daemon` syscall or `fork`ing twice then having the parent exit)"
+        "answer": "**Detaching executed malware from its parent process** to avoid detection by endpoint software on the \"parent-child\" relationship."
     },
     "T1037": {
         "__name": "Boot or Logon Initialization Scripts",
@@ -661,7 +661,7 @@
     },
     "T1069": {
         "__name": "Permission Groups Discovery",
-        "question": "What type of **permission groups is the adversary trying to discover**?\n\nWhat actions is the adversary performing?",
+        "question": "What type of **permission groups is the adversary trying to discover**? What actions is the adversary performing?",
         "answer": "**Searching group and permission settings** that can help adversaries determine user accounts, groups, and permissions."
     },
     "T1069.001": {
@@ -681,7 +681,7 @@
     },
     "T1070": {
         "__name": "Indicator Removal",
-        "question": "What indicators did the adversary **try and remove**?\n\nWhat actions did the adversary take?",
+        "question": "What indicators did the adversary **try and remove**? What actions did the adversary take?",
         "answer": "**Deleting or altering artifacts within systems**, including logs or captured files such as quarantined malware."
     },
     "T1070.001": {
@@ -1911,7 +1911,7 @@
     },
     "T1550": {
         "__name": "Use Alternate Authentication Material",
-        "question": "What type of **alternative auth material** is the adversary using?\n\nWhat actions did they perform?",
+        "question": "What type of **alternative auth material** is the adversary using? What actions did they perform?",
         "answer": "Using **alternate authentication material** such as password hashes, Kerberos tickets, or access tokens to **access accounts, information, or services**."
     },
     "T1550.001": {
@@ -2276,7 +2276,7 @@
     },
     "T1564": {
         "__name": "Hide Artifacts",
-        "question": "What is the adversary doing in order to **hide artifacts**?\n\nWhat is the environment?",
+        "question": "What is the adversary doing in order to **hide artifacts**? What is the environment?",
         "answer": "Attempting to **hide artifacts** associated with their activities to evade being detected."
     },
     "T1564.001": {
@@ -2536,7 +2536,7 @@
     },
     "T1578": {
         "__name": "Modify Cloud Compute Infrastructure",
-        "question": "In what way did the adversary **modify the cloud infrastructure**?\n\nWhat actions did the adversary perform?",
+        "question": "In what way did the adversary **modify the cloud infrastructure**? What actions did the adversary perform?",
         "answer": "Modifying the **cloud account's service infrastructure**."
     },
     "T1578.001": {
@@ -3001,7 +3001,7 @@
     },
     "T1601": {
         "__name": "Modify System Image",
-        "question": "In what way did the adversary **modify the system image**?\n\nWhat actions did they take?",
+        "question": "In what way did the adversary **modify the system image**? What actions did they take?",
         "answer": "Modifying the OS of an **embedded network device**."
     },
     "T1601.001": {
