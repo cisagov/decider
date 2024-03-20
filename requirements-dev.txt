@@ -1,4 +1,4 @@
-black==23.3.0
+black==24.3.0
 certifi==2023.7.22
 cfgv==3.3.1
 charset-normalizer==3.1.0
